@@ -44,7 +44,6 @@ export default class DndState {
     public hitDice: string = '1d12';
     public xp: number = 0;
     public hp: number = 6;
-    public speed: number = 25;
     public initiative: number = 0;
     public proficiencyBonus: number = 2;
     public languageids: number[] = [0, 1];

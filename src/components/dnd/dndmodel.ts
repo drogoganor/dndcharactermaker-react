@@ -21,7 +21,6 @@ export default class DndModel {
   }
 
   public savingThrow(i: number): number {
-    var throws = this.props.savingThrows[this.state.class.id].throws;
     var savingThrow = this.props.savingThrows[this.state.class.id].throws.find(th => th === i) !== undefined ? this.state.proficiencyBonus : 0;
 
     return this.getModifier(this.statTotal(i)) + savingThrow;
@@ -108,7 +107,7 @@ export default class DndModel {
   public get languagesLeftText(): string {
     // Nice text label to indicate how many additional languages you can choose
     var racelanguages = this.props.raceLanguages[this.state.race.id].languages.length;
-    var extraLangs = this.props.raceExtraLanguages[this.state.race.id].extras;
+    var extraLangs = this.state.race.extraLanguages;
     var numBackgroundLangs = this.numBackgroundLanguages;
     var numLeft = racelanguages + extraLangs + numBackgroundLangs - this.state.languageids.length;
 
@@ -274,7 +273,7 @@ export default class DndModel {
 
   public allLanguagesChosen(): boolean {
     var racelanguages = this.props.raceLanguages[this.state.race.id].languages.length;
-    var extraLangs = this.props.raceExtraLanguages[this.state.race.id].extras;
+    var extraLangs = this.state.race.extraLanguages;
     var numBackgroundLangs = this.numBackgroundLanguages;
 
     if (this.state.languageids.length < racelanguages + extraLangs + numBackgroundLangs)
@@ -295,7 +294,7 @@ export default class DndModel {
   public hasBonusLanguages(): boolean {
     // Whether the current class/background combo is able to select additional languages
     var numBackgroundLangs = this.numBackgroundLanguages;
-    return this.props.raceExtraLanguages[this.state.race.id].extras > 0 || numBackgroundLangs > 0;
+    return this.state.race.extraLanguages > 0 || numBackgroundLangs > 0;
   };
 
   public hasChosenAnyEquipment(): boolean {
@@ -541,7 +540,7 @@ export default class DndModel {
     fields['CHamod'] = [this.statTotal(5)];
 
     fields['HPMax'] = [o.hp];
-    fields['Speed'] = [o.speed];
+    fields['Speed'] = [o.race.speed];
     fields['Initiative'] = [Util.formatModifier(o.initiative)];
 
     fields['ST Strength'] = [Util.formatModifier(this.savingThrow(0))];

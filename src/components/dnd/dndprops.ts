@@ -9,6 +9,8 @@ export interface Race {
     text: string;
     page: string;
     bonuses: number[];
+    speed: number;
+    extraLanguages: number;
 }
 
 export interface Class {
@@ -135,11 +137,6 @@ interface PersonalityTrait {
     text: string;
 }
 
-interface Speed {
-    id: number;
-    value: number;
-}
-
 interface RaceLanguage {
     id: number;
     languages: number[];
@@ -238,147 +235,163 @@ export default class DndProps {
         raceid: 0,
         text: 'Dwarf',
         page: '20',
-        bonuses: [0, 0, 2, 0, 0, 0]
+        bonuses: [0, 0, 2, 0, 0, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 1,
         raceid: 0,
         text: 'Hill Dwarf',
         page: '20',
-        bonuses: [0, 0, 2, 0, 1, 0]
+        bonuses: [0, 0, 2, 0, 1, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 2,
         raceid: 0,
         text: 'Mountain Dwarf',
         page: '20',
-        bonuses: [2, 0, 2, 0, 0, 0]
+        bonuses: [2, 0, 2, 0, 0, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 3,
         raceid: 1,
         text: 'Elf',
         page: '22',
-        bonuses: [0, 2, 0, 0, 0, 0]
+        bonuses: [0, 2, 0, 0, 0, 0],
+        speed: 30,
+        extraLanguages: 0
       },
       {
         id: 4,
         raceid: 1,
         text: 'High Elf',
         page: '22',
-        bonuses: [0, 2, 0, 1, 0, 0]
+        bonuses: [0, 2, 0, 1, 0, 0],
+        speed: 30,
+        extraLanguages: 1
       },
       {
         id: 5,
         raceid: 1,
         text: 'Wood Elf',
         page: '22',
-        bonuses: [0, 2, 0, 0, 1, 0]
+        bonuses: [0, 2, 0, 0, 1, 0],
+        speed: 35,
+        extraLanguages: 0
       },
       {
         id: 6,
         raceid: 1,
         text: 'Dark Elf (Drow)',
         page: '22',
-        bonuses: [0, 2, 0, 0, 0, 1]
+        bonuses: [0, 2, 0, 0, 0, 1],
+        speed: 30,
+        extraLanguages: 0
       },
       {
         id: 7,
         raceid: 2,
         text: 'Halfling',
         page: '27',
-        bonuses: [0, 2, 0, 0, 0, 0]
+        bonuses: [0, 2, 0, 0, 0, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 8,
         raceid: 2,
         text: 'Halfling (Lightfoot)',
         page: '27',
-        bonuses: [0, 2, 0, 0, 0, 1]
+        bonuses: [0, 2, 0, 0, 0, 1],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 9,
         raceid: 2,
         text: 'Halfling (Stout)',
         page: '27',
-        bonuses: [0, 2, 1, 0, 0, 0]
+        bonuses: [0, 2, 1, 0, 0, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 10,
         raceid: 3,
         text: 'Human',
         page: '30',
-        bonuses: [1, 1, 1, 1, 1, 1]
+        bonuses: [1, 1, 1, 1, 1, 1],
+        speed: 30,
+        extraLanguages: 1
       },
       {
         id: 11,
         raceid: 4,
         text: 'Dragonborn',
         page: '33',
-        bonuses: [2, 0, 0, 0, 0, 1]
+        bonuses: [2, 0, 0, 0, 0, 1],
+        speed: 30,
+        extraLanguages: 0
       },
       {
         id: 12,
         raceid: 5,
         text: 'Gnome',
         page: '36',
-        bonuses: [0, 0, 0, 2, 0, 0]
+        bonuses: [0, 0, 0, 2, 0, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 13,
         raceid: 5,
         text: 'Forest Gnome',
         page: '36',
-        bonuses: [0, 1, 0, 2, 0, 0]
+        bonuses: [0, 1, 0, 2, 0, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 14,
         raceid: 5,
         text: 'Rock Gnome',
         page: '36',
-        bonuses: [0, 0, 1, 2, 0, 0]
+        bonuses: [0, 0, 1, 2, 0, 0],
+        speed: 25,
+        extraLanguages: 0
       },
       {
         id: 15,
         raceid: 6,
         text: 'Half-Elf',
         page: '22 and 30',
-        bonuses: [0, 0, 0, 0, 0, 2]
+        bonuses: [0, 0, 0, 0, 0, 2],
+        speed: 30,
+        extraLanguages: 1
       },
       {
         id: 16,
         raceid: 7,
         text: 'Half-Orc',
         page: '41',
-        bonuses: [2, 0, 1, 0, 0, 0]
+        bonuses: [2, 0, 1, 0, 0, 0],
+        speed: 30,
+        extraLanguages: 0
       },
       {
         id: 17,
         raceid: 8,
         text: 'Tiefling',
         page: '43',
-        bonuses: [0, 0, 0, 1, 0, 2]
+        bonuses: [0, 0, 0, 1, 0, 2],
+        speed: 30,
+        extraLanguages: 0
       },
-    ];
-    public speeds: Speed[] = [ /* By race */
-      { id: 0, value: 25 },
-      { id: 1, value: 25 },
-      { id: 2, value: 25 },
-      { id: 3, value: 30 },
-      { id: 4, value: 30 },
-      { id: 5, value: 35 },
-      { id: 6, value: 30 },
-      { id: 7, value: 25 },
-      { id: 8, value: 25 },
-      { id: 9, value: 25 },
-      { id: 10, value: 30 },
-      { id: 11, value: 30 },
-      { id: 12, value: 25 },
-      { id: 13, value: 25 },
-      { id: 14, value: 25 },
-      { id: 15, value: 30 },
-      { id: 16, value: 30 },
-      { id: 17, value: 30 },
     ];
     public raceLanguages: RaceLanguage[] = [
       { id: 0, languages: [0, 1] },
@@ -390,26 +403,6 @@ export default class DndProps {
       { id: 6, languages: [0, 2] },
       { id: 7, languages: [0, 7] },
       { id: 8, languages: [0, 12] },
-    ];
-    public raceExtraLanguages: RaceExtraLanguage[] = [
-      { id: 0, extras: 0 },
-      { id: 1, extras: 0 },
-      { id: 2, extras: 0 },
-      { id: 3, extras: 0 },
-      { id: 4, extras: 1 },
-      { id: 5, extras: 0 },
-      { id: 6, extras: 0 },
-      { id: 7, extras: 0 },
-      { id: 8, extras: 0 },
-      { id: 9, extras: 0 },
-      { id: 10, extras: 1 },
-      { id: 11, extras: 0 },
-      { id: 12, extras: 0 },
-      { id: 13, extras: 0 },
-      { id: 14, extras: 0 },
-      { id: 15, extras: 1 },
-      { id: 16, extras: 0 },
-      { id: 17, extras: 0 },
     ];
     public classes: Class[] = [
       {
@@ -579,6 +572,48 @@ export default class DndProps {
       { id: 9, num: 2, profs: [2, 4, 6, 7, 13, 14] },
       { id: 10, num: 2, profs: [2, 4, 5, 7, 8, 10, 14] },
       { id: 11, num: 2, profs: [2, 5, 6, 8, 9, 14] },
+    ];
+    public savingThrows: ClassSavingThrow[] = [
+      { id: 0, throws: [0, 2] },
+      { id: 1, throws: [1, 5] },
+      { id: 2, throws: [4, 5] },
+      { id: 3, throws: [3, 4] },
+      { id: 4, throws: [0, 2] },
+      { id: 5, throws: [0, 1] },
+      { id: 6, throws: [4, 5] },
+      { id: 7, throws: [0, 1] },
+      { id: 8, throws: [1, 3] },
+      { id: 9, throws: [2, 5] },
+      { id: 10, throws: [4, 5] },
+      { id: 11, throws: [3, 4] },
+    ];
+    public hitDice: HitDice[] = [
+      { id: 0, num: 1, dice: 12 },
+      { id: 1, num: 1, dice: 8 },
+      { id: 2, num: 1, dice: 8 },
+      { id: 3, num: 1, dice: 8 },
+      { id: 4, num: 1, dice: 10 },
+      { id: 5, num: 1, dice: 8 },
+      { id: 6, num: 1, dice: 10 },
+      { id: 7, num: 1, dice: 10 },
+      { id: 8, num: 1, dice: 8 },
+      { id: 9, num: 1, dice: 6 },
+      { id: 10, num: 1, dice: 8 },
+      { id: 11, num: 1, dice: 6 },
+    ];
+    public startingHp: StartingHP[] = [ /* +Constitution */
+      { id: 0, hp: 12 },
+      { id: 1, hp: 8 },
+      { id: 2, hp: 8 },
+      { id: 3, hp: 8 },
+      { id: 4, hp: 10 },
+      { id: 5, hp: 8 },
+      { id: 6, hp: 10 },
+      { id: 7, hp: 10 },
+      { id: 8, hp: 8 },
+      { id: 9, hp: 6 },
+      { id: 10, hp: 8 },
+      { id: 11, hp: 6 },
     ];
     public classEquipment: ClassEquipment[] = [
       {
@@ -971,48 +1006,6 @@ export default class DndProps {
           { num: 1, id: 108 }, // Spellbook
         ],
       },
-    ];
-    public savingThrows: ClassSavingThrow[] = [
-      { id: 0, throws: [0, 2] },
-      { id: 1, throws: [1, 5] },
-      { id: 2, throws: [4, 5] },
-      { id: 3, throws: [3, 4] },
-      { id: 4, throws: [0, 2] },
-      { id: 5, throws: [0, 1] },
-      { id: 6, throws: [4, 5] },
-      { id: 7, throws: [0, 1] },
-      { id: 8, throws: [1, 3] },
-      { id: 9, throws: [2, 5] },
-      { id: 10, throws: [4, 5] },
-      { id: 11, throws: [3, 4] },
-    ];
-    public hitDice: HitDice[] = [
-      { id: 0, num: 1, dice: 12 },
-      { id: 1, num: 1, dice: 8 },
-      { id: 2, num: 1, dice: 8 },
-      { id: 3, num: 1, dice: 8 },
-      { id: 4, num: 1, dice: 10 },
-      { id: 5, num: 1, dice: 8 },
-      { id: 6, num: 1, dice: 10 },
-      { id: 7, num: 1, dice: 10 },
-      { id: 8, num: 1, dice: 8 },
-      { id: 9, num: 1, dice: 6 },
-      { id: 10, num: 1, dice: 8 },
-      { id: 11, num: 1, dice: 6 },
-    ];
-    public startingHp: StartingHP[] = [ /* +Constitution */
-      { id: 0, hp: 12 },
-      { id: 1, hp: 8 },
-      { id: 2, hp: 8 },
-      { id: 3, hp: 8 },
-      { id: 4, hp: 10 },
-      { id: 5, hp: 8 },
-      { id: 6, hp: 10 },
-      { id: 7, hp: 10 },
-      { id: 8, hp: 8 },
-      { id: 9, hp: 6 },
-      { id: 10, hp: 8 },
-      { id: 11, hp: 6 },
     ];
     public backgrounds: Background[] = [
       {
