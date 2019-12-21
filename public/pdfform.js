@@ -1,8 +1,5 @@
 'use strict';
 
-import minipdf from './minipdf'
-import minipdf_js from './minipdf'
-
 if (typeof window == 'undefined') {
 	// node.js, load compat libraries
 	var DOMParser = require('xmldom').DOMParser;
@@ -14,7 +11,7 @@ if (typeof window == 'undefined') {
 	var pako = require('pako');
 }
 
-export default function pdfform(minipdf_lib) {
+function pdfform(minipdf_lib) {
 
 if (minipdf_lib === 'pdf.js') {
 	minipdf_lib = require('./minipdf_js.js');

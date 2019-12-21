@@ -1,4 +1,4 @@
-import DndProps, { EquipmentChoiceBlock, Race, Class, Alignment, Backgrounds } from './dndprops';
+import DndProps, { EquipmentChoiceBlock, Race, Class, Alignment, Background } from './dndprops';
 
 export interface EquipmentModel {
     id: number;
@@ -36,7 +36,7 @@ export default class DndState {
     public race: Race;
     public class: Class;
     public alignment: Alignment;
-    public background: Backgrounds;
+    public background: Background;
     public statArray: number[] = Array(6).fill(null);
     public raceStatBonuses: number[] = [0, 0, 2, 0, 0, 0];
     public classStatBonuses: number[] = Array(6).fill(0);
@@ -67,13 +67,9 @@ export default class DndState {
     ];
     public currency: number[] = [0, 0, 0, 15, 0];
     public traits: number[] = [0];
-    public personalityTraitsText: string = '';
     public ideals: number[] = [0];
-    public idealsText: string = '';
     public bonds: number[] = [0];
-    public bondsText: string = '';
     public flaws: number[] = [0];
-    public flawsText: string = '';
     public weaponModel: any[] = [];
     public age: string = '20';
     public height: string = '6\'1';
