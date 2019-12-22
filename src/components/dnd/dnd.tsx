@@ -87,7 +87,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                             type="button"
                                             key={index}
                                             name="race"
-                                            onClick={(e) => this.handleClickSelection(e, race)}
+                                            onClick={(e) => this.selectRace(e, race)}
                                             className={"button " + (this.state.race.id === race.id ? "is-link is-selected" : null)}
                                         >{race.text}</button>)
                                 })}
@@ -106,7 +106,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                             type="button"
                                             key={index}
                                             name="class"
-                                            onClick={(e) => this.selectClass(e, cls)}
+                                            onClick={(e) => this.selectClassOrBackground(e, cls)}
                                             className={"button " + (this.state.class.id === cls.id ? "is-link is-selected" : null)}
                                         >{cls.text}</button>)
                                 })}
@@ -141,7 +141,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                             type="button"
                                             key={index}
                                             name="background"
-                                            onClick={(e) => this.handleClickSelection(e, bg)}
+                                            onClick={(e) => this.selectClassOrBackground(e, bg)}
                                             className={"button " + (this.state.background.id === bg.id ? "is-link is-selected" : null)}
                                         >{bg.text}</button>)
                                 })}
@@ -205,7 +205,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                         <label className='column is-2 label'>Proficiencies:</label>
                         <div className='column' id="proficiencies">
                             <div className='tags are-small'>
-                                {this.state.proficiencies.map((prof, index) => {
+                                {model.proficiencies.map((prof, index) => {
                                     return (
                                         <span
                                             className="tag is-dark"
@@ -260,7 +260,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                         {choices.choices?.map((choice, index) => {
                                             return (
                                                 <span className='buttons are-small' key={index}>
-                                                    <span className='tag'>{choice.num}x</span>
+                                                    <span className='tag'>{model.extrasText(choice) + choice.num}x</span>
 
                                                     {choice.items.map((item, index) => {
                                                         return (
@@ -292,7 +292,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                         <label className='column is-2 label'>Languages:</label>
                         <div className='column tags are-small'>
                             <div className='tags are-small'>
-                                {this.state.languageids.map((lang, index) => {
+                                {model.languages.map((lang, index) => {
                                     return (
                                         <span
                                             className="tag is-dark"
@@ -428,7 +428,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
         });
     }
 
-    selectClass(event: any, val: any) {
+    selectRace(event: any, val: any) {
         event.preventDefault();
 
         const target = event.target;
@@ -436,10 +436,25 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
 
         this.setState({
             ...this.state,
-            [name]: val
+            [name]: val,
+            languageids: []
         });
+    };
 
-        //this.resetEquipment(event); // This seems dodgy and unnecessary - shouldn't we be able to set the equipment choice model to empty and be able to deal with it?
+    selectClassOrBackground(event: any, val: any) {
+        event.preventDefault();
+
+        const target = event.target;
+        const name = target.name;
+
+        this.setState({
+            ...this.state,
+            [name]: val,
+            equipment: [],
+            equipChoices: [],
+            proficiencies: [],
+            languageids: []
+        });
     };
 
     allocateStat(event: any, index: number, val: number) {
@@ -498,7 +513,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
 
         this.setState({
             ...this.state,
-            proficiencies: this.state.background.proficiencies.slice()
+            proficiencies: []
         });
     };
 
@@ -518,10 +533,22 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
         event.preventDefault();
 
         var equipChoices = this.state.equipChoices.slice();
-        var choiceCategory = equipChoices[categoryId];
+        var existingEquipment = this.state.equipment.slice();
+
         var equipModel = this.state.class.equipChoices[categoryId];
+
+        var choiceCategory = equipChoices.find(eq => eq.id === categoryId); //equipChoices[categoryId];
+        var equipChoice = equipModel.choices[choiceId];
+
+        if (choiceCategory === undefined)
+        {
+            // Add new if not present
+            // TODO: Is this bugged?
+            choiceCategory = { id: categoryId, chosen: false, selection: choiceId, remaining: 0, items: [] };
+            equipChoices.push(choiceCategory);
+        }
+
         if (choiceCategory.chosen === false) {
-            var equipChoice = equipModel.choices[choiceId];
             choiceCategory.chosen = true;
             choiceCategory.selection = choiceId;
             choiceCategory.remaining = equipChoice.num - 1;
@@ -541,7 +568,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                 var extras = equipChoice.extras;
                 for (i = 0; i < extras.length; i++) {
                     // Added to fixed equipment, might have complications
-                    this.state.equipment.push({ id: extras[i].id, num: extras[i].num || 1 });
+                    existingEquipment.push({ id: extras[i].id, num: extras[i].num || 1 });
                 }
             }
 
@@ -552,6 +579,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
 
         this.setState({
             ...this.state,
+            equipment: existingEquipment,
             equipChoices: equipChoices
         });
     };
@@ -568,47 +596,19 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
     resetEquipment(event: any) {
         event.preventDefault();
 
-        var newEquip: EquipmentModel[] = [];
-        var bgEquip = this.state.background.equipment;
-        var e;
-        for (e = 0; e < bgEquip.length; e++) {
-            var id = bgEquip[e];
-            var eq = this.props.equipment[id];
-            newEquip.push({ id: eq.id, num: 1 });
-        }
-
-        var classFixedEquip = this.state.class.fixedEquip;
-        if (typeof classFixedEquip !== 'undefined') {
-            for (e = 0; e < classFixedEquip.length; e++) {
-                var fixedEquip = classFixedEquip[e];
-                eq = this.props.equipment[fixedEquip.id];
-                newEquip.push({ id: eq.id, num: fixedEquip.num || 1 });
-            }
-        }
-
-        // Equipment choices
-        var equipChoices = this.state.class.equipChoices;
-        var newEquipChoices = [];
-        for (e = 0; e < equipChoices.length; e++) {
-            var choice = equipChoices[e];
-            newEquipChoices.push({ id: choice.id, chosen: false, selection: 0, remaining: 0, items: [] });
-        }
-
         this.setState({
             ...this.state,
-            equipment: newEquip,
-            equipChoices: newEquipChoices
+            equipment: [],
+            equipChoices: []
         });
     };
 
     resetLanguages(event: any) {
         event.preventDefault();
 
-        var languageids = this.state.race.languages.slice();
-
         this.setState({
             ...this.state,
-            languageids: languageids
+            languageids: []
         });
     };
 

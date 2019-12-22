@@ -38,24 +38,18 @@ export default class DndState {
     public readonly background: Background;
     public readonly statArray: number[] = Array(6).fill(null);
     public readonly xp: number = 0;
-    public readonly languageids: number[] = [0, 1];
+    public readonly languageids: number[] = [];
+    public readonly proficiencies: number[] = [];
 
-    
-    public readonly proficiencies: number[] = [6, 14];
-    public readonly equipment: EquipmentModel[] = [
-        { id: 66, num: 1, },
-        { id: 67, num: 1, },
-        { id: 68, num: 1, },
-        { id: 69, num: 1, },
-        { id: 70, num: 1, },
-        { id: 71, num: 1, },
-        { id: 4, num: 4, },
-        { id: 37, num: 1, },
-    ];
+    public readonly equipment: EquipmentModel[] = [];
+
     public readonly equipChoices: EquipmentChoiceModel[] = [
+        /*
         { id: 0, chosen: false, selection: 0, remaining: 1, items: [] },
         { id: 1, chosen: false, selection: 0, remaining: 1, items: [] },
+        */
     ];
+
     public readonly traits: number[] = [0];
     public readonly ideals: number[] = [0];
     public readonly bonds: number[] = [0];
