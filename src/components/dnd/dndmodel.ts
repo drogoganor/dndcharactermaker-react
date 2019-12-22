@@ -27,9 +27,7 @@ export default class DndModel {
 
   private getModifier(val: number): number {
     // Get stat modifier from lookup table
-    var i;
-    for (i = 0; i < this.props.statModifiers.length; i++) {
-      var mod = this.props.statModifiers[i];
+    for (let mod of this.props.statModifiers) {
       if (val <= mod.val)
         return mod.modifier;
     }
@@ -41,10 +39,9 @@ export default class DndModel {
     if (this.state.xp === undefined)
       return 1;
 
-    var i;
     var lev = 0;
-    for (i = 0; i < this.props.xpLevels.length; i++) {
-      if (this.state.xp >= this.props.xpLevels[i].xp)
+    for (let xpLevel of this.props.xpLevels) {
+      if (this.state.xp >= xpLevel.xp)
         lev++;
       else
         break;
@@ -149,9 +146,7 @@ export default class DndModel {
     result.push(backgroundFeature);
 
     var classFeatures = this.state.class.features;
-    var i;
-    for (i = 0; i < classFeatures.length; i++) {
-      var classFeature = classFeatures[i];
+    for (let classFeature of classFeatures) {
       if (classFeature.level <= this.level) {
         result.push(classFeature.text);
       }
@@ -161,28 +156,24 @@ export default class DndModel {
   };
 
   public get equipment(): EquipmentModel[] {
-    var i;
     var equipModel = [];
     var bgEquip = this.state.background.equipment;
     var classEquip = this.state.class.fixedEquip;
 
     // Selected equipment
-    for (i = 0; i < this.state.equipment.length; i++) {
-      var ex = this.state.equipment[i];
-      equipModel.push({ id: ex.id, num: ex.num ?? 1 });
+    for (let eq of this.state.equipment) {
+      equipModel.push({ id: eq.id, num: eq.num ?? 1 });
     }
 
     // Class fixed equipment
     if (classEquip !== undefined) {
-      for (i = 0; i < classEquip.length; i++) {
-        var e = classEquip[i];
-        equipModel.push({ id: e.id, num: e.num ?? 1 });
+      for (let eq of classEquip) {
+        equipModel.push({ id: eq.id, num: eq.num ?? 1 });
       }
     }
 
     // Background
-    for (i = 0; i < bgEquip.length; i++) {
-      var eq = bgEquip[i];
+    for (let eq of bgEquip) {
       equipModel.push({ id: eq, num: 1 });
     }
 
@@ -191,16 +182,12 @@ export default class DndModel {
 
   public get equipmentList(): any[] {
     // Get list of equipment ID's and text
-    var i;
     var equipIds: any[] = [];
 
     // Equipment choices
-    for (i = 0; i < this.state.equipChoices.length; i++) {
-      var equipChoice = this.state.equipChoices[i];
+    for (let equipChoice of this.state.equipChoices) {
       if (equipChoice.chosen === true) {
-        var e;
-        for (e = 0; e < equipChoice.items.length; e++) {
-          var item = equipChoice.items[e];
+        for (let item of equipChoice.items) {
           if (!this.isPack(item.id)) {
             equipIds.push({ id: item.id, num: item.num });
           } else {
@@ -211,8 +198,7 @@ export default class DndModel {
     }
 
     // Background & fixed equipment
-    for (i = 0; i < this.equipment.length; i++) {
-      var thisEquip = this.equipment[i];
+    for (let thisEquip of this.equipment) {
       if (!this.isPack(thisEquip.id)) {
         equipIds.push({ id: thisEquip.id, num: thisEquip.num });
       } else {
@@ -230,9 +216,10 @@ export default class DndModel {
     var equipIds = this.equipmentList;
 
     for (i = 0; i < equipIds.length; i++) {
-      text += this.props.equipment[equipIds[i].id].text;
-      if (equipIds[i].num > 1)
-        text += ' (' + equipIds[i].num + ')';
+      let equip = equipIds[i];
+      text += this.props.equipment[equip.id].text;
+      if (equip.num > 1)
+        text += ' (' + equip.num + ')';
       if (i < equipIds.length - 1)
         text += ', ';
     }
@@ -242,14 +229,13 @@ export default class DndModel {
 
   public get equipmentTextList(): string[] {
     // Array of equipment text
-    var i;
     var arr = [];
     var equipIds = this.equipmentList;
 
-    for (i = 0; i < equipIds.length; i++) {
-      var text = this.props.equipment[equipIds[i].id].text;
-      if (equipIds[i].num > 1)
-        text += ' (' + equipIds[i].num + ')';
+    for (let equip of equipIds) {
+      var text = this.props.equipment[equip.id].text;
+      if (equip.num > 1)
+        text += ' (' + equip.num + ')';
       arr.push(text);
     }
 
@@ -263,10 +249,8 @@ export default class DndModel {
   public get availableLanguages(): any[] {
     // List of all available additional languages to choose from, excluding already selected
     var langs = [];
-    var i;
     var languages = this.languages;
-    for (i = 0; i < this.props.languages.length; i++) {
-      var lang = this.props.languages[i];
+    for (let lang of this.props.languages) {
       if (!languages.includes(lang.id))
         langs.push(lang);
     }
@@ -284,13 +268,10 @@ export default class DndModel {
   public get availableProficiencies(): any[] {
     // List of all available proficiencies to choose from, excluding already selected
     var profs = [];
-    var i;
     var classProfs = this.state.class.proficiencies.profs;
     var backgroundProfs = this.state.background.proficiencies;
-    for (i = 0; i < this.props.skills.length; i++) {
-      var prof = this.props.skills[i];
-
-      if (!this.proficiencies.includes(i) && (classProfs.includes(i) || backgroundProfs.includes(i)))
+    for (let prof of this.props.skills) {
+      if (!this.proficiencies.includes(prof.id) && (classProfs.includes(prof.id) || backgroundProfs.includes(prof.id)))
         profs.push(prof);
     }
     return profs;
@@ -362,14 +343,11 @@ export default class DndModel {
     // List of all available equipment choices to choose from, excluding already selected
     var equipChoices = this.state.class.equipChoices;
     var model: EquipmentChoiceModel[] = [];
-    var i;
-    for (i = 0; i < equipChoices.length; i++) {
-      var equipChoice = equipChoices[i];
 
+    for (let equipChoice of equipChoices) {
       var chosenChoices = this.state.equipChoices.find(eq => eq.id === equipChoice.id);
       if (chosenChoices === undefined) {
-
-        var modelRow: EquipmentChoiceModel = {
+        let modelRow = {
           id: equipChoice.id,
           choices: equipChoice.choices,
           chosen: false,
@@ -379,10 +357,9 @@ export default class DndModel {
           items: []
         };
         model.push(modelRow);
-
       }
       else if (chosenChoices.chosen === false || (chosenChoices.chosen === true && chosenChoices.remaining > 0)) {
-        var modelRow: EquipmentChoiceModel = {
+        let modelRow = {
           id: equipChoice.id,
           choices: equipChoice.choices,
           chosen: chosenChoices.chosen,
@@ -417,9 +394,7 @@ export default class DndModel {
     if (typeof backpackItems === 'undefined')
       return packItems;
 
-    var i;
-    for (i = 0; i < backpackItems.contents.length; i++) {
-      var backpackItem = backpackItems.contents[i];
+    for (let backpackItem of backpackItems.contents) {
       packItems.push({ id: backpackItem.id, num: backpackItem.num });
     }
 
@@ -429,29 +404,27 @@ export default class DndModel {
   public extrasText(choice: EquipmentChoiceBlock): string {
     return choice.extras ? choice.extras.map(extra =>
       this.props.equipment[extra.id].text +
-      (extra.num && extra.num > 1 ? ' (' + extra.num + ')' : '')
-    ).join(', ') + ' + ' : '';
+      (extra.num && extra.num > 1 ? ' (' + extra.num + ')' : ''))
+        .join(', ') + ' + ' : '';
   };
 
   buildWeaponModel(): any[] {
     // Build model of weaponry chosen or included, with atk and damage type
     var weaponModel = [];
 
-    var i;
     var equipmentData;
-    for (i = 0; i < this.state.equipChoices.length; i++) {
-      var choiceItems = this.state.equipChoices[i].items;
-      var x;
-      for (x = 0; x < choiceItems.length; x++) {
-        equipmentData = this.props.equipment[choiceItems[x].id];
+    for (let equipChoices of this.state.equipChoices) {
+      var choiceItems = equipChoices.items;
+      for (let choiceItem of choiceItems) {
+        equipmentData = this.props.equipment[choiceItem.id];
         if (equipmentData.type === 0) {
           weaponModel.push(this.addWeaponModel(equipmentData));
         }
       }
     }
 
-    for (i = 0; i < this.state.equipment.length; i++) {
-      equipmentData = this.props.equipment[this.state.equipment[i].id];
+    for (let equipment of this.state.equipment) {
+      equipmentData = this.props.equipment[equipment.id];
       if (equipmentData.type === 0) {
         weaponModel.push(this.addWeaponModel(equipmentData));
       }
@@ -460,8 +433,7 @@ export default class DndModel {
     // Condense model (remove duplicates)
     var usedIds: number[] = [];
     var newWeaponModel = [];
-    for (i = 0; i < weaponModel.length; i++) {
-      var weapModel = weaponModel[i];
+    for (let weapModel of weaponModel) {
       if (!usedIds.includes(weapModel.id)) {
         usedIds.push(weapModel.id);
         newWeaponModel.push(weapModel);
@@ -593,9 +565,7 @@ export default class DndModel {
     fields['ST Wisdom'] = [Util.formatModifier(this.savingThrow(4))];
     fields['ST Charisma'] = [Util.formatModifier(this.savingThrow(5))];
 
-    var i;
-    for (i = 0; i < 2; i++) {
-      var savingThrowStat = o.class.savingThrows[i];
+    for (let savingThrowStat of o.class.savingThrows) {
       switch (savingThrowStat) {
         case 0:
           fields['Check Box 11'] = [true];
@@ -671,8 +641,7 @@ export default class DndModel {
     fields['Survival'] = [Util.formatModifier(this.statModifier(4) + (this.proficiencies.includes(17) ? this.proficiencyBonus : 0))];
 
     // Proficiencies
-    for (i = 0; i < this.proficiencies.length; i++) {
-      var prof = this.proficiencies[i];
+    for (let prof of this.proficiencies) {
       switch (prof) {
         case 0:
           fields['Check Box 23'] = [true];
@@ -735,7 +704,7 @@ export default class DndModel {
 
     // Weapons
     var weaponModel = this.buildWeaponModel();
-    for (i = 0; i < weaponModel.length; i++) {
+    for (let i = 0; i < weaponModel.length; i++) {
       var weap = weaponModel[i];
       var weapAtkBonusStr = Util.formatModifier(weap.atkBonus);
       var weapDmgStr = weap.dice + (weap.dmgBonus !== 0 ? ' ' + Util.formatModifier(weap.dmgBonus) : '') + ' ' + weap.dmgType;

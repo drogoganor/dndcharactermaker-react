@@ -1,6 +1,6 @@
 import React from 'react';
 import DndProps from './dndprops';
-import DndState, { EquipmentChoiceModel, EquipmentModel } from './dndstate';
+import DndState, { EquipmentChoiceModel } from './dndstate';
 import DndModel from './dndmodel';
 import Util from './util';
 import 'bulma';
