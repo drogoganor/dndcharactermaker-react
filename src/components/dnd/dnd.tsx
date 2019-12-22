@@ -361,22 +361,18 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                         <label className='label'>Hair:</label>
                         <input className='input' id="hair" type="text" value={this.state.hair} onChange={this.handleInputChange} />
                     </div>
-                    {/*
                     <div className='field'>
                         <label className='label'>Appearance (not implemented yet):</label>
-                        <input className='input' id="appearance" type="file" accept="image/*" disabled='disabled' v-on:change="setAppearance">
+                        <input className='input' id="appearance" type="file" accept="image/*" onChange={(e) => this.setAppearance(e)} />
                     </div>
-                    */}
                     <div className='field'>
                         <label className='label'>Organization/Faction:</label>
                         <input className='input' id="organizations" type="text" value={this.state.organizations} onChange={this.handleInputChange} />
                     </div>
-                    {/*
                     <div className='field'>
                         <label className='label'>Faction Logo (not implemented yet):</label>
-                        <input className='input' id="factionLogo" type="file" accept="image/*" disabled='disabled' v-on:change="setFactionLogo">
+                        <input className='input' id="factionLogo" type="file" accept="image/*" onChange={(e) => this.setFactionLogo(e)} />
                     </div>
-                    */}
                     <div className='field'>
                         <label className='label'>Allies:</label>
                         <input className='input' id="allies" type="text" value={this.state.allies} onChange={this.handleInputChange} />
@@ -488,7 +484,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
 
         this.setState({
             ...this.state,
-            proficiencies: this.props.backgroundProficiencies[this.state.background.id].profs.slice()
+            proficiencies: this.state.background.proficiencies.slice()
         });
     };
 
@@ -509,7 +505,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
 
         var equipChoices = this.state.equipChoices.slice();
         var choiceCategory = equipChoices[categoryId];
-        var equipModel = this.props.classEquipment[this.state.class.id].equipChoices[categoryId];
+        var equipModel = this.state.class.equipChoices[categoryId];
         if (choiceCategory.chosen === false) {
             var equipChoice = equipModel.choices[choiceId];
             choiceCategory.chosen = true;
@@ -567,7 +563,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
             newEquip.push({ id: eq.id, num: 1 });
         }
 
-        var classFixedEquip = this.props.classEquipment[this.state.class.id].fixedEquip;
+        var classFixedEquip = this.state.class.fixedEquip;
         if (typeof classFixedEquip !== 'undefined') {
             for (e = 0; e < classFixedEquip.length; e++) {
                 var fixedEquip = classFixedEquip[e];
@@ -577,7 +573,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
         }
 
         // Equipment choices
-        var equipChoices = this.props.classEquipment[this.state.class.id].equipChoices;
+        var equipChoices = this.state.class.equipChoices;
         var newEquipChoices = [];
         for (e = 0; e < equipChoices.length; e++) {
             var choice = equipChoices[e];
@@ -594,7 +590,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
     resetLanguages(event: any) {
         event.preventDefault();
 
-        var languageids = this.props.raceLanguages[this.state.race.id].languages.slice();
+        var languageids = this.state.race.languages.slice();
 
         this.setState({
             ...this.state,
@@ -611,6 +607,25 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
         this.setState({
             ...this.state,
             languageids: languageids
+        });
+    };
+    
+
+    setAppearance(event: any) {
+        event.preventDefault();
+
+        this.setState({
+            ...this.state,
+            appearance: event.currentTarget.files[0]
+        });
+    };
+
+    setFactionLogo(event: any) {
+        event.preventDefault();
+
+        this.setState({
+            ...this.state,
+            factionLogo: event.currentTarget.files[0]
         });
     };
 

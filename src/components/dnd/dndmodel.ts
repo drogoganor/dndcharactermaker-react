@@ -13,7 +13,7 @@ export default class DndModel {
 
   // Stats
   public statTotal(i: number): number {
-    return this.state.statArray[i] + this.state.raceStatBonuses[i];
+    return this.state.statArray[i] + this.state.race.bonuses[i];
   }
 
   public statModifier(i: number): number {
@@ -21,7 +21,7 @@ export default class DndModel {
   }
 
   public savingThrow(i: number): number {
-    var savingThrow = this.props.savingThrows[this.state.class.id].throws.find(th => th === i) !== undefined ? this.state.proficiencyBonus : 0;
+    var savingThrow = this.state.class.savingThrows.find(th => th === i) !== undefined ? this.proficiencyBonus : 0;
 
     return this.getModifier(this.statTotal(i)) + savingThrow;
   }
@@ -56,6 +56,10 @@ export default class DndModel {
     return lev;
   };
 
+  public get proficiencyBonus(): number {
+    return this.props.proficiencyLevels[this.level - 1].bonus;
+  };
+
   public get toolProficienciesText(): string {
     // Nice text of selected tool proficiencies
     var i;
@@ -70,7 +74,7 @@ export default class DndModel {
   };
 
   public get currencyText(): string {
-    var currency = this.props.backgroundCurrency[this.state.background.id].currency.slice();
+    var currency = this.state.background.currency.slice();
 
     // Nice text of character currencies
     var text = '';
@@ -98,15 +102,15 @@ export default class DndModel {
 
   public get proficiencesLeftText(): string {
     // Nice text label of how many proficiencies left to select
-    var numBackgroundProfs = this.props.backgroundProficiencies[this.state.background.id].profs.length;
-    var numLeft = this.props.classProficiencies[this.state.class.id].num - (this.state.proficiencies.length - numBackgroundProfs);
+    var numBackgroundProfs = this.state.background.proficiencies.length;
+    var numLeft = this.state.class.proficiencies.num - (this.state.proficiencies.length - numBackgroundProfs);
 
     return "Choose " + numLeft + " additional proficienc" + (numLeft > 1 ? "ies" : "y") + ":";
   };
 
   public get languagesLeftText(): string {
     // Nice text label to indicate how many additional languages you can choose
-    var racelanguages = this.props.raceLanguages[this.state.race.id].languages.length;
+    var racelanguages = this.state.race.languages.length;
     var extraLangs = this.state.race.extraLanguages;
     var numBackgroundLangs = this.numBackgroundLanguages;
     var numLeft = racelanguages + extraLangs + numBackgroundLangs - this.state.languageids.length;
@@ -145,8 +149,8 @@ export default class DndModel {
 
   public get traitsAndFeatures(): string[] {
     var result = [];
-    var backgroundFeature = this.props.backgroundFeatures[this.state.background.id];
-    result.push(backgroundFeature.text);
+    var backgroundFeature = this.state.background.backgroundFeature;
+    result.push(backgroundFeature);
 
     var classFeatures = this.state.class.features;
     var i;
@@ -240,8 +244,8 @@ export default class DndModel {
     // List of all available proficiencies to choose from, excluding already selected
     var profs = [];
     var i;
-    var classProfs = this.props.classProficiencies[this.state.class.id].profs;
-    var backgroundProfs = this.props.backgroundProficiencies[this.state.background.id].profs;
+    var classProfs = this.state.class.proficiencies.profs;
+    var backgroundProfs = this.state.background.proficiencies;
     for (i = 0; i < this.props.skills.length; i++) {
       var prof = this.props.skills[i];
 
@@ -252,8 +256,7 @@ export default class DndModel {
   };
 
   public get numBackgroundLanguages(): number {
-    var backgroundLangs = this.props.backgroundLangauges.find(bgl => bgl.id === this.state.background.id);
-    return backgroundLangs ? backgroundLangs.num : 0;
+    return this.state.background.languages;
   };
 
   // Computed
@@ -263,8 +266,8 @@ export default class DndModel {
   };
 
   public allProficienciesChosen(): boolean {
-    var numClassProfs = this.props.classProficiencies[this.state.class.id].num;
-    var numBackgroundProfs = this.props.backgroundProficiencies[this.state.background.id].profs.length;
+    var numClassProfs = this.state.class.proficiencies.num;
+    var numBackgroundProfs = this.state.background.proficiencies.length;
 
     if (this.state.proficiencies.length < numClassProfs + numBackgroundProfs)
       return false;
@@ -272,7 +275,7 @@ export default class DndModel {
   };
 
   public allLanguagesChosen(): boolean {
-    var racelanguages = this.props.raceLanguages[this.state.race.id].languages.length;
+    var racelanguages = this.state.race.languages.length;
     var extraLangs = this.state.race.extraLanguages;
     var numBackgroundLangs = this.numBackgroundLanguages;
 
@@ -298,7 +301,7 @@ export default class DndModel {
   };
 
   public hasChosenAnyEquipment(): boolean {
-    return this.equipmentChoiceModel().length < this.props.classEquipment[this.state.class.id].equipChoices.length;
+    return this.equipmentChoiceModel().length < this.state.class.equipChoices.length;
   };
 
   public getEquipmentName(id: number): string {
@@ -323,7 +326,7 @@ export default class DndModel {
 
   public equipmentChoiceModel = (): EquipmentChoiceModel[] => {
     // List of all available equipment choices to choose from, excluding already selected
-    var equipChoices = this.props.classEquipment[this.state.class.id].equipChoices;
+    var equipChoices = this.state.class.equipChoices;
     var model: EquipmentChoiceModel[] = [];
     var i;
     for (i = 0; i < equipChoices.length; i++) {
@@ -374,17 +377,9 @@ export default class DndModel {
     return packItems;
   };
 
-  setAppearance = (image: any) => {
-    this.state.appearance = image.srcElement.files[0];
-  };
-
-  setFactionLogo = (image: any) => {
-    this.state.factionLogo = image.srcElement.files[0];
-  };
-
-  buildWeaponModel = () => {
+  buildWeaponModel(): any[] {
     // Build model of weaponry chosen or included, with atk and damage type
-    this.state.weaponModel = [];
+    var weaponModel = [];
 
     var i;
     var equipmentData;
@@ -393,30 +388,34 @@ export default class DndModel {
       var x;
       for (x = 0; x < choiceItems.length; x++) {
         equipmentData = this.props.equipment[choiceItems[x].id];
-        this.addWeaponModel(equipmentData);
+        if (equipmentData.type === 0) {
+          weaponModel.push(this.addWeaponModel(equipmentData));
+        }
       }
     }
 
     for (i = 0; i < this.state.equipment.length; i++) {
       equipmentData = this.props.equipment[this.state.equipment[i].id];
-      this.addWeaponModel(equipmentData);
+      if (equipmentData.type === 0) {
+        weaponModel.push(this.addWeaponModel(equipmentData));
+      }
     }
 
     // Condense model (remove duplicates)
     var usedIds: number[] = [];
     var newWeaponModel = [];
-    for (i = 0; i < this.state.weaponModel.length; i++) {
-      var weapModel = this.state.weaponModel[i];
+    for (i = 0; i < weaponModel.length; i++) {
+      var weapModel = weaponModel[i];
       if (!usedIds.includes(weapModel.id)) {
         usedIds.push(weapModel.id);
         newWeaponModel.push(weapModel);
       }
     }
 
-    this.state.weaponModel = newWeaponModel;
+    return newWeaponModel;
   };
 
-  addWeaponModel = (equipmentData: Equipment) => {
+  addWeaponModel(equipmentData: Equipment): any {
     if (equipmentData.type === 0) { // Weapon
       var newWeap = {
         id: equipmentData.id,
@@ -439,38 +438,17 @@ export default class DndModel {
       }
 
       if (this.hasWeaponProficiency(equipmentData)) {
-        atkBonus += this.state.proficiencyBonus;
+        atkBonus += this.proficiencyBonus;
       }
 
       newWeap.atkBonus = atkBonus;
       newWeap.dmgBonus = dmgBonus;
 
-      this.state.weaponModel.push(newWeap);
+      return newWeap;
     }
   };
 
   generate = () => {
-
-    // Initiative: DEX modifier
-    this.state.initiative = this.statModifier(1);
-
-    // Base armor class: 10 + DEX modifier (TODO: include shield & armor)
-    this.state.armorClass = 10 + this.statModifier(1);
-
-    // HP: Starting HP + CON
-    this.state.hp = this.props.startingHp[this.state.class.id].hp + this.statModifier(2);
-    //this.state.level = this.level();
-
-    this.state.proficiencyBonus = this.props.proficiencyLevels[this.level - 1].bonus;
-
-    this.buildWeaponModel();
-
-    // Add proficiency to saving throw stats
-    // var savingThrows = this.props.savingThrows[this.state.class.id].throws.slice();
-    // var i;
-    // for (i = 0; i < 2; i++) {
-    //   savingThrow(savingThrows[i]] += this.state.proficiencyBonus;
-    // }
 
     this.processPdf();
   };
@@ -493,6 +471,16 @@ export default class DndModel {
   fillPdfFields = (blob: any) => {
     var fields: any = {};
     var o = this.state;
+
+    // Initiative: DEX modifier
+    var initiative = this.statModifier(1);
+
+    // Base armor class: 10 + DEX modifier (TODO: include shield & armor)
+    var armorClass = 10 + this.statModifier(1);
+
+    // HP: Starting HP + CON
+    var hp = this.state.class.hitDice + this.statModifier(2);
+
     fields['PlayerName'] = [o.playerName];
     fields['CharacterName'] = [o.characterName];
     fields['CharacterName 2'] = [o.characterName];
@@ -539,9 +527,9 @@ export default class DndModel {
     fields['WISmod'] = [this.statTotal(4)];
     fields['CHamod'] = [this.statTotal(5)];
 
-    fields['HPMax'] = [o.hp];
+    fields['HPMax'] = [hp];
     fields['Speed'] = [o.race.speed];
-    fields['Initiative'] = [Util.formatModifier(o.initiative)];
+    fields['Initiative'] = [Util.formatModifier(initiative)];
 
     fields['ST Strength'] = [Util.formatModifier(this.savingThrow(0))];
     fields['ST Dexterity'] = [Util.formatModifier(this.savingThrow(1))];
@@ -578,7 +566,7 @@ export default class DndModel {
     }
 
     fields['HDTotal'] = [o.hitDice];
-    fields['ProfBonus'] = [o.proficiencyBonus];
+    fields['ProfBonus'] = [this.proficiencyBonus];
 
     var profLangText = 'Languages: ' + this.languagesText;
 
@@ -586,7 +574,7 @@ export default class DndModel {
       profLangText += '\n\nProficiencies: ' + this.toolProficienciesText;
     fields['ProficienciesLang'] = [profLangText];
 
-    fields['AC'] = [o.armorClass];
+    fields['AC'] = [armorClass];
     fields['Equipment'] = [this.equipmentText];
 
     // Only an amount of gold
@@ -604,28 +592,28 @@ export default class DndModel {
     // https://rpg.stackexchange.com/questions/101169/how-does-passive-perception-work
     var pp = 10 + this.statModifier(4);
     if (o.proficiencies.includes(11))
-      pp += o.proficiencyBonus;
+      pp += this.proficiencyBonus;
 
     fields['Passive'] = [pp];
 
-    fields['Acrobatics'] = [Util.formatModifier(this.statModifier(1) + (o.proficiencies.includes(0) ? o.proficiencyBonus : 0))];
-    fields['Animal'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(1) ? o.proficiencyBonus : 0))];
-    fields['Arcana'] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(2) ? o.proficiencyBonus : 0))];
-    fields['Athletics'] = [Util.formatModifier(this.statModifier(0) + (o.proficiencies.includes(3) ? o.proficiencyBonus : 0))];
-    fields['Deception '] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(4) ? o.proficiencyBonus : 0))];
-    fields['History '] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(5) ? o.proficiencyBonus : 0))];
-    fields['Insight'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(6) ? o.proficiencyBonus : 0))];
-    fields['Intimidation'] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(7) ? o.proficiencyBonus : 0))];
-    fields['Investigation '] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(8) ? o.proficiencyBonus : 0))];
-    fields['Medicine'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(9) ? o.proficiencyBonus : 0))];
-    fields['Nature'] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(10) ? o.proficiencyBonus : 0))];
-    fields['Perception '] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(11) ? o.proficiencyBonus : 0))];
-    fields['Performance'] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(12) ? o.proficiencyBonus : 0))];
-    fields['Persuasion'] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(13) ? o.proficiencyBonus : 0))];
-    fields['Religion'] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(14) ? o.proficiencyBonus : 0))];
-    fields['SleightofHand'] = [Util.formatModifier(this.statModifier(1) + (o.proficiencies.includes(15) ? o.proficiencyBonus : 0))];
-    fields['Stealth '] = [Util.formatModifier(this.statModifier(1) + (o.proficiencies.includes(16) ? o.proficiencyBonus : 0))];
-    fields['Survival'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(17) ? o.proficiencyBonus : 0))];
+    fields['Acrobatics'] = [Util.formatModifier(this.statModifier(1) + (o.proficiencies.includes(0) ? this.proficiencyBonus : 0))];
+    fields['Animal'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(1) ? this.proficiencyBonus : 0))];
+    fields['Arcana'] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(2) ? this.proficiencyBonus : 0))];
+    fields['Athletics'] = [Util.formatModifier(this.statModifier(0) + (o.proficiencies.includes(3) ? this.proficiencyBonus : 0))];
+    fields['Deception '] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(4) ? this.proficiencyBonus : 0))];
+    fields['History '] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(5) ? this.proficiencyBonus : 0))];
+    fields['Insight'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(6) ? this.proficiencyBonus : 0))];
+    fields['Intimidation'] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(7) ? this.proficiencyBonus : 0))];
+    fields['Investigation '] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(8) ? this.proficiencyBonus : 0))];
+    fields['Medicine'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(9) ? this.proficiencyBonus : 0))];
+    fields['Nature'] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(10) ? this.proficiencyBonus : 0))];
+    fields['Perception '] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(11) ? this.proficiencyBonus : 0))];
+    fields['Performance'] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(12) ? this.proficiencyBonus : 0))];
+    fields['Persuasion'] = [Util.formatModifier(this.statModifier(5) + (o.proficiencies.includes(13) ? this.proficiencyBonus : 0))];
+    fields['Religion'] = [Util.formatModifier(this.statModifier(3) + (o.proficiencies.includes(14) ? this.proficiencyBonus : 0))];
+    fields['SleightofHand'] = [Util.formatModifier(this.statModifier(1) + (o.proficiencies.includes(15) ? this.proficiencyBonus : 0))];
+    fields['Stealth '] = [Util.formatModifier(this.statModifier(1) + (o.proficiencies.includes(16) ? this.proficiencyBonus : 0))];
+    fields['Survival'] = [Util.formatModifier(this.statModifier(4) + (o.proficiencies.includes(17) ? this.proficiencyBonus : 0))];
 
     // Proficiencies
     for (i = 0; i < o.proficiencies.length; i++) {
@@ -691,8 +679,9 @@ export default class DndModel {
     }
 
     // Weapons
-    for (i = 0; i < o.weaponModel.length; i++) {
-      var weap = o.weaponModel[i];
+    var weaponModel = this.buildWeaponModel();
+    for (i = 0; i < weaponModel.length; i++) {
+      var weap = weaponModel[i];
       var weapAtkBonusStr = Util.formatModifier(weap.atkBonus);
       var weapDmgStr = weap.dice + (weap.dmgBonus !== 0 ? ' ' + Util.formatModifier(weap.dmgBonus) : '') + ' ' + weap.dmgType;
 

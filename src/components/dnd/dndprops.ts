@@ -11,6 +11,7 @@ export interface Race {
     bonuses: number[];
     speed: number;
     extraLanguages: number;
+    languages: number[];
 }
 
 export interface Class {
@@ -19,6 +20,11 @@ export interface Class {
     features: Feature[];
     armorProficiencies: number[];
     weaponProficiencies: ClassWeaponProficiency;
+    proficiencies: ClassProficiency;
+    savingThrows: number[];
+    hitDice: number;
+    equipChoices: EquipmentChoice[];
+    fixedEquip?: EquipmentFixedBlock[];
 }
 
 interface ClassWeaponProficiency {
@@ -49,12 +55,6 @@ interface WeaponCategory {
 interface DamageType {
     id: number;
     text: string;
-}
-
-interface ClassEquipment {
-    id: number;
-    equipChoices: EquipmentChoice[];
-    fixedEquip?: EquipmentFixedBlock[];
 }
 
 interface EquipmentChoice {
@@ -103,21 +103,11 @@ export interface Background {
     id: number;
     text: string;
     equipment: number[];
-}
-
-interface BackgroundFeature {
-    id: number;
-    text: string;
-}
-
-interface BackgroundCurrency {
-    id: number;
+    backgroundFeature: string;
     currency: number[];
-}
-
-interface BackgroundLangauge {
-    id: number;
-    num: number;
+    languages: number;
+    toolProficiencies: number[];
+    proficiencies: number[];
 }
 
 interface ToolProficiency {
@@ -125,26 +115,11 @@ interface ToolProficiency {
     text: string;
 }
 
-interface BackgroundToolProficiency {
-    id: number;
-    profs: number[];
-}
-
 interface PersonalityTrait {
     id: number;
     roll?: number;
     bg: number;
     text: string;
-}
-
-interface RaceLanguage {
-    id: number;
-    languages: number[];
-}
-
-interface RaceExtraLanguage {
-    id: number;
-    extras: number;
 }
 
 interface Language {
@@ -157,35 +132,13 @@ interface ProficiencyLevel {
     bonus: number;
 }
 
-interface ClassSavingThrow {
-    id: number;
-    throws: number[];
-}
-
-interface HitDice {
-    id: number;
-    num: number;
-    dice: number;
-}
-
-interface StartingHP {
-    id: number;
-    hp: number;
-}
-
 export interface Alignment {
     id: number;
     lawfulChaotic: string;
     goodEvil: string;
 }
 
-interface BackgroundProficiency {
-    id: number;
-    profs: number[];
-}
-
 interface ClassProficiency {
-    id: number;
     num: number;
     profs: number[];
 }
@@ -237,7 +190,8 @@ export default class DndProps {
         page: '20',
         bonuses: [0, 0, 2, 0, 0, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 1]
       },
       {
         id: 1,
@@ -246,7 +200,8 @@ export default class DndProps {
         page: '20',
         bonuses: [0, 0, 2, 0, 1, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 1]
       },
       {
         id: 2,
@@ -255,7 +210,8 @@ export default class DndProps {
         page: '20',
         bonuses: [2, 0, 2, 0, 0, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 1]
       },
       {
         id: 3,
@@ -264,7 +220,8 @@ export default class DndProps {
         page: '22',
         bonuses: [0, 2, 0, 0, 0, 0],
         speed: 30,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 2]
       },
       {
         id: 4,
@@ -273,7 +230,8 @@ export default class DndProps {
         page: '22',
         bonuses: [0, 2, 0, 1, 0, 0],
         speed: 30,
-        extraLanguages: 1
+        extraLanguages: 1,
+        languages: [0, 2]
       },
       {
         id: 5,
@@ -282,7 +240,8 @@ export default class DndProps {
         page: '22',
         bonuses: [0, 2, 0, 0, 1, 0],
         speed: 35,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 2]
       },
       {
         id: 6,
@@ -291,7 +250,8 @@ export default class DndProps {
         page: '22',
         bonuses: [0, 2, 0, 0, 0, 1],
         speed: 30,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 2]
       },
       {
         id: 7,
@@ -300,7 +260,8 @@ export default class DndProps {
         page: '27',
         bonuses: [0, 2, 0, 0, 0, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 6]
       },
       {
         id: 8,
@@ -309,7 +270,8 @@ export default class DndProps {
         page: '27',
         bonuses: [0, 2, 0, 0, 0, 1],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 6]
       },
       {
         id: 9,
@@ -318,7 +280,8 @@ export default class DndProps {
         page: '27',
         bonuses: [0, 2, 1, 0, 0, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 6]
       },
       {
         id: 10,
@@ -327,7 +290,8 @@ export default class DndProps {
         page: '30',
         bonuses: [1, 1, 1, 1, 1, 1],
         speed: 30,
-        extraLanguages: 1
+        extraLanguages: 1,
+        languages: [0]
       },
       {
         id: 11,
@@ -336,7 +300,8 @@ export default class DndProps {
         page: '33',
         bonuses: [2, 0, 0, 0, 0, 1],
         speed: 30,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 10]
       },
       {
         id: 12,
@@ -345,7 +310,8 @@ export default class DndProps {
         page: '36',
         bonuses: [0, 0, 0, 2, 0, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 4]
       },
       {
         id: 13,
@@ -354,7 +320,8 @@ export default class DndProps {
         page: '36',
         bonuses: [0, 1, 0, 2, 0, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 4]
       },
       {
         id: 14,
@@ -363,7 +330,8 @@ export default class DndProps {
         page: '36',
         bonuses: [0, 0, 1, 2, 0, 0],
         speed: 25,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 4]
       },
       {
         id: 15,
@@ -372,7 +340,8 @@ export default class DndProps {
         page: '22 and 30',
         bonuses: [0, 0, 0, 0, 0, 2],
         speed: 30,
-        extraLanguages: 1
+        extraLanguages: 1,
+        languages: [0, 2]
       },
       {
         id: 16,
@@ -381,7 +350,8 @@ export default class DndProps {
         page: '41',
         bonuses: [2, 0, 1, 0, 0, 0],
         speed: 30,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 7]
       },
       {
         id: 17,
@@ -390,19 +360,9 @@ export default class DndProps {
         page: '43',
         bonuses: [0, 0, 0, 1, 0, 2],
         speed: 30,
-        extraLanguages: 0
+        extraLanguages: 0,
+        languages: [0, 12]
       },
-    ];
-    public raceLanguages: RaceLanguage[] = [
-      { id: 0, languages: [0, 1] },
-      { id: 1, languages: [0, 2] },
-      { id: 2, languages: [0, 6] },
-      { id: 3, languages: [0] },
-      { id: 4, languages: [0, 10] },
-      { id: 5, languages: [0, 4] },
-      { id: 6, languages: [0, 2] },
-      { id: 7, languages: [0, 7] },
-      { id: 8, languages: [0, 12] },
     ];
     public classes: Class[] = [
       {
@@ -419,205 +379,9 @@ export default class DndProps {
           categories: [0, 1],
           weapons: []
         },
-      },
-      {
-        id: 1,
-        text: 'Bard',
-        features: [
-          { level: 1, text: 'Bardic Inspiration (p.53)' },
-        ],
-        armorProficiencies: [0],
-        weaponProficiencies: {
-          categories: [0],
-          weapons: [33, 21, 25, 27]
-        },
-      },
-      {
-        id: 2,
-        text: 'Cleric',
-        features: [
-          { level: 1, text: 'Divine Domain (p.58)' },
-        ],
-        armorProficiencies: [0, 1, 3],
-        weaponProficiencies: {
-          categories: [0],
-          weapons: []
-        },
-      },
-      {
-        id: 3,
-        text: 'Druid',
-        features: [
-          { level: 1, text: 'Druidic (p.66)' },
-        ],
-        armorProficiencies: [0, 1, 3], // Non-metal only
-        weaponProficiencies: {
-          categories: [],
-          weapons: [0, 1, 11, 4, 6, 7, 26, 8, 13, 9]
-        },
-      },
-      {
-        id: 4,
-        text: 'Fighter',
-        features: [
-          { level: 1, text: 'Fighting Style (p.72)' },
-          { level: 1, text: 'Second Wind (p.72)' },
-        ],
-        armorProficiencies: [0, 1, 2, 3],
-        weaponProficiencies: {
-          categories: [0, 1],
-          weapons: []
-        },
-      },
-      {
-        id: 5,
-        text: 'Monk',
-        features: [
-          { level: 1, text: 'Unarmored Defense (p.78)' },
-          { level: 1, text: 'Martial Arts (p.78)' },
-        ],
-        armorProficiencies: [],
-        weaponProficiencies: {
-          categories: [0],
-          weapons: [27]
-        },
-      },
-      {
-        id: 6,
-        text: 'Paladin',
-        features: [
-          { level: 1, text: 'Divine Sense (p.84)' },
-          { level: 1, text: 'Lay on Hands (p.84)' },
-        ],
-        armorProficiencies: [0, 1, 2, 3],
-        weaponProficiencies: {
-          categories: [0, 1],
-          weapons: []
-        },
-      },
-      {
-        id: 7,
-        text: 'Ranger',
-        features: [
-          { level: 1, text: 'Favored Enemy (p.91)' },
-          { level: 1, text: 'Natural Explorer (p.91)' },
-        ],
-        armorProficiencies: [0, 1, 3],
-        weaponProficiencies: {
-          categories: [0, 1],
-          weapons: []
-        },
-      },
-      {
-        id: 8,
-        text: 'Rogue',
-        features: [
-          { level: 1, text: 'Expertise (p.96)' },
-          { level: 1, text: 'Sneak Attack (p.96)' },
-          { level: 1, text: 'Thieves\' Cant (p.96)' },
-        ],
-        armorProficiencies: [0],
-        weaponProficiencies: {
-          categories: [0],
-          weapons: [33, 21, 25, 27]
-        },
-      },
-      {
-        id: 9,
-        text: 'Sorcerer',
-        features: [
-          { level: 1, text: 'Sorcerous Origin (p.101)' },
-        ],
-        armorProficiencies: [],
-        weaponProficiencies: {
-          categories: [],
-          weapons: [1, 11, 13, 7, 10]
-        },
-      },
-      {
-        id: 10,
-        text: 'Warlock',
-        features: [
-          { level: 1, text: 'Otherworldly Patron (p.107)' },
-        ],
-        armorProficiencies: [0],
-        weaponProficiencies: {
-          categories: [0],
-          weapons: []
-        },
-      },
-      {
-        id: 11,
-        text: 'Wizard',
-        features: [
-          { level: 1, text: 'Arcane Recovery (p.115)' },
-        ],
-        armorProficiencies: [],
-        weaponProficiencies: {
-          categories: [0],
-          weapons: [1, 11, 13, 7, 10]
-        },
-      },
-    ];
-    public classProficiencies: ClassProficiency[] = [
-      { id: 0, num: 2, profs: [1, 3, 7, 10, 11, 17] },
-      { id: 1, num: 3, profs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
-      { id: 2, num: 2, profs: [5, 6, 9, 13, 14] },
-      { id: 3, num: 2, profs: [1, 2, 6, 9, 10, 11, 17] },
-      { id: 4, num: 2, profs: [0, 1, 3, 5, 6, 7, 11, 17] },
-      { id: 5, num: 2, profs: [0, 3, 5, 6, 14, 16] },
-      { id: 6, num: 2, profs: [3, 6, 7, 9, 13, 14] },
-      { id: 7, num: 3, profs: [1, 3, 6, 8, 10, 11, 16, 17] },
-      { id: 8, num: 4, profs: [0, 3, 4, 6, 7, 8, 11, 12, 13, 15, 16] },
-      { id: 9, num: 2, profs: [2, 4, 6, 7, 13, 14] },
-      { id: 10, num: 2, profs: [2, 4, 5, 7, 8, 10, 14] },
-      { id: 11, num: 2, profs: [2, 5, 6, 8, 9, 14] },
-    ];
-    public savingThrows: ClassSavingThrow[] = [
-      { id: 0, throws: [0, 2] },
-      { id: 1, throws: [1, 5] },
-      { id: 2, throws: [4, 5] },
-      { id: 3, throws: [3, 4] },
-      { id: 4, throws: [0, 2] },
-      { id: 5, throws: [0, 1] },
-      { id: 6, throws: [4, 5] },
-      { id: 7, throws: [0, 1] },
-      { id: 8, throws: [1, 3] },
-      { id: 9, throws: [2, 5] },
-      { id: 10, throws: [4, 5] },
-      { id: 11, throws: [3, 4] },
-    ];
-    public hitDice: HitDice[] = [
-      { id: 0, num: 1, dice: 12 },
-      { id: 1, num: 1, dice: 8 },
-      { id: 2, num: 1, dice: 8 },
-      { id: 3, num: 1, dice: 8 },
-      { id: 4, num: 1, dice: 10 },
-      { id: 5, num: 1, dice: 8 },
-      { id: 6, num: 1, dice: 10 },
-      { id: 7, num: 1, dice: 10 },
-      { id: 8, num: 1, dice: 8 },
-      { id: 9, num: 1, dice: 6 },
-      { id: 10, num: 1, dice: 8 },
-      { id: 11, num: 1, dice: 6 },
-    ];
-    public startingHp: StartingHP[] = [ /* +Constitution */
-      { id: 0, hp: 12 },
-      { id: 1, hp: 8 },
-      { id: 2, hp: 8 },
-      { id: 3, hp: 8 },
-      { id: 4, hp: 10 },
-      { id: 5, hp: 8 },
-      { id: 6, hp: 10 },
-      { id: 7, hp: 10 },
-      { id: 8, hp: 8 },
-      { id: 9, hp: 6 },
-      { id: 10, hp: 8 },
-      { id: 11, hp: 6 },
-    ];
-    public classEquipment: ClassEquipment[] = [
-      {
-        id: 0, // Barbarian
+        proficiencies: { num: 2, profs: [1, 3, 7, 10, 11, 17] },
+        savingThrows: [0, 2],
+        hitDice: 12,
         equipChoices: [
           {
             id: 0,
@@ -640,7 +404,19 @@ export default class DndProps {
         ],
       },
       {
-        id: 1, // Bard
+        id: 1,
+        text: 'Bard',
+        features: [
+          { level: 1, text: 'Bardic Inspiration (p.53)' },
+        ],
+        armorProficiencies: [0],
+        weaponProficiencies: {
+          categories: [0],
+          weapons: [33, 21, 25, 27]
+        },
+        proficiencies: { num: 3, profs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
+        savingThrows: [1, 5],
+        hitDice: 8,
         equipChoices: [
           {
             id: 0,
@@ -671,7 +447,19 @@ export default class DndProps {
         ],
       },
       {
-        id: 2, // Cleric
+        id: 2,
+        text: 'Cleric',
+        features: [
+          { level: 1, text: 'Divine Domain (p.58)' },
+        ],
+        armorProficiencies: [0, 1, 3],
+        weaponProficiencies: {
+          categories: [0],
+          weapons: []
+        },
+        proficiencies: { num: 2, profs: [5, 6, 9, 13, 14] },
+        savingThrows: [4, 5],
+        hitDice: 8,
         equipChoices: [
           {
             id: 0,
@@ -715,7 +503,19 @@ export default class DndProps {
         ],
       },
       {
-        id: 3, // Druid
+        id: 3,
+        text: 'Druid',
+        features: [
+          { level: 1, text: 'Druidic (p.66)' },
+        ],
+        armorProficiencies: [0, 1, 3], // Non-metal only
+        weaponProficiencies: {
+          categories: [],
+          weapons: [0, 1, 11, 4, 6, 7, 26, 8, 13, 9]
+        },
+        proficiencies: { num: 2, profs: [1, 2, 6, 9, 10, 11, 17] },
+        savingThrows: [3, 4],
+        hitDice: 8,
         equipChoices: [
           {
             id: 0,
@@ -739,7 +539,20 @@ export default class DndProps {
         ],
       },
       {
-        id: 4, // Fighter
+        id: 4,
+        text: 'Fighter',
+        features: [
+          { level: 1, text: 'Fighting Style (p.72)' },
+          { level: 1, text: 'Second Wind (p.72)' },
+        ],
+        armorProficiencies: [0, 1, 2, 3],
+        weaponProficiencies: {
+          categories: [0, 1],
+          weapons: []
+        },
+        proficiencies: { num: 2, profs: [0, 1, 3, 5, 6, 7, 11, 17] },
+        savingThrows: [0, 2],
+        hitDice: 10,
         equipChoices: [
           {
             id: 0,
@@ -784,7 +597,20 @@ export default class DndProps {
         ],
       },
       {
-        id: 5, // Monk
+        id: 5,
+        text: 'Monk',
+        features: [
+          { level: 1, text: 'Unarmored Defense (p.78)' },
+          { level: 1, text: 'Martial Arts (p.78)' },
+        ],
+        armorProficiencies: [],
+        weaponProficiencies: {
+          categories: [0],
+          weapons: [27]
+        },
+        proficiencies: { num: 2, profs: [0, 3, 5, 6, 14, 16] },
+        savingThrows: [0, 1],
+        hitDice: 8,
         equipChoices: [
           {
             id: 0,
@@ -806,7 +632,20 @@ export default class DndProps {
         ],
       },
       {
-        id: 6, // Paladin
+        id: 6,
+        text: 'Paladin',
+        features: [
+          { level: 1, text: 'Divine Sense (p.84)' },
+          { level: 1, text: 'Lay on Hands (p.84)' },
+        ],
+        armorProficiencies: [0, 1, 2, 3],
+        weaponProficiencies: {
+          categories: [0, 1],
+          weapons: []
+        },
+        proficiencies: { num: 2, profs: [3, 6, 7, 9, 13, 14] },
+        savingThrows: [4, 5],
+        hitDice: 10,
         equipChoices: [
           {
             id: 0,
@@ -839,7 +678,20 @@ export default class DndProps {
         ],
       },
       {
-        id: 7, // Ranger
+        id: 7,
+        text: 'Ranger',
+        features: [
+          { level: 1, text: 'Favored Enemy (p.91)' },
+          { level: 1, text: 'Natural Explorer (p.91)' },
+        ],
+        armorProficiencies: [0, 1, 3],
+        weaponProficiencies: {
+          categories: [0, 1],
+          weapons: []
+        },
+        proficiencies: { num: 3, profs: [1, 3, 6, 8, 10, 11, 16, 17] },
+        savingThrows: [0, 1],
+        hitDice: 10,
         equipChoices: [
           {
             id: 0,
@@ -869,7 +721,21 @@ export default class DndProps {
         ],
       },
       {
-        id: 8, // Rogue
+        id: 8,
+        text: 'Rogue',
+        features: [
+          { level: 1, text: 'Expertise (p.96)' },
+          { level: 1, text: 'Sneak Attack (p.96)' },
+          { level: 1, text: 'Thieves\' Cant (p.96)' },
+        ],
+        armorProficiencies: [0],
+        weaponProficiencies: {
+          categories: [0],
+          weapons: [33, 21, 25, 27]
+        },
+        proficiencies: { num: 4, profs: [0, 3, 4, 6, 7, 8, 11, 12, 13, 15, 16] },
+        savingThrows: [1, 3],
+        hitDice: 8,
         equipChoices: [
           {
             id: 0,
@@ -905,7 +771,19 @@ export default class DndProps {
         ],
       },
       {
-        id: 9, // Sorcerer
+        id: 9,
+        text: 'Sorcerer',
+        features: [
+          { level: 1, text: 'Sorcerous Origin (p.101)' },
+        ],
+        armorProficiencies: [],
+        weaponProficiencies: {
+          categories: [],
+          weapons: [1, 11, 13, 7, 10]
+        },
+        proficiencies: { num: 2, profs: [2, 4, 6, 7, 13, 14] },
+        savingThrows: [2, 5],
+        hitDice: 6,
         equipChoices: [
           {
             id: 0,
@@ -938,7 +816,19 @@ export default class DndProps {
         ],
       },
       {
-        id: 10, // Warlock
+        id: 10,
+        text: 'Warlock',
+        features: [
+          { level: 1, text: 'Otherworldly Patron (p.107)' },
+        ],
+        armorProficiencies: [0],
+        weaponProficiencies: {
+          categories: [0],
+          weapons: []
+        },
+        proficiencies: { num: 2, profs: [2, 4, 5, 7, 8, 10, 14] },
+        savingThrows: [4, 5],
+        hitDice: 8,
         equipChoices: [
           {
             id: 0,
@@ -978,7 +868,19 @@ export default class DndProps {
         ],
       },
       {
-        id: 11, // Wizard
+        id: 11,
+        text: 'Wizard',
+        features: [
+          { level: 1, text: 'Arcane Recovery (p.115)' },
+        ],
+        armorProficiencies: [],
+        weaponProficiencies: {
+          categories: [0],
+          weapons: [1, 11, 13, 7, 10]
+        },
+        proficiencies: { num: 2, profs: [2, 5, 6, 8, 9, 14] },
+        savingThrows: [3, 4],
+        hitDice: 6,
         equipChoices: [
           {
             id: 0,
@@ -1011,136 +913,133 @@ export default class DndProps {
       {
         id: 0,
         text: 'Acolyte',
-        equipment: [66, 67, 68, 69, 70, 71]
+        equipment: [66, 67, 68, 69, 70, 71],
+        backgroundFeature: 'Shelter of the Faithful (p.127)',
+        currency: [0, 0, 0, 15, 0],
+        languages: 2,
+        toolProficiencies: [],
+        proficiencies: [6, 14]
       },
       {
         id: 1,
         text: 'Charlatan',
-        equipment: [72, 73, 74, 71]
+        equipment: [72, 73, 74, 71],
+        backgroundFeature: 'False Identity (p.128)',
+        currency: [0, 0, 0, 15, 0],
+        languages: 0,
+        toolProficiencies: [0, 1],
+        proficiencies: [4, 15]
       },
       {
         id: 2,
         text: 'Criminal',
-        equipment: [75, 76, 71]
+        equipment: [75, 76, 71],
+        backgroundFeature: 'Criminal Contact (p.129)',
+        currency: [0, 0, 0, 15, 0],
+        languages: 0,
+        toolProficiencies: [2, 3],
+        proficiencies: [4, 16]
       },
       {
         id: 3,
         text: 'Entertainer',
-        equipment: [63, 77, 78, 71]
+        equipment: [63, 77, 78, 71],
+        backgroundFeature: 'By Popular Demand (p.130)',
+        currency: [0, 0, 0, 15, 0],
+        languages: 0,
+        toolProficiencies: [0, 4],
+        proficiencies: [0, 12]
       },
       {
         id: 4,
         text: 'Folk Hero',
-        equipment: [79, 80, 81, 70, 71]
+        equipment: [79, 80, 81, 70, 71],
+        backgroundFeature: 'Rustic Hospitality (p.131)',
+        currency: [0, 0, 0, 10, 0],
+        languages: 0,
+        toolProficiencies: [5, 6],
+        proficiencies: [1, 17]
       },
       {
         id: 5,
         text: 'Guild Artisan',
-        equipment: [79, 82, 83, 71]
+        equipment: [79, 82, 83, 71],
+        backgroundFeature: 'Guild Membership (p.133)',
+        currency: [0, 0, 0, 15, 0],
+        languages: 1,
+        toolProficiencies: [5],
+        proficiencies: [6, 13]
       },
       {
         id: 6,
         text: 'Hermit',
-        equipment: [84, 85, 70, 86]
+        equipment: [84, 85, 70, 86],
+        backgroundFeature: 'Discovery (p.134)',
+        currency: [0, 0, 0, 5, 0],
+        languages: 1,
+        toolProficiencies: [7],
+        proficiencies: [9, 13]
       },
       {
         id: 7,
         text: 'Noble',
-        equipment: [72, 87, 88, 89]
+        equipment: [72, 87, 88, 89],
+        backgroundFeature: 'Position of Privilege (p.135)',
+        currency: [0, 0, 0, 25, 0],
+        languages: 1,
+        toolProficiencies: [2],
+        proficiencies: [5, 13]
       },
       {
         id: 8,
         text: 'Outlander',
-        equipment: [90, 91, 92, 83, 71]
+        equipment: [90, 91, 92, 83, 71],
+        backgroundFeature: 'Wanderer (p.136)',
+        currency: [0, 0, 0, 10, 0],
+        languages: 1,
+        toolProficiencies: [4],
+        proficiencies: [3, 17]
       },
       {
         id: 9,
         text: 'Sage',
-        equipment: [93, 94, 95, 96, 70, 71]
+        equipment: [93, 94, 95, 96, 70, 71],
+        backgroundFeature: 'Researcher (p.138)',
+        currency: [0, 0, 0, 10, 0],
+        languages: 2,
+        toolProficiencies: [],
+        proficiencies: [2, 5]
       },
       {
         id: 10,
         text: 'Sailor',
-        equipment: [97, 98, 99, 70, 71]
+        equipment: [97, 98, 99, 70, 71],
+        backgroundFeature: 'Ship\'s Passage (p.139)',
+        currency: [0, 0, 0, 10, 0],
+        languages: 0,
+        toolProficiencies: [8, 9],
+        proficiencies: [3, 11]
       },
       {
         id: 11,
         text: 'Soldier',
-        equipment: [100, 101, 102, 70, 71]
+        equipment: [100, 101, 102, 70, 71],
+        backgroundFeature: 'Military Rank (p.140)',
+        currency: [0, 0, 0, 10, 0],
+        languages: 0,
+        toolProficiencies: [2, 6],
+        proficiencies: [3, 7]
       },
       {
         id: 12,
         text: 'Urchin',
-        equipment: [95, 103, 104, 105, 70, 71]
+        equipment: [95, 103, 104, 105, 70, 71],
+        backgroundFeature: 'City Secrets (p.141)',
+        currency: [0, 0, 0, 10, 0],
+        languages: 0,
+        toolProficiencies: [0, 3],
+        proficiencies: [15, 16]
       },
-    ];
-    public backgroundFeatures: BackgroundFeature[] = [
-      { id: 0, text: 'Shelter of the Faithful (p.127)' },
-      { id: 1, text: 'False Identity (p.128)' },
-      { id: 2, text: 'Criminal Contact (p.129)' },
-      { id: 3, text: 'By Popular Demand (p.130)' },
-      { id: 4, text: 'Rustic Hospitality (p.131)' },
-      { id: 5, text: 'Guild Membership (p.133)' },
-      { id: 6, text: 'Discovery (p.134)' },
-      { id: 7, text: 'Position of Privilege (p.135)' },
-      { id: 8, text: 'Wanderer (p.136)' },
-      { id: 9, text: 'Researcher (p.138)' },
-      { id: 10, text: 'Ship\'s Passage (p.139)' },
-      { id: 11, text: 'Military Rank (p.140)' },
-      { id: 12, text: 'City Secrets (p.141)' },
-    ];
-    public backgroundCurrency: BackgroundCurrency[] = [
-      { id: 0, currency: [0, 0, 0, 15, 0] }, /* CP, SP, EP, GP, PP */
-      { id: 1, currency: [0, 0, 0, 15, 0] },
-      { id: 2, currency: [0, 0, 0, 15, 0] },
-      { id: 3, currency: [0, 0, 0, 15, 0] },
-      { id: 4, currency: [0, 0, 0, 10, 0] },
-      { id: 5, currency: [0, 0, 0, 15, 0] },
-      { id: 6, currency: [0, 0, 0, 5, 0] },
-      { id: 7, currency: [0, 0, 0, 25, 0] },
-      { id: 8, currency: [0, 0, 0, 10, 0] },
-      { id: 9, currency: [0, 0, 0, 10, 0] },
-      { id: 10, currency: [0, 0, 0, 10, 0] },
-      { id: 11, currency: [0, 0, 0, 10, 0] },
-      { id: 12, currency: [0, 0, 0, 10, 0] },
-    ];
-    public backgroundLangauges: BackgroundLangauge[] = [
-      { id: 0, num: 2 },
-      { id: 5, num: 1 },
-      { id: 6, num: 1 },
-      { id: 7, num: 1 },
-      { id: 8, num: 1 },
-      { id: 9, num: 2 },
-    ];
-    public backgroundToolProficiencies: BackgroundToolProficiency[] = [
-      { id: 0, profs: [] },
-      { id: 1, profs: [0, 1] },
-      { id: 2, profs: [2, 3] },
-      { id: 3, profs: [0, 4] },
-      { id: 4, profs: [5, 6] },
-      { id: 5, profs: [5] },
-      { id: 6, profs: [7] },
-      { id: 7, profs: [2] },
-      { id: 8, profs: [4] },
-      { id: 9, profs: [] },
-      { id: 10, profs: [8, 9] },
-      { id: 11, profs: [2, 6] },
-      { id: 12, profs: [0, 3] },
-    ];
-    public backgroundProficiencies: BackgroundProficiency[] = [
-      { id: 0, profs: [6, 14] },
-      { id: 1, profs: [4, 15] },
-      { id: 2, profs: [4, 16] },
-      { id: 3, profs: [0, 12] },
-      { id: 4, profs: [1, 17] },
-      { id: 5, profs: [6, 13] },
-      { id: 6, profs: [9, 13] },
-      { id: 7, profs: [5, 13] },
-      { id: 8, profs: [3, 17] },
-      { id: 9, profs: [2, 5] },
-      { id: 10, profs: [3, 11] },
-      { id: 11, profs: [3, 7] },
-      { id: 12, profs: [15, 16] },
     ];
     public armorCategories: ArmorCategory[] = [
       { id: 0, text: 'Light Armor' },
