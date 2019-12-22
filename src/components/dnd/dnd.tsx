@@ -25,7 +25,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                     </div>
                         <div className="message-body media-content content">
                             <div>
-                                This tool will generate a pre-filled <a href="https://dnd.wizards.com/articles/features/character_sheets">D&amp;D 5e character sheet</a> in PDF format. You'll need a <a href="https://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook">Player's Handbook</a> to fill out some details from page number references. Please see the <a href="https://github.com/drogoganor/dndcharactermaker">GitHub page</a> for more details or to report issues.
+                                This tool will generate a pre-filled <a href="https://dnd.wizards.com/articles/features/character_sheets">D&amp;D 5e character sheet</a> in PDF format. You'll need a <a href="https://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook">Player's Handbook</a> to fill out some details from page number references. Please see the <a href="https://github.com/drogoganor/dndcharactermaker-react">GitHub page</a> for more details or to report issues.
                         </div>
                             <div>
                                 Missing features list:
