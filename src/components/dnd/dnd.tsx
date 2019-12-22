@@ -106,7 +106,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                             type="button"
                                             key={index}
                                             name="class"
-                                            onClick={(e) => this.handleClickSelection(e, cls)}
+                                            onClick={(e) => this.selectClass(e, cls)}
                                             className={"button " + (this.state.class.id === cls.id ? "is-link is-selected" : null)}
                                         >{cls.text}</button>)
                                 })}
@@ -427,6 +427,20 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
             [name]: val
         });
     }
+
+    selectClass(event: any, val: any) {
+        event.preventDefault();
+
+        const target = event.target;
+        const name = target.name;
+
+        this.setState({
+            ...this.state,
+            [name]: val
+        });
+
+        //this.resetEquipment(event); // This seems dodgy and unnecessary - shouldn't we be able to set the equipment choice model to empty and be able to deal with it?
+    };
 
     allocateStat(event: any, index: number, val: number) {
         event.preventDefault();

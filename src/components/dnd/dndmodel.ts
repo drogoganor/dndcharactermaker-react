@@ -41,7 +41,7 @@ export default class DndModel {
 
   public get level(): number {
     // Computed character level from XP
-    if (this.state.xp === null) // || this.state.xp === '' || !this.state.isInt(this.xp))
+    if (this.state.xp === undefined)
       return 1;
 
     var i;
@@ -64,10 +64,10 @@ export default class DndModel {
     // Nice text of selected tool proficiencies
     var i;
     var text = '';
-    for (i = 0; i < this.state.toolProficiencies.length; i++) {
-      var name = this.props.toolProficiencies[this.state.toolProficiencies[i]].text;
+    for (i = 0; i < this.state.background.toolProficiencies.length; i++) {
+      var name = this.props.toolProficiencies[this.state.background.toolProficiencies[i]].text;
       text += name;
-      if (i < this.state.toolProficiencies.length - 1)
+      if (i < this.state.background.toolProficiencies.length - 1)
         text += ', ';
     }
     return text;
@@ -324,7 +324,7 @@ export default class DndModel {
     return false;
   };
 
-  public equipmentChoiceModel = (): EquipmentChoiceModel[] => {
+  public equipmentChoiceModel(): EquipmentChoiceModel[] {
     // List of all available equipment choices to choose from, excluding already selected
     var equipChoices = this.state.class.equipChoices;
     var model: EquipmentChoiceModel[] = [];
@@ -357,7 +357,7 @@ export default class DndModel {
     return {}
   };
 
-  public getPackItems = (packId: number) => {
+  public getPackItems(packId: number): any[] {
     var packItems: any[] = [];
 
     if (!this.isPack(packId))
@@ -448,12 +448,11 @@ export default class DndModel {
     }
   };
 
-  generate = () => {
-
+  generate() {
     this.processPdf();
   };
 
-  processPdf = () => {
+  processPdf() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', './DnD_5E_CharacterSheet - Form Fillable.pdf', true);
     xhr.responseType = 'arraybuffer';
@@ -468,7 +467,7 @@ export default class DndModel {
     xhr.send();
   };
 
-  fillPdfFields = (blob: any) => {
+  fillPdfFields(blob: any) {
     var fields: any = {};
     var o = this.state;
 
@@ -540,7 +539,7 @@ export default class DndModel {
 
     var i;
     for (i = 0; i < 2; i++) {
-      var savingThrowStat = o.classStatSavingThrows[i];
+      var savingThrowStat = o.class.savingThrows[i];
       switch (savingThrowStat) {
         case 0:
           fields['Check Box 11'] = [true];
@@ -565,7 +564,7 @@ export default class DndModel {
       }
     }
 
-    fields['HDTotal'] = [o.hitDice];
+    fields['HDTotal'] = ['1d' + o.class.hitDice];
     fields['ProfBonus'] = [this.proficiencyBonus];
 
     var profLangText = 'Languages: ' + this.languagesText;
@@ -581,7 +580,7 @@ export default class DndModel {
     //fields['CP'] = [o.currency[0]];
     //fields['SP'] = [o.currency[1]];
     //fields['EP'] = [o.currency[2]];
-    fields['GP'] = [o.currency[3]];
+    fields['GP'] = [o.background.currency[3]];
     //fields['PP'] = [o.currency[4]];
 
     fields['PersonalityTraits '] = [this.traitText];
@@ -706,7 +705,7 @@ export default class DndModel {
       }
     }
 
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore: Legacy library
     var filledPdf = pdfform().transform(blob, fields);
     var outBlob = new Blob([filledPdf], { type: 'application/pdf' });
     var fileName = 'zzz DnD5e - Lvl' + this.level + ' ' + this.state.race.text + ' ' + this.state.class.text;
