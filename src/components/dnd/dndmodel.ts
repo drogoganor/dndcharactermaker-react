@@ -11,7 +11,6 @@ export default class DndModel {
     this.props = props;
   }
 
-  // Stats
   public statTotal(i: number): number {
     return this.state.statArray[i] + this.state.race.bonuses[i];
   }
@@ -36,8 +35,6 @@ export default class DndModel {
     }
     return this.props.statModifiers[this.props.statModifiers.length - 1].modifier;
   };
-
-  // Getters
 
   public get level(): number {
     // Computed character level from XP
@@ -131,19 +128,19 @@ export default class DndModel {
   };
 
   public get traitText(): string {
-    return this.props.personalityTraits[this.state.traits[0]].text;
+    return this.props.personalityTraits[this.state.trait].text;
   };
 
   public get idealText(): string {
-    return this.props.ideals[this.state.ideals[0]].text;
+    return this.props.ideals[this.state.ideal].text;
   };
 
   public get bondText(): string {
-    return this.props.bonds[this.state.bonds[0]].text;
+    return this.props.bonds[this.state.bond].text;
   };
 
   public get flawText(): string {
-    return this.props.flaws[this.state.flaws[0]].text;
+    return this.props.flaws[this.state.flaw].text;
   };
 
   public get traitsAndFeatures(): string[] {
@@ -299,8 +296,6 @@ export default class DndModel {
     return profs;
   };
 
-  // Computed
-
   public allStatsAssigned(): boolean {
     return this.state.statRolls.length === 0;
   };
@@ -315,7 +310,6 @@ export default class DndModel {
   };
 
   public allLanguagesChosen(): boolean {
-    //var racelanguages = this.state.race.languages.length;
     var extraLangs = this.state.race.extraLanguages;
     var numBackgroundLangs = this.numBackgroundLanguages;
 
@@ -433,7 +427,7 @@ export default class DndModel {
   };
 
   public extrasText(choice: EquipmentChoiceBlock): string {
-    return choice.extras ? choice.extras.map(extra => 
+    return choice.extras ? choice.extras.map(extra =>
       this.props.equipment[extra.id].text +
       (extra.num && extra.num > 1 ? ' (' + extra.num + ')' : '')
     ).join(', ') + ' + ' : '';
@@ -488,7 +482,7 @@ export default class DndModel {
         dmgBonus: 0
       };
 
-      // TODO: Calc attack bonus, this is going to be ugly
+      // Calc attack bonus
       var atkBonus = 0;
       var dmgBonus = 0;
       if (equipmentData.melee === true) { // TODO: Check finesse, use DEX if true
@@ -770,7 +764,7 @@ export default class DndModel {
     // @ts-ignore: Legacy library
     var filledPdf = pdfform().transform(blob, fields);
     var outBlob = new Blob([filledPdf], { type: 'application/pdf' });
-    var fileName = 'zzz DnD5e - Lvl' + this.level + ' ' + this.state.race.text + ' ' + this.state.class.text;
+    var fileName = 'DnD5e - Lvl' + this.level + ' ' + this.state.race.text + ' ' + this.state.class.text;
     if (this.state.playerName !== '')
       fileName += ' ' + this.state.playerName;
 

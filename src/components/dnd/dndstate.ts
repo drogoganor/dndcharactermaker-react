@@ -11,7 +11,6 @@ export interface EquipmentChoiceModel {
     selection: number;
     remaining: number;
     items: EquipmentModel[];
-
     choices?: EquipmentChoiceBlock[];
 }
 
@@ -40,20 +39,12 @@ export default class DndState {
     public readonly xp: number = 0;
     public readonly languageids: number[] = [];
     public readonly proficiencies: number[] = [];
-
     public readonly equipment: EquipmentModel[] = [];
-
-    public readonly equipChoices: EquipmentChoiceModel[] = [
-        /*
-        { id: 0, chosen: false, selection: 0, remaining: 1, items: [] },
-        { id: 1, chosen: false, selection: 0, remaining: 1, items: [] },
-        */
-    ];
-
-    public readonly traits: number[] = [0];
-    public readonly ideals: number[] = [0];
-    public readonly bonds: number[] = [0];
-    public readonly flaws: number[] = [0];
+    public readonly equipChoices: EquipmentChoiceModel[] = [];
+    public readonly trait: number = 0;
+    public readonly ideal: number = 0;
+    public readonly bond: number = 0;
+    public readonly flaw: number = 0;
     public readonly age: string = '20';
     public readonly height: string = '6\'1';
     public readonly weight: string = '170lbs';

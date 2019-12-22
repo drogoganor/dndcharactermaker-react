@@ -394,6 +394,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                         <button
                             type="button"
                             id="generate"
+                            disabled={!model.allChoicesFulfilled()}
                             onClick={(e) => this.generate(e, model)}
                             className={'button is-large ' + (!model.allChoicesFulfilled() ? 'is-outlined' : 'is-success')}
                         >Generate PDF</button>
@@ -534,16 +535,13 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
 
         var equipChoices = this.state.equipChoices.slice();
         var existingEquipment = this.state.equipment.slice();
-
         var equipModel = this.state.class.equipChoices[categoryId];
-
-        var choiceCategory = equipChoices.find(eq => eq.id === categoryId); //equipChoices[categoryId];
         var equipChoice = equipModel.choices[choiceId];
+        var choiceCategory = equipChoices.find(eq => eq.id === categoryId);
 
         if (choiceCategory === undefined)
         {
             // Add new if not present
-            // TODO: Is this bugged?
             choiceCategory = { id: categoryId, chosen: false, selection: choiceId, remaining: 0, items: [] };
             equipChoices.push(choiceCategory);
         }
