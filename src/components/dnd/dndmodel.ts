@@ -20,7 +20,7 @@ export default class DndModel {
   }
 
   public savingThrow(i: number): number {
-    var savingThrow = this.state.class.savingThrows.find(th => th === i) !== undefined ? this.proficiencyBonus : 0;
+    let savingThrow = this.state.class.savingThrows.find(th => th === i) !== undefined ? this.proficiencyBonus : 0;
 
     return this.getModifier(this.statTotal(i)) + savingThrow;
   }
@@ -39,7 +39,7 @@ export default class DndModel {
     if (this.state.xp === undefined)
       return 1;
 
-    var lev = 0;
+    let lev = 0;
     for (let xpLevel of this.props.xpLevels) {
       if (this.state.xp >= xpLevel.xp)
         lev++;
@@ -55,23 +55,14 @@ export default class DndModel {
   };
 
   public get toolProficienciesText(): string {
-    // Nice text of selected tool proficiencies
-    var i;
-    var text = '';
-    for (i = 0; i < this.state.background.toolProficiencies.length; i++) {
-      var name = this.props.toolProficiencies[this.state.background.toolProficiencies[i]].text;
-      text += name;
-      if (i < this.state.background.toolProficiencies.length - 1)
-        text += ', ';
-    }
-    return text;
+    return this.state.background.toolProficiencies.map(prof => this.props.toolProficiencies[prof].text).join(', ');
   };
 
   public get currencyText(): string {
-    var currency = this.state.background.currency.slice();
+    let currency = this.state.background.currency.slice();
 
     // Nice text of character currencies
-    var text = '';
+    let text = '';
     if (currency[0] > 0)
       text += currency[0] + " CP ";
     if (currency[1] > 0)
@@ -86,7 +77,7 @@ export default class DndModel {
   };
 
   public get raceNamePageReferenceText(): string {
-    var race = this.state.race;
+    let race = this.state.race;
     return 'Example ' + race.text + ' names can be found on page ' + race.page;
   };
 
@@ -96,32 +87,22 @@ export default class DndModel {
 
   public get proficiencesLeftText(): string {
     // Nice text label of how many proficiencies left to select
-    var numLeft = this.state.class.proficiencies.num - this.state.proficiencies.length;
+    let numLeft = this.state.class.proficiencies.num - this.state.proficiencies.length;
 
     return "Choose " + numLeft + " additional proficienc" + (numLeft > 1 ? "ies" : "y") + ":";
   };
 
   public get languagesLeftText(): string {
     // Nice text label to indicate how many additional languages you can choose
-    var extraLangs = this.state.race.extraLanguages;
-    var numBackgroundLangs = this.numBackgroundLanguages;
-    var numLeft = extraLangs + numBackgroundLangs - this.state.languageids.length;
+    let extraLangs = this.state.race.extraLanguages;
+    let numBackgroundLangs = this.numBackgroundLanguages;
+    let numLeft = extraLangs + numBackgroundLangs - this.state.languageids.length;
 
     return "Choose " + numLeft + " additional language" + (numLeft > 1 ? "s" : "") + ":";
   };
 
   public get languagesText(): string {
-    // Nice text of selected languages
-    var i;
-    var text = '';
-    var languages = this.languages;
-    for (i = 0; i < languages.length; i++) {
-      var langName = this.props.languages[languages[i]].text;
-      text += langName;
-      if (i < languages.length - 1)
-        text += ', ';
-    }
-    return text;
+    return this.languages.map(language => this.props.languages[language].text).join(', ');
   };
 
   public get traitText(): string {
@@ -141,11 +122,11 @@ export default class DndModel {
   };
 
   public get traitsAndFeatures(): string[] {
-    var result = [];
-    var backgroundFeature = this.state.background.backgroundFeature;
+    let result = [];
+    let backgroundFeature = this.state.background.backgroundFeature;
     result.push(backgroundFeature);
 
-    var classFeatures = this.state.class.features;
+    let classFeatures = this.state.class.features;
     for (let classFeature of classFeatures) {
       if (classFeature.level <= this.level) {
         result.push(classFeature.text);
@@ -156,9 +137,9 @@ export default class DndModel {
   };
 
   public get equipment(): EquipmentModel[] {
-    var equipModel = [];
-    var bgEquip = this.state.background.equipment;
-    var classEquip = this.state.class.fixedEquip;
+    let equipModel = [];
+    let bgEquip = this.state.background.equipment;
+    let classEquip = this.state.class.fixedEquip;
 
     // Selected equipment
     for (let eq of this.state.equipment) {
@@ -182,7 +163,7 @@ export default class DndModel {
 
   public get equipmentList(): any[] {
     // Get list of equipment ID's and text
-    var equipIds: any[] = [];
+    let equipIds: any[] = [];
 
     // Equipment choices
     for (let equipChoice of this.state.equipChoices) {
@@ -211,9 +192,9 @@ export default class DndModel {
 
   public get equipmentText(): string {
     // Nice text of selected equipment
-    var i;
-    var text = '';
-    var equipIds = this.equipmentList;
+    let i;
+    let text = '';
+    let equipIds = this.equipmentList;
 
     for (i = 0; i < equipIds.length; i++) {
       let equip = equipIds[i];
@@ -229,11 +210,11 @@ export default class DndModel {
 
   public get equipmentTextList(): string[] {
     // Array of equipment text
-    var arr = [];
-    var equipIds = this.equipmentList;
+    let arr = [];
+    let equipIds = this.equipmentList;
 
     for (let equip of equipIds) {
-      var text = this.props.equipment[equip.id].text;
+      let text = this.props.equipment[equip.id].text;
       if (equip.num > 1)
         text += ' (' + equip.num + ')';
       arr.push(text);
@@ -248,8 +229,8 @@ export default class DndModel {
 
   public get availableLanguages(): any[] {
     // List of all available additional languages to choose from, excluding already selected
-    var langs = [];
-    var languages = this.languages;
+    let langs = [];
+    let languages = this.languages;
     for (let lang of this.props.languages) {
       if (!languages.includes(lang.id))
         langs.push(lang);
@@ -267,9 +248,9 @@ export default class DndModel {
 
   public get availableProficiencies(): any[] {
     // List of all available proficiencies to choose from, excluding already selected
-    var profs = [];
-    var classProfs = this.state.class.proficiencies.profs;
-    var backgroundProfs = this.state.background.proficiencies;
+    let profs = [];
+    let classProfs = this.state.class.proficiencies.profs;
+    let backgroundProfs = this.state.background.proficiencies;
     for (let prof of this.props.skills) {
       if (!this.proficiencies.includes(prof.id) && (classProfs.includes(prof.id) || backgroundProfs.includes(prof.id)))
         profs.push(prof);
@@ -282,8 +263,8 @@ export default class DndModel {
   };
 
   public allProficienciesChosen(): boolean {
-    var numClassProfs = this.state.class.proficiencies.num;
-    var numBackgroundProfs = this.state.background.proficiencies.length;
+    let numClassProfs = this.state.class.proficiencies.num;
+    let numBackgroundProfs = this.state.background.proficiencies.length;
 
     if (this.proficiencies.length < numClassProfs + numBackgroundProfs)
       return false;
@@ -291,8 +272,8 @@ export default class DndModel {
   };
 
   public allLanguagesChosen(): boolean {
-    var extraLangs = this.state.race.extraLanguages;
-    var numBackgroundLangs = this.numBackgroundLanguages;
+    let extraLangs = this.state.race.extraLanguages;
+    let numBackgroundLangs = this.numBackgroundLanguages;
 
     if (this.state.languageids.length < extraLangs + numBackgroundLangs)
       return false;
@@ -311,7 +292,7 @@ export default class DndModel {
 
   public hasBonusLanguages(): boolean {
     // Whether the current class/background combo is able to select additional languages
-    var numBackgroundLangs = this.numBackgroundLanguages;
+    let numBackgroundLangs = this.numBackgroundLanguages;
     return this.state.race.extraLanguages > 0 || numBackgroundLangs > 0;
   };
 
@@ -324,14 +305,14 @@ export default class DndModel {
   };
 
   public isPack(itemId: number): boolean {
-    var equipDef = this.props.equipment[itemId];
+    let equipDef = this.props.equipment[itemId];
     if (equipDef.type !== 2)
       return false;
     return true;
   };
 
   hasWeaponProficiency(equipment: Equipment): boolean {
-    var classWeaps = this.state.class.weaponProficiencies;
+    let classWeaps = this.state.class.weaponProficiencies;
     if (classWeaps.categories.includes(equipment.type))
       return true;
     if (classWeaps.weapons.includes(equipment.id))
@@ -341,11 +322,11 @@ export default class DndModel {
 
   public equipmentChoiceModel(): EquipmentChoiceModel[] {
     // List of all available equipment choices to choose from, excluding already selected
-    var equipChoices = this.state.class.equipChoices;
-    var model: EquipmentChoiceModel[] = [];
+    let equipChoices = this.state.class.equipChoices;
+    let model: EquipmentChoiceModel[] = [];
 
     for (let equipChoice of equipChoices) {
-      var chosenChoices = this.state.equipChoices.find(eq => eq.id === equipChoice.id);
+      let chosenChoices = this.state.equipChoices.find(eq => eq.id === equipChoice.id);
       if (chosenChoices === undefined) {
         let modelRow = {
           id: equipChoice.id,
@@ -384,13 +365,13 @@ export default class DndModel {
   };
 
   public getPackItems(packId: number): any[] {
-    var packItems: any[] = [];
+    let packItems: any[] = [];
 
     if (!this.isPack(packId))
       return packItems;
 
     // Iterate and add pack equipment
-    var backpackItems = this.props.backpackContents.find(bp => bp.id === packId);
+    let backpackItems = this.props.backpackContents.find(bp => bp.id === packId);
     if (typeof backpackItems === 'undefined')
       return packItems;
 
@@ -410,11 +391,11 @@ export default class DndModel {
 
   buildWeaponModel(): any[] {
     // Build model of weaponry chosen or included, with atk and damage type
-    var weaponModel = [];
+    let weaponModel = [];
 
-    var equipmentData;
+    let equipmentData;
     for (let equipChoices of this.state.equipChoices) {
-      var choiceItems = equipChoices.items;
+      let choiceItems = equipChoices.items;
       for (let choiceItem of choiceItems) {
         equipmentData = this.props.equipment[choiceItem.id];
         if (equipmentData.type === 0) {
@@ -431,8 +412,8 @@ export default class DndModel {
     }
 
     // Condense model (remove duplicates)
-    var usedIds: number[] = [];
-    var newWeaponModel = [];
+    let usedIds: number[] = [];
+    let newWeaponModel = [];
     for (let weapModel of weaponModel) {
       if (!usedIds.includes(weapModel.id)) {
         usedIds.push(weapModel.id);
@@ -445,7 +426,7 @@ export default class DndModel {
 
   addWeaponModel(equipmentData: Equipment): any {
     if (equipmentData.type === 0) { // Weapon
-      var newWeap = {
+      let newWeap = {
         id: equipmentData.id,
         name: equipmentData.text,
         dice: equipmentData.dice,
@@ -455,8 +436,8 @@ export default class DndModel {
       };
 
       // Calc attack bonus
-      var atkBonus = 0;
-      var dmgBonus = 0;
+      let atkBonus = 0;
+      let dmgBonus = 0;
       if (equipmentData.melee === true) { // TODO: Check finesse, use DEX if true
         atkBonus += this.statModifier(0); // STRmod
         dmgBonus += this.statModifier(0);
@@ -481,10 +462,10 @@ export default class DndModel {
   };
 
   processPdf() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', './DnD_5E_CharacterSheet - Form Fillable.pdf', true);
     xhr.responseType = 'arraybuffer';
-    var process = this.fillPdfFields;
+    let process = this.fillPdfFields;
     xhr.onload = function () {
       if (this.status === 200) {
         process(this.response);
@@ -496,17 +477,17 @@ export default class DndModel {
   };
 
   fillPdfFields = (blob: any) => {
-    var fields: any = {};
-    var o = this.state;
+    let fields: any = {};
+    let o = this.state;
 
     // Initiative: DEX modifier
-    var initiative = this.statModifier(1);
+    let initiative = this.statModifier(1);
 
     // Base armor class: 10 + DEX modifier (TODO: include shield & armor)
-    var armorClass = 10 + this.statModifier(1);
+    let armorClass = 10 + this.statModifier(1);
 
     // HP: Starting HP + CON
-    var hp = this.state.class.hitDice + this.statModifier(2);
+    let hp = this.state.class.hitDice + this.statModifier(2);
 
     fields['PlayerName'] = [o.playerName];
     fields['CharacterName'] = [o.characterName];
@@ -593,7 +574,7 @@ export default class DndModel {
     fields['HDTotal'] = ['1d' + o.class.hitDice];
     fields['ProfBonus'] = [this.proficiencyBonus];
 
-    var profLangText = 'Languages: ' + this.languagesText;
+    let profLangText = 'Languages: ' + this.languagesText;
 
     if (this.toolProficienciesText !== '')
       profLangText += '\n\nProficiencies: ' + this.toolProficienciesText;
@@ -615,7 +596,7 @@ export default class DndModel {
     fields['Flaws'] = [this.flawText];
 
     // https://rpg.stackexchange.com/questions/101169/how-does-passive-perception-work
-    var pp = 10 + this.statModifier(4);
+    let pp = 10 + this.statModifier(4);
     if (this.proficiencies.includes(11))
       pp += this.proficiencyBonus;
 
@@ -703,11 +684,11 @@ export default class DndModel {
     }
 
     // Weapons
-    var weaponModel = this.buildWeaponModel();
+    let weaponModel = this.buildWeaponModel();
     for (let i = 0; i < weaponModel.length; i++) {
-      var weap = weaponModel[i];
-      var weapAtkBonusStr = Util.formatModifier(weap.atkBonus);
-      var weapDmgStr = weap.dice + (weap.dmgBonus !== 0 ? ' ' + Util.formatModifier(weap.dmgBonus) : '') + ' ' + weap.dmgType;
+      let weap = weaponModel[i];
+      let weapAtkBonusStr = Util.formatModifier(weap.atkBonus);
+      let weapDmgStr = weap.dice + (weap.dmgBonus !== 0 ? ' ' + Util.formatModifier(weap.dmgBonus) : '') + ' ' + weap.dmgType;
 
       switch (i) {
         case 0:
@@ -731,9 +712,9 @@ export default class DndModel {
     }
 
     // @ts-ignore: Legacy library
-    var filledPdf = pdfform().transform(blob, fields);
-    var outBlob = new Blob([filledPdf], { type: 'application/pdf' });
-    var fileName = 'DnD5e - Lvl' + this.level + ' ' + this.state.race.text + ' ' + this.state.class.text;
+    let filledPdf = pdfform().transform(blob, fields);
+    let outBlob = new Blob([filledPdf], { type: 'application/pdf' });
+    let fileName = 'DnD5e - Lvl' + this.level + ' ' + this.state.race.text + ' ' + this.state.class.text;
     if (this.state.playerName !== '')
       fileName += ' ' + this.state.playerName;
 
