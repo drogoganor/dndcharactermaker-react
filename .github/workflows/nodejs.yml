@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [13.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -24,3 +24,12 @@ jobs:
         npm test
       env:
         CI: true
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: mi3-wss6.a2hosting.com
+        FTP_USERNAME: mi3-wss6\drogogan
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        LOCAL_DIR: build
+        REMOTE_DIR: dnd
+        ARGS: --delete
