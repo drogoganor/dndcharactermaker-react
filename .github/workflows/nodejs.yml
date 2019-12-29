@@ -35,5 +35,5 @@ jobs:
         METHOD: ftp
         PORT: 21
         LOCAL_DIR: build
-        REMOTE_DIR: httpdocs/dnd
-        ARGS: --delete --verbose --include-glob=*.js/**
+        REMOTE_DIR: "httpdocs/dnd"
+        ARGS: --delete --verbose
