@@ -36,4 +36,4 @@ jobs:
         PORT: 21
         LOCAL_DIR: build
         REMOTE_DIR: "httpdocs/dnd"
-        ARGS: --delete --verbose
+        ARGS: --delete --exclude-glob=*.pdf
