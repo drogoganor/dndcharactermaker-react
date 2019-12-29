@@ -34,4 +34,4 @@ jobs:
         PORT: 21
         LOCAL_DIR: build
         REMOTE_DIR: dnd
-        ARGS: --delete
+        ARGS: --delete --delete-first --scan-all-first
