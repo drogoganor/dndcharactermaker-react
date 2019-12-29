@@ -24,6 +24,8 @@ jobs:
         npm test
       env:
         CI: true
+    - name: List output files
+      run: ls
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
       env:
@@ -34,4 +36,4 @@ jobs:
         PORT: 21
         LOCAL_DIR: build
         REMOTE_DIR: dnd
-        ARGS: --delete --delete-first --scan-all-first
+        ARGS: --delete
