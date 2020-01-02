@@ -34,6 +34,7 @@ export default class DndState {
     public readonly race: Race;
     public readonly class: Class;
     public readonly alignment: Alignment;
+    public readonly backgroundSpecialty: number = 0;
     public readonly background: Background;
     public readonly statArray: number[] = Array(6).fill(null);
     public readonly xp: number = 0;

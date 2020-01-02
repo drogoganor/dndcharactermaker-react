@@ -58,6 +58,14 @@ export default class DndModel {
     return this.state.background.toolProficiencies.map(prof => this.props.toolProficiencies[prof].text).join(', ');
   };
 
+  public get specialtyText(): string {
+    if (!this.state.background.specialty) {
+      return '';
+    } else {
+      return this.state.background.specialty.name + ': ' + this.state.background.specialty.rolls[this.state.backgroundSpecialty].text;
+    }
+  };
+
   public get currencyText(): string {
     let currency = this.state.background.currency.slice();
 
@@ -106,25 +114,30 @@ export default class DndModel {
   };
 
   public get traitText(): string {
-    return this.props.personalityTraits[this.state.trait].text;
+    return this.state.background.personalityTraits[this.state.trait].text;
   };
 
   public get idealText(): string {
-    return this.props.ideals[this.state.ideal].text;
+    return this.state.background.ideals[this.state.ideal].text;
   };
 
   public get bondText(): string {
-    return this.props.bonds[this.state.bond].text;
+    return this.state.background.bonds[this.state.bond].text;
   };
 
   public get flawText(): string {
-    return this.props.flaws[this.state.flaw].text;
+    return this.state.background.flaws[this.state.flaw].text;
   };
 
   public get traitsAndFeatures(): string[] {
     let result = [];
     let backgroundFeature = this.state.background.backgroundFeature;
     result.push(backgroundFeature);
+
+    let backgroundSpecialty = this.specialtyText;
+    if (backgroundSpecialty !== '') {
+      result.push(backgroundSpecialty);
+    }
 
     let classFeatures = this.state.class.features;
     for (let classFeature of classFeatures) {
