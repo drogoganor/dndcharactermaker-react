@@ -21,6 +21,17 @@ export interface Class {
   hitDice: number;
   equipChoices: EquipmentChoice[];
   fixedEquip?: EquipmentFixedBlock[];
+  subclass: Subclass;
+}
+
+interface Subclass {
+  text: string;
+  archetypes: Archetype[];
+}
+
+interface Archetype {
+  id: number;
+  text: string;
 }
 
 export interface Background {
@@ -361,6 +372,13 @@ export default class DndProps {
     {
       id: 0,
       text: 'Barbarian',
+      subclass: {
+        text: 'Primal Path',
+        archetypes: [
+          { id: 0, text: 'Path of the Berserker' },
+          { id: 1, text: 'Path of the Totem Warrior' },
+        ]
+      },
       features: [
         { level: 1, text: 'Rage (p.48)' },
         { level: 1, text: 'Unarmored Defense (p.48)' },
@@ -399,6 +417,13 @@ export default class DndProps {
     {
       id: 1,
       text: 'Bard',
+      subclass: {
+        text: 'Bard College',
+        archetypes: [
+          { id: 0, text: 'College of Lore' },
+          { id: 1, text: 'College of Valor' },
+        ]
+      },
       features: [
         { level: 1, text: 'Bardic Inspiration (p.53)' },
       ],
@@ -442,6 +467,18 @@ export default class DndProps {
     {
       id: 2,
       text: 'Cleric',
+      subclass: {
+        text: 'Divine Domain',
+        archetypes: [
+          { id: 0, text: 'Knowledge Domain' },
+          { id: 1, text: 'Life Domain' },
+          { id: 2, text: 'Light Domain' },
+          { id: 3, text: 'Nature Domain' },
+          { id: 4, text: 'Tempest Domain' },
+          { id: 5, text: 'Trickery Domain' },
+          { id: 6, text: 'War Domain' },
+        ]
+      },
       features: [
         { level: 1, text: 'Divine Domain (p.58)' },
       ],
@@ -498,6 +535,13 @@ export default class DndProps {
     {
       id: 3,
       text: 'Druid',
+      subclass: {
+        text: 'Druid Circle',
+        archetypes: [
+          { id: 0, text: 'Circle of the Land' },
+          { id: 1, text: 'Circle of the Moon' },
+        ]
+      },
       features: [
         { level: 1, text: 'Druidic (p.66)' },
       ],
@@ -534,6 +578,14 @@ export default class DndProps {
     {
       id: 4,
       text: 'Fighter',
+      subclass: {
+        text: 'Martial Archetype',
+        archetypes: [
+          { id: 0, text: 'Champion' },
+          { id: 1, text: 'Battlemaster' },
+          { id: 2, text: 'Eldritch Knight' },
+        ]
+      },
       features: [
         { level: 1, text: 'Fighting Style (p.72)' },
         { level: 1, text: 'Second Wind (p.72)' },
@@ -592,6 +644,14 @@ export default class DndProps {
     {
       id: 5,
       text: 'Monk',
+      subclass: {
+        text: 'Monastic Tradition',
+        archetypes: [
+          { id: 0, text: 'Way of the Open Hand' },
+          { id: 1, text: 'Way of Shadow' },
+          { id: 2, text: 'Way of the Four Elements' },
+        ]
+      },
       features: [
         { level: 1, text: 'Unarmored Defense (p.78)' },
         { level: 1, text: 'Martial Arts (p.78)' },
@@ -627,6 +687,14 @@ export default class DndProps {
     {
       id: 6,
       text: 'Paladin',
+      subclass: {
+        text: 'Sacred Oath',
+        archetypes: [
+          { id: 0, text: 'Oath of Devotion' },
+          { id: 1, text: 'Oath of the Ancients' },
+          { id: 2, text: 'Oath of Vengeance' },
+        ]
+      },
       features: [
         { level: 1, text: 'Divine Sense (p.84)' },
         { level: 1, text: 'Lay on Hands (p.84)' },
@@ -673,6 +741,13 @@ export default class DndProps {
     {
       id: 7,
       text: 'Ranger',
+      subclass: {
+        text: 'Archetype',
+        archetypes: [
+          { id: 0, text: 'Hunter' },
+          { id: 1, text: 'Beast Master' },
+        ]
+      },
       features: [
         { level: 1, text: 'Favored Enemy (p.91)' },
         { level: 1, text: 'Natural Explorer (p.91)' },
@@ -716,6 +791,14 @@ export default class DndProps {
     {
       id: 8,
       text: 'Rogue',
+      subclass: {
+        text: 'Archetype',
+        archetypes: [
+          { id: 0, text: 'Thief' },
+          { id: 1, text: 'Assassin' },
+          { id: 2, text: 'Arcane Trickster' },
+        ]
+      },
       features: [
         { level: 1, text: 'Expertise (p.96)' },
         { level: 1, text: 'Sneak Attack (p.96)' },
@@ -766,6 +849,13 @@ export default class DndProps {
     {
       id: 9,
       text: 'Sorcerer',
+      subclass: {
+        text: 'Sorcerous Origin',
+        archetypes: [
+          { id: 0, text: 'Draconic Bloodline' },
+          { id: 1, text: 'Wild Magic' },
+        ]
+      },
       features: [
         { level: 1, text: 'Sorcerous Origin (p.101)' },
       ],
@@ -811,6 +901,14 @@ export default class DndProps {
     {
       id: 10,
       text: 'Warlock',
+      subclass: {
+        text: 'Otherworldly Patron',
+        archetypes: [
+          { id: 0, text: 'The Archfey' },
+          { id: 1, text: 'The Fiend' },
+          { id: 2, text: 'The Great Old One' },
+        ]
+      },
       features: [
         { level: 1, text: 'Otherworldly Patron (p.107)' },
       ],
@@ -863,6 +961,19 @@ export default class DndProps {
     {
       id: 11,
       text: 'Wizard',
+      subclass: {
+        text: 'Arcane Tradition',
+        archetypes: [
+          { id: 0, text: 'School of Abjuration' },
+          { id: 1, text: 'School of Conjuration' },
+          { id: 2, text: 'School of Divination' },
+          { id: 3, text: 'School of Enchantment' },
+          { id: 4, text: 'School of Evocation' },
+          { id: 5, text: 'School of Illusion' },
+          { id: 6, text: 'School of Necromancy' },
+          { id: 7, text: 'School of Transmutation' },
+        ]
+      },
       features: [
         { level: 1, text: 'Arcane Recovery (p.115)' },
       ],
