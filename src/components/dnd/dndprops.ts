@@ -67,8 +67,11 @@ interface ClassWeaponProficiency {
 }
 
 interface Feature {
+  id: number;
   level: number;
   text: string;
+  replaces?: number;
+  archetypeId?: number;
 }
 
 interface ArmorCategory {
@@ -380,10 +383,29 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Rage (p.48)' },
-        { level: 1, text: 'Unarmored Defense (p.48)' },
-        //{ level: 2, text: 'Reckless Attack (p.48)' },
-        // TODO: Features above level 1
+        { id: 0, level: 1, text: 'Rage (p.48)' },
+        { id: 1, level: 1, text: 'Unarmored Defense (p.48)' },
+        { id: 2, level: 2, text: 'Reckless Attack (p.48)' },
+        { id: 3, level: 2, text: 'Danger Sense (p.48)' },
+        { id: 4, level: 5, text: 'Extra Attack (p.49)' },
+        { id: 5, level: 5, text: 'Fast Movement (p.49)' },
+        { id: 6, level: 7, text: 'Feral Instinct (p.49)' },
+        { id: 7, level: 9, text: 'Brutal Critical (p.49)' },
+        { id: 8, level: 11, text: 'Relentless Rage (p.49)' },
+        { id: 9, level: 15, text: 'Persistent Rage (p.49)' },
+        { id: 10, level: 18, text: 'Indomitable Might (p.49)' },
+        { id: 11, level: 20, text: 'Primal Champion (p.49)' },
+        // Path of the Berserker
+        { id: 12, level: 3, text: 'Frenzy (p.49)' },
+        { id: 13, level: 6, text: 'Mindless Rage (p.49)' },
+        { id: 14, level: 10, text: 'Intimidating Presence (p.49)' },
+        { id: 15, level: 14, text: 'Retaliation (p.50)' },
+        // Path of the Totem Warrior
+        { id: 16, level: 3, text: 'Spirit Seeker (p.50)' },
+        { id: 17, level: 3, text: 'Totem Spirit (p.50)' },
+        { id: 18, level: 6, text: 'Aspect of the Beast (p.50)' },
+        { id: 19, level: 10, text: 'Spirit Walker (p.50)' },
+        { id: 20, level: 14, text: 'Totemic Attunement (p.50)' },
       ],
       armorProficiencies: [0, 1, 3],
       weaponProficiencies: {
@@ -425,7 +447,22 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Bardic Inspiration (p.53)' },
+        { id: 0, level: 1, text: 'Bardic Inspiration (p.53)' },
+        { id: 1, level: 2, text: 'Jack of all trades (p.54)' },
+        { id: 2, level: 2, text: 'Song of rest (p.54)' },
+        { id: 3, level: 3, text: 'Expertise (p.54)' },
+        { id: 4, level: 5, text: 'Font of Inspiration (p.54)' },
+        { id: 5, level: 6, text: 'Countercharm (p.54)' },
+        { id: 6, level: 10, text: 'Magical Secrets (p.54)' },
+        { id: 7, level: 20, text: 'Superior Inspiration (p.54)' },
+        // College of Lore
+        { id: 8, level: 3, text: 'Cutting Words (p.54)' },
+        { id: 9, level: 7, text: 'Additional Magical Secrets (p.55)' },
+        { id: 10, level: 14, text: 'Peerless Skill (p.55)' },
+        // College of Valor
+        { id: 11, level: 3, text: 'Combat Inspiration (p.55)' },
+        { id: 12, level: 6, text: 'Extra Attack (p.55)' },
+        { id: 13, level: 14, text: 'Battle Magic (p.55)' },
       ],
       armorProficiencies: [0],
       weaponProficiencies: {
@@ -480,7 +517,59 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Divine Domain (p.58)' },
+        { id: 0, level: 2, text: 'Channel Divinity [  ] (p.58)' },
+        { id: 1, level: 6, text: 'Channel Divinity [  ][  ] (p.58)', replaces: 0 },
+        { id: 2, level: 18, text: 'Channel Divinity [  ][  ][  ] (p.58)', replaces: 1 },
+        { id: 3, level: 2, text: 'CD: Turn Undead (p.59)' },
+        { id: 4, level: 5, text: 'Destroy Undead (p.59)' },
+        { id: 5, level: 10, text: 'Divine Intervention [  ] (p.59)' },
+        // Knowledge
+        { id: 6, level: 1, text: 'Blessings of Knowledge (p.59)' },
+        { id: 7, level: 2, text: 'CD: Knowledge of the Ages (p.59)' },
+        { id: 8, level: 6, text: 'CD: Read Thoughts (p.59)' },
+        { id: 9, level: 8, text: 'Potent Spellcasting (p.60)' },
+        { id: 10, level: 17, text: 'Visions of the Past (p.60)' },
+        // Life
+        { id: 11, level: 1, text: 'Bonus Proficiency: Heavy Armor (p.60)' },
+        { id: 12, level: 1, text: 'Disciple of Life (p.60)' },
+        { id: 13, level: 2, text: 'CD: Preserve Life (p.60)' },
+        { id: 14, level: 6, text: 'Blessed Healer (p.60)' },
+        { id: 15, level: 8, text: 'Divine Strike (p.60)' },
+        { id: 16, level: 17, text: 'Supreme Healing (p.60)' },
+        // Light
+        { id: 17, level: 1, text: 'Bonus Cantrip: Light (p.61)' },
+        { id: 18, level: 1, text: 'Warding Flame (p.61)' },
+        { id: 19, level: 2, text: 'CD: Radiance of the Dawn (p.61)' },
+        { id: 20, level: 6, text: 'Improved Flare (p.61)' },
+        { id: 21, level: 8, text: 'Potent Spellcasting (p.61)' },
+        { id: 22, level: 17, text: 'Corona of Light (p.61)' },
+        // Nature
+        { id: 23, level: 1, text: 'Acolyte of Nature (p.62)' },
+        { id: 24, level: 1, text: 'Bonus Proficiency: Heavy Armor (p.62)' },
+        { id: 25, level: 2, text: 'CD: Charm Animals and Plants (p.62)' },
+        { id: 26, level: 6, text: 'Dampen Elements (p.62)' },
+        { id: 27, level: 8, text: 'Divine Strike (p.62)' },
+        { id: 28, level: 17, text: 'Master of Nature (p.62)' },
+        // Tempest
+        { id: 29, level: 1, text: 'Bonus Proficiency: Martial Weapons & Heavy Armor (p.62)' },
+        { id: 30, level: 1, text: 'Wrath of the Storm (p.62)' },
+        { id: 31, level: 2, text: 'CD: Destructive Wrath (p.62)' },
+        { id: 32, level: 6, text: 'Thunderbolt Strike (p.62)' },
+        { id: 33, level: 8, text: 'Divine Strike (p.62)' },
+        { id: 34, level: 17, text: 'Stormborn (p.62)' },
+        // Trickery
+        { id: 35, level: 1, text: 'Blessing of the Trickster (p.63)' },
+        { id: 36, level: 2, text: 'CD: Invoke Duplicity (p.63)' },
+        { id: 37, level: 6, text: 'CD: Cloak of Shadows (p.63)' },
+        { id: 38, level: 8, text: 'Divine Strike (p.63)' },
+        { id: 39, level: 17, text: 'Improved Duplicity (p.63)' },
+        // War
+        { id: 40, level: 1, text: 'Bonus Proficiency: Martial Weapons & Heavy Armor (p.63)' },
+        { id: 41, level: 1, text: 'War Priest (p.63)' },
+        { id: 42, level: 2, text: 'CD: Guided Strike (p.63)' },
+        { id: 43, level: 2, text: 'CD: War God\'s Blessing (p.63)' },
+        { id: 44, level: 8, text: 'Divine Strike (p.63)' },
+        { id: 45, level: 17, text: 'Avatar of Battle (p.63)' },
       ],
       armorProficiencies: [0, 1, 3],
       weaponProficiencies: {
@@ -543,7 +632,7 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Druidic (p.66)' },
+        { id: 0, level: 1, text: 'Druidic (p.66)' },
       ],
       armorProficiencies: [0, 1, 3], // Non-metal only
       weaponProficiencies: {
@@ -587,8 +676,8 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Fighting Style (p.72)' },
-        { level: 1, text: 'Second Wind (p.72)' },
+        { id: 0, level: 1, text: 'Fighting Style (p.72)' },
+        { id: 1, level: 1, text: 'Second Wind (p.72)' },
       ],
       armorProficiencies: [0, 1, 2, 3],
       weaponProficiencies: {
@@ -653,8 +742,8 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Unarmored Defense (p.78)' },
-        { level: 1, text: 'Martial Arts (p.78)' },
+        { id: 0, level: 1, text: 'Unarmored Defense (p.78)' },
+        { id: 1, level: 1, text: 'Martial Arts (p.78)' },
       ],
       armorProficiencies: [],
       weaponProficiencies: {
@@ -696,8 +785,8 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Divine Sense (p.84)' },
-        { level: 1, text: 'Lay on Hands (p.84)' },
+        { id: 0, level: 1, text: 'Divine Sense (p.84)' },
+        { id: 1, level: 1, text: 'Lay on Hands (p.84)' },
       ],
       armorProficiencies: [0, 1, 2, 3],
       weaponProficiencies: {
@@ -749,8 +838,8 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Favored Enemy (p.91)' },
-        { level: 1, text: 'Natural Explorer (p.91)' },
+        { id: 0, level: 1, text: 'Favored Enemy (p.91)' },
+        { id: 1, level: 1, text: 'Natural Explorer (p.91)' },
       ],
       armorProficiencies: [0, 1, 3],
       weaponProficiencies: {
@@ -800,9 +889,9 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Expertise (p.96)' },
-        { level: 1, text: 'Sneak Attack (p.96)' },
-        { level: 1, text: 'Thieves\' Cant (p.96)' },
+        { id: 0, level: 1, text: 'Expertise (p.96)' },
+        { id: 1, level: 1, text: 'Sneak Attack (p.96)' },
+        { id: 2, level: 1, text: 'Thieves\' Cant (p.96)' },
       ],
       armorProficiencies: [0],
       weaponProficiencies: {
@@ -857,7 +946,7 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Sorcerous Origin (p.101)' },
+        { id: 0, level: 1, text: 'Sorcerous Origin (p.101)' },
       ],
       armorProficiencies: [],
       weaponProficiencies: {
@@ -910,7 +999,7 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Otherworldly Patron (p.107)' },
+        { id: 0, level: 1, text: 'Otherworldly Patron (p.107)' },
       ],
       armorProficiencies: [0],
       weaponProficiencies: {
@@ -975,7 +1064,7 @@ export default class DndProps {
         ]
       },
       features: [
-        { level: 1, text: 'Arcane Recovery (p.115)' },
+        { id: 0, level: 1, text: 'Arcane Recovery (p.115)' },
       ],
       armorProficiencies: [],
       weaponProficiencies: {
