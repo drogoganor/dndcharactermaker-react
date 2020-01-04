@@ -33,6 +33,7 @@ export default class DndState {
     public readonly playerName: string = '';
     public readonly race: Race;
     public readonly class: Class;
+    public readonly archetype: number = 0;
     public readonly alignment: Alignment;
     public readonly backgroundSpecialty: number = 0;
     public readonly background: Background;

@@ -22,30 +22,28 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                     <article className='message'>
                         <div className='message-header'>
                             This is a work-in-progress. Many features are missing.
-                    </div>
-                        <div className="message-body media-content content">
-                            <div>
-                                This tool will generate a pre-filled <a href="https://dnd.wizards.com/articles/features/character_sheets">D&amp;D 5e character sheet</a> in PDF format. You'll need a <a href="https://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook">Player's Handbook</a> to fill out some details from page number references. Please see the <a href="https://github.com/drogoganor/dndcharactermaker-react">GitHub page</a> for more details or to report issues.
                         </div>
-                            <div>
+                        <div className="message-body media-content content">
+                            <p>
+                                This tool will generate a pre-filled <a href="https://dnd.wizards.com/articles/features/character_sheets">D&amp;D 5e character sheet</a> in PDF format. You'll need a <a href="https://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook">Player's Handbook</a> to fill out some details from page number references. Please see the <a href="https://github.com/drogoganor/dndcharactermaker-react">GitHub page</a> for more details or to report issues.
+                            </p>
+                            <p>
                                 Missing features list:
+                            </p>
                             <ul>
-                                    <li>Everything from Sword Coast Adventurer's Guide and Xanathar's Guide to Everything</li>
-                                    <li>Levels above 1 (no calculation of hit points, proficiency bonus, and extra features)</li>
-                                    <li>Armor class does not include equipped armor or shield!</li>
-                                    <li>Many race &amp; subrace skills, proficiencies, and features are missing (stat bonuses, speed, &amp; languages are implemented)</li>
-                                    <li>Class features &amp; traits</li>
-                                    <li>Personality traits, ideals, bonds &amp; flaws selection</li>
-                                    <li>Cantrips and spells</li>
-                                    <li>Character appearance &amp; faction logo</li>
-                                </ul>
-                            </div>
-                            <div>
+                                <li>Everything from books other than the Player's Handbook</li>
+                                <li>Armor class does not include equipped armor or shield</li>
+                                <li>Cantrips and spells</li>
+                                <li>Race features such as Darkvision, Luck, etc.</li>
+                                <li>Feats and stat improvement</li>
+                                <li>Character appearance &amp; faction logo</li>
+                            </ul>
+                            <p>
                                 Known bugs and limitations:
+                            </p>
                             <ul>
-                                    <li>The same item can be listed twice e.g. a Criminal Rogue with a Burglar's pack will have Crowbar listed twice instead of "Crowbar (2)"</li>
-                                </ul>
-                            </div>
+                                <li>The same item can be listed twice e.g. a Criminal Rogue with a Burglar's pack will have Crowbar listed twice instead of "Crowbar (2)"</li>
+                            </ul>
                         </div>
                     </article>
                 </div>
@@ -113,6 +111,27 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                             </div>
                         </div>
                     </div>
+
+                    {model.canSelectArchetype && (
+                    <div className='field'>
+                        <label className='label'>{this.state.class.subclass.text}:</label>
+                        <div id="character-subclass">
+                            <div className="buttons are-small has-addons">
+
+                                {this.state.class.subclass.archetypes.map((sub, index) => {
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={index}
+                                            name="archetype"
+                                            onClick={(e) => this.handleClickSelection(e, sub.id)}
+                                            className={"button " + (this.state.archetype === sub.id ? "is-link is-selected" : null)}
+                                        >{sub.text}</button>)
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                    )}
 
                     <div className='field'>
                         <label className='label'>Alignment:</label>
@@ -321,45 +340,89 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                         </div>
                     </div>
 
-                    <div className='field'>
-                        <label className='label'>Personality Traits:</label>
-                        <div className='column is-1' id="level">{model.traitText}</div>
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Personality Trait:</label>
+                        <div className='column buttons are-small'>
+                            {this.state.background.personalityTraits.map((trait, index) => {
+                                return (
+                                    <button type="button"
+                                        name="trait"
+                                        key={index}
+                                        onClick={(e) => this.handleClickSelection(e, trait.id)}
+                                        className={"button is-fullwidth " + (this.state.trait === trait.id ? "is-link is-selected" : null)}>
+                                            {trait.text}
+                                    </button>)
+                            })}
+                        </div>
                     </div>
-                    <div className='field'>
-                        <label className='label'>Ideals:</label>
-                        <div className='column is-1' id="level">{model.idealText}</div>
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Ideal:</label>
+                        <div className='column buttons are-small'>
+                            {this.state.background.ideals.map((trait, index) => {
+                                return (
+                                    <button type="button"
+                                        name="ideal"
+                                        key={index}
+                                        onClick={(e) => this.handleClickSelection(e, trait.id)}
+                                        className={"button is-fullwidth " + (this.state.ideal === trait.id ? "is-link is-selected" : null)}>
+                                            {trait.text}
+                                    </button>)
+                            })}
+                        </div>
                     </div>
-                    <div className='field'>
-                        <label className='label'>Bonds:</label>
-                        <div className='column is-1' id="level">{model.bondText}</div>
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Bond:</label>
+                        <div className='column buttons are-small'>
+                            {this.state.background.bonds.map((trait, index) => {
+                                return (
+                                    <button type="button"
+                                        name="bond"
+                                        key={index}
+                                        onClick={(e) => this.handleClickSelection(e, trait.id)}
+                                        className={"button is-fullwidth " + (this.state.bond === trait.id ? "is-link is-selected" : null)}>
+                                            {trait.text}
+                                    </button>)
+                            })}
+                        </div>
                     </div>
-                    <div className='field'>
-                        <label className='label'>Flaws:</label>
-                        <div className='column is-1' id="level">{model.flawText}</div>
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Flaw:</label>
+                        <div className='column buttons are-small'>
+                            {this.state.background.flaws.map((trait, index) => {
+                                return (
+                                    <button type="button"
+                                        name="flaw"
+                                        key={index}
+                                        onClick={(e) => this.handleClickSelection(e, trait.id)}
+                                        className={"button is-fullwidth " + (this.state.flaw === trait.id ? "is-link is-selected" : null)}>
+                                            {trait.text}
+                                    </button>)
+                            })}
+                        </div>
                     </div>
-                    <div className='field'>
-                        <label className='label'>Age:</label>
-                        <input className='input' id="age" type="text" value={this.state.age} onChange={this.handleInputChange} />
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Age:</label>
+                        <input className='input column is-2' id="age" type="text" value={this.state.age} onChange={this.handleInputChange} />
                     </div>
-                    <div className='field'>
-                        <label className='label'>Height:</label>
-                        <input className='input' id="height" type="text" value={this.state.height} onChange={this.handleInputChange} />
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Height:</label>
+                        <input className='input column is-2' id="height" type="text" value={this.state.height} onChange={this.handleInputChange} />
                     </div>
-                    <div className='field'>
-                        <label className='label'>Weight:</label>
-                        <input className='input' id="weight" type="text" value={this.state.weight} onChange={this.handleInputChange} />
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Weight:</label>
+                        <input className='input column is-2' id="weight" type="text" value={this.state.weight} onChange={this.handleInputChange} />
                     </div>
-                    <div className='field'>
-                        <label className='label'>Eyes:</label>
-                        <input className='input' id="eyes" type="text" value={this.state.eyes} onChange={this.handleInputChange} />
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Eyes:</label>
+                        <input className='input column is-2' id="eyes" type="text" value={this.state.eyes} onChange={this.handleInputChange} />
                     </div>
-                    <div className='field'>
-                        <label className='label'>Skin:</label>
-                        <input className='input' id="skin" type="text" value={this.state.skin} onChange={this.handleInputChange} />
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Skin:</label>
+                        <input className='input column is-2' id="skin" type="text" value={this.state.skin} onChange={this.handleInputChange} />
                     </div>
-                    <div className='field'>
-                        <label className='label'>Hair:</label>
-                        <input className='input' id="hair" type="text" value={this.state.hair} onChange={this.handleInputChange} />
+                    <div className='columns field'>
+                        <label className='column is-2 label'>Hair:</label>
+                        <input className='input column is-2' id="hair" type="text" value={this.state.hair} onChange={this.handleInputChange} />
                     </div>
                     <div className='field'>
                         <label className='label'>Appearance (not implemented yet):</label>
@@ -375,7 +438,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                     </div>
                     <div className='field'>
                         <label className='label'>Allies:</label>
-                        <input className='input' id="allies" type="text" value={this.state.allies} onChange={this.handleInputChange} />
+                        <textarea className="textarea" id="allies" value={this.state.allies} onChange={this.handleInputChange} placeholder="Enter your character's allies and/or organizations" />
                     </div>
                     <div className='field'>
                         <label className='label'>Backstory:</label>
@@ -383,11 +446,11 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                     </div>
                     <div className='field'>
                         <label className='label'>Additional Features &amp; Traits:</label>
-                        <input className='input' id="additionalFeaturesAndTraits" type="text" value={this.state.additionalFeaturesAndTraits} onChange={this.handleInputChange} />
+                        <textarea className="textarea" id="additionalFeaturesAndTraits" value={this.state.additionalFeaturesAndTraits} onChange={this.handleInputChange} placeholder="Enter your character's additional features &amp; traits" />
                     </div>
                     <div className='field'>
                         <label className='label'>Treasure:</label>
-                        <input className='input' id="treasure" type="text" value={this.state.treasure} onChange={this.handleInputChange} />
+                        <textarea className="textarea" id="treasure" value={this.state.treasure} onChange={this.handleInputChange} placeholder="Enter your character's additional treasure" />
                     </div>
 
                     <div id="finish">
@@ -454,7 +517,9 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
             equipment: [],
             equipChoices: [],
             proficiencies: [],
-            languageids: []
+            languageids: [],
+            backgroundSpecialty: 0, // TODO: This is bg only - separate out handlers
+            archetype: 0 // TODO: This is class only - separate out handlers
         });
     };
 

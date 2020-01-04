@@ -66,6 +66,14 @@ export default class DndModel {
     }
   };
 
+  public get canSelectArchetype(): boolean {
+    if (this.level >= this.state.class.subclass.atLevel) {
+      return true;
+    }
+
+    return false;
+  };
+
   public get currencyText(): string {
     let currency = this.state.background.currency.slice();
 
@@ -141,7 +149,10 @@ export default class DndModel {
 
     let classFeatures = this.state.class.features;
     for (let classFeature of classFeatures) {
-      if (classFeature.level <= this.level) {
+      // We meet the level and it has no archetype requirement, or we match the archetype requirement
+      // TODO: Also check for replacements
+      if (classFeature.level <= this.level &&
+        (classFeature.archetypeId === undefined || classFeature.archetypeId === this.state.archetype)) {
         result.push(classFeature.text);
       }
     }
