@@ -25,6 +25,9 @@ export default class DndCharacter {
         this.background = phb.backgrounds[0];
     }
 
+    public readonly statAssignmentIndex: number = 0;
+    public readonly statRolls: number[] = [15, 14, 13, 12, 10, 8];
+
     public readonly characterName: string = '';
     public readonly playerName: string = '';
     public readonly race: Race;
@@ -59,5 +62,12 @@ export default class DndCharacter {
 
     // Items moved from dndmodel
     public readonly level: number = 1;
+
+    public readonly allEquipmentChosen: boolean = false;
+    public readonly allLanguagesChosen: boolean = false;
+    public readonly allProficienciesChosen: boolean = false;
+    public readonly allStatsAssigned: boolean = false;
+
+    public readonly equipmentText: string = '';
 }
 

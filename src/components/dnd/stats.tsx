@@ -6,7 +6,7 @@ import Util from '../../core/util';
 
 interface Props {
     race: Race;
-    setStatArray: (statArray: number[]) => void;
+    setStatArray: (statArray: number[], allStatsAssigned: boolean) => void;
 }
 
 class State {
@@ -25,6 +25,10 @@ export default class StatsComponent extends React.Component<Props, State> {
     get currentStatAssignmentText(): string {
         return reference.statBlocks[this.state.statAssignmentIndex].text;
     };
+
+    get allStatsAssigned(): boolean {
+        return this.state.statRolls.length === 0;
+    }
 
     getModifier(val: number): number {
         // Get stat modifier from lookup table
@@ -52,6 +56,8 @@ export default class StatsComponent extends React.Component<Props, State> {
             statRolls: reference.standardStatArray.slice(),
             statAssignmentIndex: 0
         });
+
+        this.props.setStatArray(this.state.statRolls, this.allStatsAssigned);
     };
 
     rerollStatsRandom(event: any) {
@@ -66,6 +72,8 @@ export default class StatsComponent extends React.Component<Props, State> {
                 .reverse(),
             statAssignmentIndex: 0
         });
+
+        this.props.setStatArray(this.state.statRolls, this.allStatsAssigned);
     };
 
     allocateStat(event: any, index: number, val: number) {
@@ -93,7 +101,7 @@ export default class StatsComponent extends React.Component<Props, State> {
             statAssignmentIndex: assignIndex
         });
 
-        this.props.setStatArray(statArray);
+        this.props.setStatArray(statArray, this.allStatsAssigned);
     };
 
     public render(): JSX.Element {
