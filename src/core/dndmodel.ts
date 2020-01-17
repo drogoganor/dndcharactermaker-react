@@ -91,10 +91,6 @@ export default class DndModel {
       text += currency[4] + " PP ";
     return text;
   };
-  
-  public get currentStatAssignmentText(): string {
-    return reference.statBlocks[this.state.statAssignmentIndex].text;
-  };
 
   public get proficiencesLeftText(): string {
     // Nice text label of how many proficiencies left to select

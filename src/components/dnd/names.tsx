@@ -9,7 +9,7 @@ interface Props {
     setCharacterName: (characterName: string) => void;
 }
 
-export default class PlayerAndCharacterName extends React.Component<Props> {
+export default class Names extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handlePlayerNameChange = this.handlePlayerNameChange.bind(this);

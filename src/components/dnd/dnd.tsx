@@ -7,10 +7,13 @@ import 'bulma';
 import Summary from './summary';
 import XpLevel from './xpLevel';
 import reference from '../../core/reference';
-import PlayerAndCharacterName from './playerAndCharacterName';
-import { Race, Class } from '../../core/types';
+import Names from './names';
+import { Race, Class, Alignment, Background } from '../../core/types';
 import RaceComponent from './race';
 import ClassComponent from './class';
+import AlignmentComponent from './alignment';
+import BackgroundComponent from './background';
+import StatsComponent from './stats';
 
 interface Props { }
 
@@ -24,6 +27,11 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         this.handlePlayerNameChange = this.handlePlayerNameChange.bind(this);
         this.handleCharacterNameChange = this.handleCharacterNameChange.bind(this);
         this.handleRaceChange = this.handleRaceChange.bind(this);
+        this.handleClassChange = this.handleClassChange.bind(this);
+        this.handleArchetypeChange = this.handleArchetypeChange.bind(this);
+        this.handleAlignmentChange = this.handleAlignmentChange.bind(this);
+        this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
+        this.handleStatArrayChange = this.handleStatArrayChange.bind(this);
     }
 
     handleXpChange(xp: number) {
@@ -75,6 +83,32 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         });
     }
 
+    handleAlignmentChange(alignment: Alignment) {
+        this.setState({
+            ...this.state,
+            alignment: alignment
+        });
+    }
+
+    handleBackgroundChange(background: Background) {
+        this.setState({
+            ...this.state,
+            background: background,
+            equipment: [],
+            equipChoices: [],
+            proficiencies: [],
+            languageids: [],
+            backgroundSpecialty: 0
+        });
+    }
+    
+    handleStatArrayChange(statArray: number[]) {
+        this.setState({
+            ...this.state,
+            statArray: statArray
+        });
+    }
+
     public render(): JSX.Element {
         var model = new DndModel(this.state);
 
@@ -87,7 +121,7 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                         xp={this.state.xp}
                         setXp={this.handleXpChange} />
 
-                    <PlayerAndCharacterName
+                    <Names
                         race={this.state.race}
                         playerName={this.state.playerName}
                         characterName={this.state.characterName}
@@ -105,93 +139,18 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                         setClass={this.handleClassChange} 
                         setArchetype={this.handleArchetypeChange}/>
                     
-                    <div className='field'>
-                        <label className='label'>Alignment:</label>
-                        <div id="character-alignment1">
-                            <div className="buttons are-small has-addons">
-                                {reference.alignments.map((align, index) => {
-                                    return (
-                                        <button
-                                            type="button"
-                                            key={index}
-                                            name="alignment"
-                                            onClick={(e) => this.handleClickSelection(e, align)}
-                                            className={"button " + (this.state.alignment.id === align.id ? "is-link is-selected" : null)}
-                                        >{align.lawfulChaotic + ' ' + align.goodEvil}</button>)
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                    <div className='field'>
-                        <label className='label'>Background:</label>
-                        <div id="character-background">
-                            <div className="buttons are-small has-addons">
-                                {phb.backgrounds.map((bg, index) => {
-                                    return (
-                                        <button
-                                            type="button"
-                                            key={index}
-                                            name="background"
-                                            onClick={(e) => this.selectClassOrBackground(e, bg)}
-                                            className={"button " + (this.state.background.id === bg.id ? "is-link is-selected" : null)}
-                                        >{bg.text}</button>)
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                    {model.toolProficienciesText !== '' && (
-                        <div className='columns field'>
-                            <label className='column is-2 label'>Tool Proficiencies:</label>
-                            <div className='column' id="toolProfs">
-                                <span className='tag is-dark'>{model.toolProficienciesText}</span>
-                            </div>
-                        </div>)
-                    }
-                    <div className='columns field'>
-                        <label className='column is-2 label'>Currency:</label>
-                        <div className='column' id="currency">{model.currencyText}</div>
-                    </div>
-                    <div className='columns'>
-                        <label className='column is-2 label'>Stats:</label>
-                        <div className='column is-1'>Assigned</div>
-                        <div className='column is-1'>Racial</div>
-                        <div className='column is-1'>Total</div>
-                        <div className='column is-1'>Modifier</div>
-                    </div>
-                    {reference.statBlocks.map((block, index) => {
-                        return (
-                            <div className='columns' id="stat-block" key={index}>
-                                <div className='column is-2'>{block.text}</div>
-                                <div className='column is-1'>{this.state.statArray[block.id]}</div>
-                                <div className='column is-1'>{this.state.race.bonuses[block.id]}</div>
-                                <div className='column is-1'>{model.statTotal(block.id)}</div>
-                                <div className='column is-1'>{Util.formatModifier(model.statModifier(block.id))}</div>
-                            </div>)
-                    })}
-                    {this.state.statRolls.length > 0 && (
-                        <div className='columns field'>
-                            <div className='column is-2'>Assign <b>{model.currentStatAssignmentText}</b>:</div>
-                            <div className='column buttons has-addons'>
-                                {this.state.statRolls.map((r, index) => {
-                                    return (
-                                        <button
-                                            type="button"
-                                            className="button is-link"
-                                            name="assignStat"
-                                            onClick={(e) => this.allocateStat(e, index, r)}
-                                            key={index}
-                                        >{r}</button>)
-                                })}
-                            </div>
-                        </div>)
-                    }
-                    <div className='columns field'>
-                        <label className='column is-2 label'>Reset Stats:</label>
-                        <div className='column'>
-                            <button type="button" className='button is-danger' onClick={(e) => this.rerollStatsStandard(e)}>Standard Array</button>&nbsp;
-                <button type="button" className='button is-danger' onClick={(e) => this.rerollStatsRandom(e)}>Reroll</button>
-                        </div>
-                    </div>
+                    <AlignmentComponent
+                        alignment={this.state.alignment}
+                        setAlignment={this.handleAlignmentChange}/>
+
+                    <BackgroundComponent
+                        background={this.state.background}
+                        setBackground={this.handleBackgroundChange}/>
+
+                    <StatsComponent
+                        race={this.state.race}
+                        setStatArray={this.handleStatArrayChange}/>
+                    
                     <div className='columns field'>
                         <label className='column is-2 label'>Proficiencies:</label>
                         <div className='column' id="proficiencies">
@@ -492,57 +451,6 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
             languageids: [],
             backgroundSpecialty: 0, // TODO: This is bg only - separate out handlers
             archetype: 0 // TODO: This is class only - separate out handlers
-        });
-    };
-
-    allocateStat(event: any, index: number, val: number) {
-        event.preventDefault();
-
-        var statArray = this.state.statArray.slice();
-        var statRolls = this.state.statRolls.slice();
-        statRolls.splice(index, 1);
-        var assignIndex = this.state.statAssignmentIndex;
-
-        statArray[assignIndex] = val;
-        assignIndex++;
-
-        if (assignIndex === 5) {
-            // Auto-assign last
-            statArray[assignIndex] = statRolls[0];
-            statRolls = [];
-            assignIndex = 0;
-        }
-
-        this.setState({
-            ...this.state,
-            statArray: statArray,
-            statRolls: statRolls,
-            statAssignmentIndex: assignIndex
-        });
-    };
-
-    rerollStatsStandard(event: any) {
-        event.preventDefault();
-
-        this.setState({
-            ...this.state,
-            statArray: Array(6).fill(null),
-            statRolls: reference.standardStatArray.slice(),
-            statAssignmentIndex: 0
-        });
-    };
-
-    rerollStatsRandom(event: any) {
-        event.preventDefault();
-
-        this.setState({
-            ...this.state,
-            statArray: Array(6).fill(null),
-            statRolls: [...new Array(6)]
-                .map(() => Util.statRoll())
-                .sort((a, b) => a - b)
-                .reverse(),
-            statAssignmentIndex: 0
         });
     };
 

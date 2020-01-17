@@ -25,9 +25,6 @@ export default class DndCharacter {
         this.background = phb.backgrounds[0];
     }
 
-    public readonly statAssignmentIndex: number = 0;
-    public readonly statRolls: number[] = [15, 14, 13, 12, 10, 8];
-
     public readonly characterName: string = '';
     public readonly playerName: string = '';
     public readonly race: Race;
