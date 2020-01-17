@@ -1,14 +1,14 @@
-import DndProps, { Equipment, EquipmentChoiceBlock } from './dndprops';
-import DndState, { EquipmentChoiceModel, EquipmentModel } from './dndstate';
+import phb from './dndbook';
+import { Background, Equipment, EquipmentChoiceBlock } from './types';
+import DndCharacter, { EquipmentChoiceModel, EquipmentModel } from './dndcharacter';
 import Util from './util';
+import reference from './reference';
 
 export default class DndModel {
-  readonly props: DndProps;
-  readonly state: DndState;
+  readonly state: DndCharacter;
 
-  constructor(props: DndProps, state: DndState) {
+  constructor(state: DndCharacter) {
     this.state = state;
-    this.props = props;
   }
 
   public statTotal(i: number): number {
@@ -27,20 +27,20 @@ export default class DndModel {
 
   private getModifier(val: number): number {
     // Get stat modifier from lookup table
-    for (let mod of this.props.statModifiers) {
+    for (let mod of reference.statModifiers) {
       if (val <= mod.val)
         return mod.modifier;
     }
-    return this.props.statModifiers[this.props.statModifiers.length - 1].modifier;
+    return reference.statModifiers[reference.statModifiers.length - 1].modifier;
   };
 
-  public get level(): number {
+  public get level(): number { // Defunct
     // Computed character level from XP
     if (this.state.xp === undefined)
       return 1;
 
     let lev = 0;
-    for (let xpLevel of this.props.xpLevels) {
+    for (let xpLevel of reference.xpLevels) {
       if (this.state.xp >= xpLevel.xp)
         lev++;
       else
@@ -51,11 +51,11 @@ export default class DndModel {
   };
 
   public get proficiencyBonus(): number {
-    return this.props.proficiencyLevels[this.level - 1].bonus;
+    return reference.proficiencyLevels[this.level - 1].bonus;
   };
 
   public get toolProficienciesText(): string {
-    return this.state.background.toolProficiencies.map(prof => this.props.toolProficiencies[prof].text).join(', ');
+    return this.state.background.toolProficiencies.map(prof => reference.toolProficiencies[prof].text).join(', ');
   };
 
   public get specialtyText(): string {
@@ -91,14 +91,9 @@ export default class DndModel {
       text += currency[4] + " PP ";
     return text;
   };
-
-  public get raceNamePageReferenceText(): string {
-    let race = this.state.race;
-    return 'Example ' + race.text + ' names can be found on page ' + race.page;
-  };
-
+  
   public get currentStatAssignmentText(): string {
-    return this.props.statBlocks[this.state.statAssignmentIndex].text;
+    return reference.statBlocks[this.state.statAssignmentIndex].text;
   };
 
   public get proficiencesLeftText(): string {
@@ -118,7 +113,7 @@ export default class DndModel {
   };
 
   public get languagesText(): string {
-    return this.languages.map(language => this.props.languages[language].text).join(', ');
+    return this.languages.map(language => reference.languages[language].text).join(', ');
   };
 
   public get traitText(): string {
@@ -222,7 +217,7 @@ export default class DndModel {
 
     for (i = 0; i < equipIds.length; i++) {
       let equip = equipIds[i];
-      text += this.props.equipment[equip.id].text;
+      text += reference.equipment[equip.id].text;
       if (equip.num > 1)
         text += ' (' + equip.num + ')';
       if (i < equipIds.length - 1)
@@ -238,7 +233,7 @@ export default class DndModel {
     let equipIds = this.equipmentList;
 
     for (let equip of equipIds) {
-      let text = this.props.equipment[equip.id].text;
+      let text = reference.equipment[equip.id].text;
       if (equip.num > 1)
         text += ' (' + equip.num + ')';
       arr.push(text);
@@ -255,7 +250,7 @@ export default class DndModel {
     // List of all available additional languages to choose from, excluding already selected
     let langs = [];
     let languages = this.languages;
-    for (let lang of this.props.languages) {
+    for (let lang of reference.languages) {
       if (!languages.includes(lang.id))
         langs.push(lang);
     }
@@ -275,7 +270,7 @@ export default class DndModel {
     let profs = [];
     let classProfs = this.state.class.proficiencies.profs;
     let backgroundProfs = this.state.background.proficiencies;
-    for (let prof of this.props.skills) {
+    for (let prof of reference.skills) {
       if (!this.proficiencies.includes(prof.id) && (classProfs.includes(prof.id) || backgroundProfs.includes(prof.id)))
         profs.push(prof);
     }
@@ -325,11 +320,11 @@ export default class DndModel {
   };
 
   public getEquipmentName(id: number): string {
-    return this.props.equipment[id].text;
+    return reference.equipment[id].text;
   };
 
   public isPack(itemId: number): boolean {
-    let equipDef = this.props.equipment[itemId];
+    let equipDef = reference.equipment[itemId];
     if (equipDef.type !== 2)
       return false;
     return true;
@@ -395,7 +390,7 @@ export default class DndModel {
       return packItems;
 
     // Iterate and add pack equipment
-    let backpackItems = this.props.backpackContents.find(bp => bp.id === packId);
+    let backpackItems = reference.backpackContents.find(bp => bp.id === packId);
     if (typeof backpackItems === 'undefined')
       return packItems;
 
@@ -408,7 +403,7 @@ export default class DndModel {
 
   public extrasText(choice: EquipmentChoiceBlock): string {
     return choice.extras ? choice.extras.map(extra =>
-      this.props.equipment[extra.id].text +
+      reference.equipment[extra.id].text +
       (extra.num && extra.num > 1 ? ' (' + extra.num + ')' : ''))
         .join(', ') + ' + ' : '';
   };
@@ -421,7 +416,7 @@ export default class DndModel {
     for (let equipChoices of this.state.equipChoices) {
       let choiceItems = equipChoices.items;
       for (let choiceItem of choiceItems) {
-        equipmentData = this.props.equipment[choiceItem.id];
+        equipmentData = reference.equipment[choiceItem.id];
         if (equipmentData.type === 0) {
           weaponModel.push(this.addWeaponModel(equipmentData));
         }
@@ -429,7 +424,7 @@ export default class DndModel {
     }
 
     for (let equipment of this.state.equipment) {
-      equipmentData = this.props.equipment[equipment.id];
+      equipmentData = reference.equipment[equipment.id];
       if (equipmentData.type === 0) {
         weaponModel.push(this.addWeaponModel(equipmentData));
       }
@@ -454,7 +449,7 @@ export default class DndModel {
         id: equipmentData.id,
         name: equipmentData.text,
         dice: equipmentData.dice,
-        dmgType: this.props.damageTypes[equipmentData.damage || 0].text,
+        dmgType: reference.damageTypes[equipmentData.damage || 0].text,
         atkBonus: 0,
         dmgBonus: 0
       };

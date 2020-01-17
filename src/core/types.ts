@@ -1,0 +1,188 @@
+export type Race = {
+    id: number;
+    raceid: number;
+    text: string;
+    page: string;
+    bonuses: number[];
+    speed: number;
+    extraLanguages: number;
+    languages: number[];
+}
+
+export type Class = {
+    id: number;
+    text: string;
+    features: Feature[];
+    armorProficiencies: number[];
+    weaponProficiencies: ClassWeaponProficiency;
+    proficiencies: ClassProficiency;
+    savingThrows: number[];
+    hitDice: number;
+    equipChoices: EquipmentChoice[];
+    fixedEquip?: EquipmentFixedBlock[];
+    subclass: Subclass;
+}
+
+type Subclass = {
+    atLevel: number;
+    text: string;
+    archetypes: Archetype[];
+}
+
+type Archetype = {
+    id: number;
+    text: string;
+}
+
+export type Background = {
+    id: number;
+    text: string;
+    equipment: number[];
+    backgroundFeature: string;
+    currency: number[];
+    languages: number;
+    toolProficiencies: number[];
+    proficiencies: number[];
+    specialty?: BackgroundSpecialty;
+    personalityTraits: PersonalityTrait[];
+    ideals: PersonalityTrait[];
+    bonds: PersonalityTrait[];
+    flaws: PersonalityTrait[];
+}
+
+type BackgroundSpecialty = {
+    name: string;
+    rolls: BackgroundSpecialtyRoll[];
+}
+
+type BackgroundSpecialtyRoll = {
+    id: number;
+    text: string;
+}
+
+type ClassWeaponProficiency = {
+    categories: number[];
+    weapons: number[];
+}
+
+type Feature = {
+    id: number;
+    level: number;
+    text: string;
+    replaces?: number;
+    archetypeId?: number;
+}
+
+export type ArmorCategory = {
+    id: number;
+    text: string;
+}
+
+export type EquipmentCategory = {
+    id: number;
+    text: string;
+}
+
+export type WeaponCategory = {
+    id: number;
+    text: string;
+}
+
+export type DamageType = {
+    id: number;
+    text: string;
+}
+
+type EquipmentChoice = {
+    id: number;
+    choices: EquipmentChoiceBlock[];
+}
+
+export type Equipment = {
+    id: number;
+    type: number;
+    text: string;
+    weapon: boolean;
+    weaponCategory?: number;
+    damage?: number;
+    dice?: string;
+    melee?: boolean;
+    thrown?: boolean;
+    light?: boolean;
+    twohanded?: boolean;
+    weight?: number;
+}
+
+export type EquipmentChoiceBlock = {
+    id: number;
+    num: number;
+    items: number[];
+    extras?: EquipmentFixedBlock[];
+}
+
+type EquipmentFixedBlock = {
+    id: number;
+    num?: number;
+}
+
+export type Backpack = {
+    id: number;
+    contents: BackpackContent[];
+}
+
+type BackpackContent = {
+    id: number;
+    num: number;
+}
+
+export type ToolProficiency = {
+    id: number;
+    text: string;
+}
+
+type PersonalityTrait = {
+    id: number;
+    text: string;
+}
+
+export type Language = {
+    id: number;
+    text: string;
+}
+
+export type ProficiencyLevel = {
+    level: number;
+    bonus: number;
+}
+
+export type Alignment = {
+    id: number;
+    lawfulChaotic: string;
+    goodEvil: string;
+}
+
+type ClassProficiency = {
+    num: number;
+    profs: number[];
+}
+
+export type Skill = {
+    id: number;
+    attr: number;
+    text: string;
+}
+
+export type StatBlock = {
+    id: number;
+    text: string;
+}
+
+export type Modifier = {
+    val: number;
+    modifier: number;
+}
+
+export type XpLevel = {
+    xp: number;
+    level: number;
+}

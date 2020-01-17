@@ -1,143 +1,115 @@
 import React from 'react';
-import DndProps from './dndprops';
-import DndState, { EquipmentChoiceModel } from './dndstate';
-import DndModel from './dndmodel';
-import Util from './util';
+import phb from '../../core/dndbook';
+import DndCharacter, { EquipmentChoiceModel } from '../../core/dndcharacter';
+import DndModel from '../../core/dndmodel';
+import Util from '../../core/util';
 import 'bulma';
+import Summary from './summary';
+import XpLevel from './xpLevel';
+import reference from '../../core/reference';
+import PlayerAndCharacterName from './playerAndCharacterName';
+import { Race, Class } from '../../core/types';
+import RaceComponent from './race';
+import ClassComponent from './class';
 
-export default class DndCharacterMakerComponent extends React.Component<DndProps, DndState> {
-    constructor(props: DndProps) {
+interface Props { }
+
+export default class DndCharacterMakerComponent extends React.Component<Props, DndCharacter> {
+    constructor(props: Props) {
         super(props);
-        this.state = new DndState(props);
-        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = new DndCharacter();
+        //this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.handleXpChange = this.handleXpChange.bind(this);
+        this.handlePlayerNameChange = this.handlePlayerNameChange.bind(this);
+        this.handleCharacterNameChange = this.handleCharacterNameChange.bind(this);
+        this.handleRaceChange = this.handleRaceChange.bind(this);
+    }
+
+    handleXpChange(xp: number) {
+        this.setState({
+            ...this.state,
+            xp: xp,
+            level: reference.getLevel(xp)
+        });
+    }
+
+    handlePlayerNameChange(name: string) {
+        this.setState({
+            ...this.state,
+            playerName: name
+        });
+    }
+
+    handleCharacterNameChange(name: string) {
+        this.setState({
+            ...this.state,
+            characterName: name
+        });
+    }
+
+    handleRaceChange(race: Race) {
+        this.setState({
+            ...this.state,
+            race: race,
+            languageids: []
+        });
+    }
+
+    handleClassChange(cls: Class) {
+        this.setState({
+            ...this.state,
+            class: cls,
+            equipment: [],
+            equipChoices: [],
+            proficiencies: [],
+            languageids: [],
+            archetype: 0
+        });
+    }
+
+    handleArchetypeChange(archetype: number) {
+        this.setState({
+            ...this.state,
+            archetype: archetype
+        });
     }
 
     public render(): JSX.Element {
-        var model = new DndModel(this.props, this.state);
+        var model = new DndModel(this.state);
 
         return (
             <div className='bd-main-container container'>
-                <div className='content'>
-                    <div className='title'>D&amp;D 5e Character Sheet Maker</div>
-                    <article className='message'>
-                        <div className='message-header'>
-                            This is a work-in-progress. Many features are missing.
-                        </div>
-                        <div className="message-body media-content content">
-                            <p>
-                                This tool will generate a pre-filled <a href="https://dnd.wizards.com/articles/features/character_sheets">D&amp;D 5e character sheet</a> in PDF format. You'll need a <a href="https://dnd.wizards.com/products/tabletop-games/rpg-products/rpg_playershandbook">Player's Handbook</a> to fill out some details from page number references. Please see the <a href="https://github.com/drogoganor/dndcharactermaker-react">GitHub page</a> for more details or to report issues.
-                            </p>
-                            <p>
-                                Missing features list:
-                            </p>
-                            <ul>
-                                <li>Everything from books other than the Player's Handbook</li>
-                                <li>Armor class does not include equipped armor or shield</li>
-                                <li>Cantrips and spells</li>
-                                <li>Race features such as Darkvision, Luck, etc.</li>
-                                <li>Feats and stat improvement</li>
-                                <li>Character appearance &amp; faction logo</li>
-                            </ul>
-                            <p>
-                                Known bugs and limitations:
-                            </p>
-                            <ul>
-                                <li>The same item can be listed twice e.g. a Criminal Rogue with a Burglar's pack will have Crowbar listed twice instead of "Crowbar (2)"</li>
-                            </ul>
-                        </div>
-                    </article>
-                </div>
+                <Summary />
                 <div className='content has-text-left'>
-                    <div className='columns field'>
-                        <label className='column is-2 label'>Level:</label>
-                        <div className='column is-1' id="level">{model.level}</div>
-                    </div>
+                    <XpLevel
+                        level={this.state.level}
+                        xp={this.state.xp}
+                        setXp={this.handleXpChange} />
 
-                    <div className='columns field'>
-                        <label className='column is-2 label'>XP:</label>
-                        <input className='input column is-2' id="xp" type="text" name="xp" value={this.state.xp} onChange={this.handleInputChange} />
-                    </div>
+                    <PlayerAndCharacterName
+                        race={this.state.race}
+                        playerName={this.state.playerName}
+                        characterName={this.state.characterName}
+                        setCharacterName={this.handleCharacterNameChange}
+                        setPlayerName={this.handlePlayerNameChange} />
 
-                    <div className='columns field'>
-                        <label className='column is-2 label'>Character Name:</label>
-                        <input className='input column is-5' id="charname" type="text"
-                            name="characterName"
-                            placeholder={model.raceNamePageReferenceText}
-                            value={this.state.characterName}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div className='columns field'>
-                        <label className='column is-2 label'>Player Name:</label>
-                        <input className='input column is-5' id="playername" type="text" placeholder="Your name"
-                            name="playerName"
-                            value={this.state.playerName}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                    <div className='field'>
-                        <label className='label'>Race:</label>
-                        <div id="character-race">
-                            <div className="buttons are-small has-addons">
-                                {this.props.races.map((race, index) => {
-                                    return (
-                                        <button
-                                            type="button"
-                                            key={index}
-                                            name="race"
-                                            onClick={(e) => this.selectRace(e, race)}
-                                            className={"button " + (this.state.race.id === race.id ? "is-link is-selected" : null)}
-                                        >{race.text}</button>)
-                                })}
-                            </div>
-                        </div>
-                    </div>
+                    <RaceComponent
+                        race={this.state.race}
+                        setRace={this.handleRaceChange} />
 
-                    <div className='field'>
-                        <label className='label'>Class:</label>
-                        <div id="character-class">
-                            <div className="buttons are-small has-addons">
-
-                                {this.props.classes.map((cls, index) => {
-                                    return (
-                                        <button
-                                            type="button"
-                                            key={index}
-                                            name="class"
-                                            onClick={(e) => this.selectClassOrBackground(e, cls)}
-                                            className={"button " + (this.state.class.id === cls.id ? "is-link is-selected" : null)}
-                                        >{cls.text}</button>)
-                                })}
-                            </div>
-                        </div>
-                    </div>
-
-                    {model.canSelectArchetype && (
-                    <div className='field'>
-                        <label className='label'>{this.state.class.subclass.text}:</label>
-                        <div id="character-subclass">
-                            <div className="buttons are-small has-addons">
-
-                                {this.state.class.subclass.archetypes.map((sub, index) => {
-                                    return (
-                                        <button
-                                            type="button"
-                                            key={index}
-                                            name="archetype"
-                                            onClick={(e) => this.handleClickSelection(e, sub.id)}
-                                            className={"button " + (this.state.archetype === sub.id ? "is-link is-selected" : null)}
-                                        >{sub.text}</button>)
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                    )}
-
+                    <ClassComponent
+                        class={this.state.class}
+                        archetype={this.state.archetype}
+                        level={this.state.level}
+                        setClass={this.handleClassChange} 
+                        setArchetype={this.handleArchetypeChange}/>
+                    
                     <div className='field'>
                         <label className='label'>Alignment:</label>
                         <div id="character-alignment1">
                             <div className="buttons are-small has-addons">
-                                {this.props.alignments.map((align, index) => {
+                                {reference.alignments.map((align, index) => {
                                     return (
                                         <button
                                             type="button"
@@ -154,7 +126,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                         <label className='label'>Background:</label>
                         <div id="character-background">
                             <div className="buttons are-small has-addons">
-                                {this.props.backgrounds.map((bg, index) => {
+                                {phb.backgrounds.map((bg, index) => {
                                     return (
                                         <button
                                             type="button"
@@ -186,7 +158,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                         <div className='column is-1'>Total</div>
                         <div className='column is-1'>Modifier</div>
                     </div>
-                    {this.props.statBlocks.map((block, index) => {
+                    {reference.statBlocks.map((block, index) => {
                         return (
                             <div className='columns' id="stat-block" key={index}>
                                 <div className='column is-2'>{block.text}</div>
@@ -230,7 +202,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                             className="tag is-dark"
                                             role="alert"
                                             key={index}
-                                        >{this.props.skills[prof].text}</span>)
+                                        >{reference.skills[prof].text}</span>)
                                 })}
                             </div>
                             {model.allProficienciesChosen() && (
@@ -273,7 +245,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                 <label className='label'>Select Extra Equipment:</label>)
                             }
 
-                            {model.equipmentChoiceModel().map((choices, index) => {
+                            {model.equipmentChoiceModel().map((choices: EquipmentChoiceModel, index) => {
                                 return (
                                     <div key={index}>
                                         {choices.choices?.map((choice, index) => {
@@ -316,7 +288,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
                                         <span
                                             className="tag is-dark"
                                             key={index}
-                                        >{this.props.languages[lang].text}</span>)
+                                        >{reference.languages[lang].text}</span>)
                                 })}
                             </div>
                             {model.hasBonusLanguages() && model.allLanguagesChosen() && (
@@ -555,7 +527,7 @@ export default class DndCharacterMakerComponent extends React.Component<DndProps
         this.setState({
             ...this.state,
             statArray: Array(6).fill(null),
-            statRolls: this.props.standardStatArray.slice(),
+            statRolls: reference.standardStatArray.slice(),
             statAssignmentIndex: 0
         });
     };

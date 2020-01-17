@@ -1,11 +1,13 @@
-import DndProps, { EquipmentChoiceBlock, Race, Class, Alignment, Background } from './dndprops';
+import phb from './dndbook';
+import { EquipmentChoiceBlock, Race, Class, Alignment, Background } from './types';
+import reference from './reference';
 
-export interface EquipmentModel {
+export type EquipmentModel = {
     id: number;
     num: number;
 }
 
-export interface EquipmentChoiceModel {
+export type EquipmentChoiceModel = {
     id: number;
     chosen: boolean;
     selection: number;
@@ -14,16 +16,13 @@ export interface EquipmentChoiceModel {
     choices?: EquipmentChoiceBlock[];
 }
 
-export default class DndState {
-    readonly props: DndProps;
+export default class DndCharacter {
 
-    constructor(props: DndProps) {
-        this.props = props;
-
-        this.race = props.races[0];
-        this.class = props.classes[0];
-        this.alignment = props.alignments[0];
-        this.background = props.backgrounds[0];
+    constructor() {
+        this.race = phb.races[0];
+        this.class = phb.classes[0];
+        this.alignment = reference.alignments[0];
+        this.background = phb.backgrounds[0];
     }
 
     public readonly statAssignmentIndex: number = 0;
@@ -60,5 +59,8 @@ export default class DndState {
     public readonly backstory: string = '';
     public readonly treasure: string = '';
     public readonly additionalFeaturesAndTraits: string = '';
+
+    // Items moved from dndmodel
+    public readonly level: number = 1;
 }
 
