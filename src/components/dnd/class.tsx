@@ -1,6 +1,6 @@
 import React from 'react';
 import { Class } from '../../core/types';
-import phb from '../../core/dndbook';
+import phb from '../../core/phb';
 
 interface Props {
     class: Class;
@@ -29,11 +29,11 @@ export default class ClassComponent extends React.Component<Props> {
 
     get canSelectArchetype(): boolean {
         if (this.props.level >= this.props.class.subclass.atLevel) {
-          return true;
+            return true;
         }
-    
+
         return false;
-      };
+    };
 
     public render(): JSX.Element {
         const clas = this.props.class;
@@ -61,24 +61,24 @@ export default class ClassComponent extends React.Component<Props> {
                 </div>
 
                 {this.canSelectArchetype && (
-                <div className='field'>
-                    <label className='label'>{clas.subclass.text}:</label>
-                    <div id="character-subclass">
-                        <div className="buttons are-small has-addons">
+                    <div className='field'>
+                        <label className='label'>{clas.subclass.text}:</label>
+                        <div id="character-subclass">
+                            <div className="buttons are-small has-addons">
 
-                            {clas.subclass.archetypes.map((sub, index) => {
-                                return (
-                                    <button
-                                        type="button"
-                                        key={index}
-                                        name="archetype"
-                                        onClick={(e) => this.handleArchetypeChange(e, sub.id)}
-                                        className={"button " + (archetype === sub.id ? "is-link is-selected" : null)}
-                                    >{sub.text}</button>)
-                            })}
+                                {clas.subclass.archetypes.map((sub, index) => {
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={index}
+                                            name="archetype"
+                                            onClick={(e) => this.handleArchetypeChange(e, sub.id)}
+                                            className={"button " + (archetype === sub.id ? "is-link is-selected" : null)}
+                                        >{sub.text}</button>)
+                                })}
+                            </div>
                         </div>
                     </div>
-                </div>
                 )}
             </div>
         )

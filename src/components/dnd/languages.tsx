@@ -1,6 +1,5 @@
 import React from 'react';
 import { Class, Race, Background } from '../../core/types';
-import phb from '../../core/dndbook';
 import reference from '../../core/reference';
 
 interface Props {
@@ -39,9 +38,10 @@ export default class LanguagesComponent extends React.Component<Props, State> {
     get allLanguagesChosen(): boolean {
         let extraLangs = this.props.race.extraLanguages;
         let numBackgroundLangs = this.numBackgroundLanguages;
-    
-        if (this.state.languageids.length < extraLangs + numBackgroundLangs)
-          return false;
+        let numLanguagesTotal = extraLangs + numBackgroundLangs;
+
+        if (this.state.languageids.length < numLanguagesTotal)
+            return false;
         return true;
     };
 
@@ -50,7 +50,7 @@ export default class LanguagesComponent extends React.Component<Props, State> {
         let extraLangs = this.props.race.extraLanguages;
         let numBackgroundLangs = this.numBackgroundLanguages;
         let numLeft = extraLangs + numBackgroundLangs - this.state.languageids.length;
-    
+
         return "Choose " + numLeft + " additional language" + (numLeft > 1 ? "s" : "") + ":";
     };
 
@@ -59,8 +59,8 @@ export default class LanguagesComponent extends React.Component<Props, State> {
         let langs = [];
         let languages = this.languages;
         for (let lang of reference.languages) {
-          if (!languages.includes(lang.id))
-            langs.push(lang);
+            if (!languages.includes(lang.id))
+                langs.push(lang);
         }
         return langs;
     };
@@ -71,9 +71,7 @@ export default class LanguagesComponent extends React.Component<Props, State> {
         this.setState({
             ...this.state,
             languageids: []
-        });
-
-        this.props.setLanguages([], this.allLanguagesChosen);
+        }, () => this.props.setLanguages([], this.allLanguagesChosen));
     };
 
     addLanguage = (event: any, id: number) => {
@@ -85,15 +83,10 @@ export default class LanguagesComponent extends React.Component<Props, State> {
         this.setState({
             ...this.state,
             languageids: languageids
-        });
-
-        this.props.setLanguages(languageids, this.allLanguagesChosen);
+        }, () => this.props.setLanguages(languageids, this.allLanguagesChosen));
     };
 
     public render(): JSX.Element {
-        const clas = this.props.class;
-        const race = this.props.race;
-
         return (
             <div className='columns field'>
                 <label className='column is-2 label'>Languages:</label>

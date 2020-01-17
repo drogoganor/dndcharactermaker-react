@@ -1,7 +1,6 @@
 import React from 'react';
-import { Race, Alignment } from '../../core/types';
-import phb from '../../core/dndbook';
 import reference from '../../core/reference';
+import { Alignment } from '../../core/types';
 
 interface Props {
     alignment: Alignment;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Race } from '../../core/types';
-import phb from '../../core/dndbook';
+import phb from '../../core/phb';
 
 interface Props {
     race: Race;

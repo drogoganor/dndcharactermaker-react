@@ -1,4 +1,4 @@
-import phb from './dndbook';
+import phb from './phb';
 import { EquipmentChoiceBlock, Race, Class, Alignment, Background } from './types';
 import reference from './reference';
 
@@ -64,8 +64,8 @@ export default class DndCharacter {
     public readonly level: number = 1;
 
     public readonly allEquipmentChosen: boolean = false;
-    public readonly allLanguagesChosen: boolean = false;
-    public readonly allProficienciesChosen: boolean = false;
+    public readonly allLanguagesChosen: boolean = false; // Faulty: Sometimes doesn't require a choice of language
+    public readonly allProficienciesChosen: boolean = false; // Faulty: Sometimes doesn't require a choice of proficiency
     public readonly allStatsAssigned: boolean = false;
 
     public readonly equipmentText: string = '';

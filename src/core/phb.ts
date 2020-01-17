@@ -1,6 +1,6 @@
-import { Race, Background, Class, ArmorCategory, EquipmentCategory, WeaponCategory, DamageType, Equipment, Backpack, ToolProficiency, Language, ProficiencyLevel, Alignment, Skill, StatBlock, Modifier, XpLevel } from "./types";
+import { Race, Background, Class, Book } from "./types";
 
-export class DndBook {
+export class PlayersHandbook implements Book {
   public races: Race[] = [
     {
       id: 0,
@@ -1882,6 +1882,6 @@ export class DndBook {
   ];
 }
 
-var phb = new DndBook();
+var phb = new PlayersHandbook();
 
 export default phb;

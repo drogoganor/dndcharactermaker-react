@@ -186,3 +186,9 @@ export type XpLevel = {
     xp: number;
     level: number;
 }
+
+export type Book = {
+    classes: Class[];
+    backgrounds: Background[];
+    races: Race[];
+}

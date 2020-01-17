@@ -30,33 +30,33 @@ export default class EquipmentComponent extends React.Component<Props, State> {
         // List of all available equipment choices to choose from, excluding already selected
         let equipChoices = this.props.class.equipChoices;
         let model: EquipmentChoiceModel[] = [];
-    
+
         for (let equipChoice of equipChoices) {
-          let chosenChoices = this.state.equipChoices.find(eq => eq.id === equipChoice.id);
-          if (chosenChoices === undefined) {
-            let modelRow = {
-              id: equipChoice.id,
-              choices: equipChoice.choices,
-              chosen: false,
-              selection: equipChoice.id,
-              remaining: 0,
-    
-              items: []
-            };
-            model.push(modelRow);
-          }
-          else if (chosenChoices.chosen === false || (chosenChoices.chosen === true && chosenChoices.remaining > 0)) {
-            let modelRow = {
-              id: equipChoice.id,
-              choices: equipChoice.choices,
-              chosen: chosenChoices.chosen,
-              selection: chosenChoices.selection,
-              remaining: chosenChoices.remaining,
-    
-              items: []
-            };
-            model.push(modelRow);
-          }
+            let chosenChoices = this.state.equipChoices.find(eq => eq.id === equipChoice.id);
+            if (chosenChoices === undefined) {
+                let modelRow = {
+                    id: equipChoice.id,
+                    choices: equipChoice.choices,
+                    chosen: false,
+                    selection: equipChoice.id,
+                    remaining: 0,
+
+                    items: []
+                };
+                model.push(modelRow);
+            }
+            else if (chosenChoices.chosen === false || (chosenChoices.chosen === true && chosenChoices.remaining > 0)) {
+                let modelRow = {
+                    id: equipChoice.id,
+                    choices: equipChoice.choices,
+                    chosen: chosenChoices.chosen,
+                    selection: chosenChoices.selection,
+                    remaining: chosenChoices.remaining,
+
+                    items: []
+                };
+                model.push(modelRow);
+            }
         }
         return model;
     };
@@ -67,8 +67,8 @@ export default class EquipmentComponent extends React.Component<Props, State> {
 
     extrasText(choice: EquipmentChoiceBlock): string {
         return choice.extras ? choice.extras.map(extra =>
-          reference.equipment[extra.id].text +
-          (extra.num && extra.num > 1 ? ' (' + extra.num + ')' : ''))
+            reference.equipment[extra.id].text +
+            (extra.num && extra.num > 1 ? ' (' + extra.num + ')' : ''))
             .join(', ') + ' + ' : '';
     };
 
@@ -79,25 +79,25 @@ export default class EquipmentComponent extends React.Component<Props, State> {
     isPack(itemId: number): boolean {
         let equipDef = reference.equipment[itemId];
         if (equipDef.type !== 2)
-          return false;
+            return false;
         return true;
     };
 
     getPackItems(packId: number): any[] {
         let packItems: any[] = [];
-    
+
         if (!this.isPack(packId))
-          return packItems;
-    
+            return packItems;
+
         // Iterate and add pack equipment
         let backpackItems = reference.backpackContents.find(bp => bp.id === packId);
         if (typeof backpackItems === 'undefined')
-          return packItems;
-    
+            return packItems;
+
         for (let backpackItem of backpackItems.contents) {
-          packItems.push({ id: backpackItem.id, num: backpackItem.num });
+            packItems.push({ id: backpackItem.id, num: backpackItem.num });
         }
-    
+
         return packItems;
     };
 
@@ -105,53 +105,53 @@ export default class EquipmentComponent extends React.Component<Props, State> {
         let equipModel = [];
         let bgEquip = this.props.background.equipment;
         let classEquip = this.props.class.fixedEquip;
-    
+
         // Selected equipment
         for (let eq of this.state.equipment) {
-          equipModel.push({ id: eq.id, num: eq.num ?? 1 });
+            equipModel.push({ id: eq.id, num: eq.num ?? 1 });
         }
-    
+
         // Class fixed equipment
         if (classEquip !== undefined) {
-          for (let eq of classEquip) {
-            equipModel.push({ id: eq.id, num: eq.num ?? 1 });
-          }
+            for (let eq of classEquip) {
+                equipModel.push({ id: eq.id, num: eq.num ?? 1 });
+            }
         }
-    
+
         // Background
         for (let eq of bgEquip) {
-          equipModel.push({ id: eq, num: 1 });
+            equipModel.push({ id: eq, num: 1 });
         }
-    
+
         return equipModel;
     }
 
     get equipmentList(): any[] {
         // Get list of equipment ID's and text
         let equipIds: any[] = [];
-    
+
         // Equipment choices
         for (let equipChoice of this.state.equipChoices) {
-          if (equipChoice.chosen === true) {
-            for (let item of equipChoice.items) {
-              if (!this.isPack(item.id)) {
-                equipIds.push({ id: item.id, num: item.num });
-              } else {
-                equipIds = equipIds.concat(this.getPackItems(item.id)); // Add pack items
-              }
+            if (equipChoice.chosen === true) {
+                for (let item of equipChoice.items) {
+                    if (!this.isPack(item.id)) {
+                        equipIds.push({ id: item.id, num: item.num });
+                    } else {
+                        equipIds = equipIds.concat(this.getPackItems(item.id)); // Add pack items
+                    }
+                }
             }
-          }
         }
-    
+
         // Background & fixed equipment
         for (let thisEquip of this.equipment) {
-          if (!this.isPack(thisEquip.id)) {
-            equipIds.push({ id: thisEquip.id, num: thisEquip.num });
-          } else {
-            equipIds = equipIds.concat(this.getPackItems(thisEquip.id)); // Add pack items
-          }
+            if (!this.isPack(thisEquip.id)) {
+                equipIds.push({ id: thisEquip.id, num: thisEquip.num });
+            } else {
+                equipIds = equipIds.concat(this.getPackItems(thisEquip.id)); // Add pack items
+            }
         }
-    
+
         return equipIds;
     };
 
@@ -159,14 +159,14 @@ export default class EquipmentComponent extends React.Component<Props, State> {
         // Array of equipment text
         let arr = [];
         let equipIds = this.equipmentList;
-    
+
         for (let equip of equipIds) {
-          let text = reference.equipment[equip.id].text;
-          if (equip.num > 1)
-            text += ' (' + equip.num + ')';
-          arr.push(text);
+            let text = reference.equipment[equip.id].text;
+            if (equip.num > 1)
+                text += ' (' + equip.num + ')';
+            arr.push(text);
         }
-    
+
         return arr;
     };
 
@@ -175,16 +175,16 @@ export default class EquipmentComponent extends React.Component<Props, State> {
         let i;
         let text = '';
         let equipIds = this.equipmentList;
-    
+
         for (i = 0; i < equipIds.length; i++) {
-          let equip = equipIds[i];
-          text += reference.equipment[equip.id].text;
-          if (equip.num > 1)
-            text += ' (' + equip.num + ')';
-          if (i < equipIds.length - 1)
-            text += ', ';
+            let equip = equipIds[i];
+            text += reference.equipment[equip.id].text;
+            if (equip.num > 1)
+                text += ' (' + equip.num + ')';
+            if (i < equipIds.length - 1)
+                text += ', ';
         }
-    
+
         return text;
     };
 
@@ -197,8 +197,7 @@ export default class EquipmentComponent extends React.Component<Props, State> {
         var equipChoice = equipModel.choices[choiceId];
         var choiceCategory = equipChoices.find(eq => eq.id === categoryId);
 
-        if (choiceCategory === undefined)
-        {
+        if (choiceCategory === undefined) {
             // Add new if not present
             choiceCategory = { id: categoryId, chosen: false, selection: choiceId, remaining: 0, items: [] };
             equipChoices.push(choiceCategory);
@@ -237,9 +236,7 @@ export default class EquipmentComponent extends React.Component<Props, State> {
             ...this.state,
             equipment: existingEquipment,
             equipChoices: equipChoices
-        });
-
-        this.props.setEquipment(existingEquipment, equipChoices, this.equipmentText, this.allEquipmentChosen);
+        }, () => this.props.setEquipment(existingEquipment, equipChoices, this.equipmentText, this.allEquipmentChosen));
     };
 
     addChoiceCategoryEquip(equipChoice: EquipmentChoiceModel, equipId: number) {
@@ -258,15 +255,10 @@ export default class EquipmentComponent extends React.Component<Props, State> {
             ...this.state,
             equipment: [],
             equipChoices: []
-        });
-
-        this.props.setEquipment([], [], this.equipmentText, this.allEquipmentChosen);
+        }, () => this.props.setEquipment([], [], this.equipmentText, this.allEquipmentChosen));
     };
 
     public render(): JSX.Element {
-        const clas = this.props.class;
-        const background = this.props.background;
-
         return (
             <div className='columns field'>
                 <label className='column is-2 label'>Equipment:</label>

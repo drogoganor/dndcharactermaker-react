@@ -1,9 +1,10 @@
 import React from 'react';
+import reference from '../../core/reference';
 
 interface Props {
     xp: number;
     level: number;
-    setXp: (xp: number) => void;
+    setXpAndLevel: (xp: number, level: number) => void;
 }
 
 export default class XpLevel extends React.Component<Props> {
@@ -13,8 +14,26 @@ export default class XpLevel extends React.Component<Props> {
     }
 
     handleChange(event: any) {
-        this.props.setXp(event.target.value);
+        let xp = event.target.value;
+
+        this.props.setXpAndLevel(xp, this.getLevel(xp));
     }
+
+    getLevel(xp: number): number {
+        // Computed character level from XP
+        if (xp === undefined)
+            return 1;
+
+        let lev = 0;
+        for (let xpLevel of reference.xpLevels) {
+            if (xp >= xpLevel.xp)
+                lev++;
+            else
+                break;
+        }
+
+        return lev;
+    };
 
     public render(): JSX.Element {
         const level = this.props.level;

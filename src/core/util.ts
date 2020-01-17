@@ -1,12 +1,11 @@
 export default class Util {
-
     public static formatModifier(val: number): string {
         if (val === null) {
             return '';
         }
 
         if (val > 0)
-          return "+" + val;
+            return "+" + val;
         return val + '';
     };
 
@@ -23,9 +22,9 @@ export default class Util {
     public static statRoll(): number {
         // Standard stat roll: 4d6, subtract lowest, get total of remaining
         var diceArray = [...new Array(4)]
-          .map(() => this.d6())
-          .sort((a, b) => a - b)
-          .reverse();
+            .map(() => this.d6())
+            .sort((a, b) => a - b)
+            .reverse();
         diceArray.pop();
         return diceArray.reduce((a, b) => a + b, 0);
     };

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Class, Background } from '../../core/types';
-import phb from '../../core/dndbook';
+import { Background } from '../../core/types';
 
 interface Props {
     background: Background;
@@ -30,9 +29,7 @@ export default class TraitsComponent extends React.Component<Props, State> {
         this.setState({
             ...this.state,
             [name]: val
-        });
-
-        this.props.setTrait(name, val);
+        }, () => this.props.setTrait(name, val));
     }
 
     public render(): JSX.Element {
@@ -50,7 +47,7 @@ export default class TraitsComponent extends React.Component<Props, State> {
                                     key={index}
                                     onClick={(e) => this.handleClickSelection(e, trait.id)}
                                     className={"button is-fullwidth " + (this.state.trait === trait.id ? "is-link is-selected" : null)}>
-                                        {trait.text}
+                                    {trait.text}
                                 </button>)
                         })}
                     </div>
@@ -65,7 +62,7 @@ export default class TraitsComponent extends React.Component<Props, State> {
                                     key={index}
                                     onClick={(e) => this.handleClickSelection(e, trait.id)}
                                     className={"button is-fullwidth " + (this.state.ideal === trait.id ? "is-link is-selected" : null)}>
-                                        {trait.text}
+                                    {trait.text}
                                 </button>)
                         })}
                     </div>
@@ -80,7 +77,7 @@ export default class TraitsComponent extends React.Component<Props, State> {
                                     key={index}
                                     onClick={(e) => this.handleClickSelection(e, trait.id)}
                                     className={"button is-fullwidth " + (this.state.bond === trait.id ? "is-link is-selected" : null)}>
-                                        {trait.text}
+                                    {trait.text}
                                 </button>)
                         })}
                     </div>
@@ -95,7 +92,7 @@ export default class TraitsComponent extends React.Component<Props, State> {
                                     key={index}
                                     onClick={(e) => this.handleClickSelection(e, trait.id)}
                                     className={"button is-fullwidth " + (this.state.flaw === trait.id ? "is-link is-selected" : null)}>
-                                        {trait.text}
+                                    {trait.text}
                                 </button>)
                         })}
                     </div>

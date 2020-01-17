@@ -1,6 +1,5 @@
 import React from 'react';
 import { Class, Background } from '../../core/types';
-import phb from '../../core/dndbook';
 import reference from '../../core/reference';
 
 interface Props {
@@ -28,7 +27,7 @@ export default class ProficienciesComponent extends React.Component<Props, State
     get proficiencesLeftText(): string {
         // Nice text label of how many proficiencies left to select
         let numLeft = this.props.class.proficiencies.num - this.state.proficiencies.length;
-    
+
         return "Choose " + numLeft + " additional proficienc" + (numLeft > 1 ? "ies" : "y") + ":";
     };
 
@@ -38,18 +37,22 @@ export default class ProficienciesComponent extends React.Component<Props, State
         let classProfs = this.props.class.proficiencies.profs;
         let backgroundProfs = this.props.background.proficiencies;
         for (let prof of reference.skills) {
-          if (!this.proficiencies.includes(prof.id) && (classProfs.includes(prof.id) || backgroundProfs.includes(prof.id)))
-            profs.push(prof);
+            if (!this.proficiencies.includes(prof.id) && (classProfs.includes(prof.id) || backgroundProfs.includes(prof.id))) {
+                profs.push(prof);
+            }
         }
+        
         return profs;
     };
 
     get allProficienciesChosen(): boolean {
         let numClassProfs = this.props.class.proficiencies.num;
         let numBackgroundProfs = this.props.background.proficiencies.length;
-    
-        if (this.proficiencies.length < numClassProfs + numBackgroundProfs)
-          return false;
+
+        if (this.proficiencies.length < numClassProfs + numBackgroundProfs) {
+            return false;
+        }
+
         return true;
     };
 
@@ -59,23 +62,19 @@ export default class ProficienciesComponent extends React.Component<Props, State
         this.setState({
             ...this.state,
             proficiencies: []
-        });
-
-        this.props.setProficiencies([], this.allProficienciesChosen);
+        }, () => this.props.setProficiencies([], this.allProficienciesChosen));
     };
 
     addProficiency(event: any, id: number) {
         event.preventDefault();
 
-        var profs = this.state.proficiencies;
+        let profs = this.state.proficiencies;
         profs.push(id);
 
         this.setState({
             ...this.state,
             proficiencies: profs
-        });
-
-        this.props.setProficiencies(profs, this.allProficienciesChosen);
+        }, () => this.props.setProficiencies(profs, this.allProficienciesChosen));
     };
 
     public render(): JSX.Element {

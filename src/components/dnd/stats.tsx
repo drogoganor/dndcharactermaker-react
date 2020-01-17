@@ -1,7 +1,6 @@
 import React from 'react';
-import { Race, Alignment } from '../../core/types';
-import phb from '../../core/dndbook';
 import reference from '../../core/reference';
+import { Race } from '../../core/types';
 import Util from '../../core/util';
 
 interface Props {
@@ -33,8 +32,8 @@ export default class StatsComponent extends React.Component<Props, State> {
     getModifier(val: number): number {
         // Get stat modifier from lookup table
         for (let mod of reference.statModifiers) {
-          if (val <= mod.val)
-            return mod.modifier;
+            if (val <= mod.val)
+                return mod.modifier;
         }
         return reference.statModifiers[reference.statModifiers.length - 1].modifier;
     };
@@ -55,9 +54,7 @@ export default class StatsComponent extends React.Component<Props, State> {
             statArray: Array(6).fill(null),
             statRolls: reference.standardStatArray.slice(),
             statAssignmentIndex: 0
-        });
-
-        this.props.setStatArray(this.state.statRolls, this.allStatsAssigned);
+        }, () => this.props.setStatArray(this.state.statRolls, this.allStatsAssigned));
     };
 
     rerollStatsRandom(event: any) {
@@ -71,9 +68,7 @@ export default class StatsComponent extends React.Component<Props, State> {
                 .sort((a, b) => a - b)
                 .reverse(),
             statAssignmentIndex: 0
-        });
-
-        this.props.setStatArray(this.state.statRolls, this.allStatsAssigned);
+        }, () => this.props.setStatArray(this.state.statRolls, this.allStatsAssigned));
     };
 
     allocateStat(event: any, index: number, val: number) {
@@ -99,13 +94,10 @@ export default class StatsComponent extends React.Component<Props, State> {
             statArray: statArray,
             statRolls: statRolls,
             statAssignmentIndex: assignIndex
-        });
-
-        this.props.setStatArray(statArray, this.allStatsAssigned);
+        }, () => this.props.setStatArray(statArray, this.allStatsAssigned));
     };
 
     public render(): JSX.Element {
-        //const statArray = this.props.statArray;
         const race = this.props.race;
 
         return (

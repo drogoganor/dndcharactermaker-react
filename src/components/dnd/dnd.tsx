@@ -1,8 +1,7 @@
 import React from 'react';
-import reference from '../../core/reference';
+import 'bulma';
 import { Race, Class, Alignment, Background } from '../../core/types';
 import DndCharacter, { EquipmentChoiceModel, EquipmentModel } from '../../core/dndcharacter';
-import 'bulma';
 import Summary from './summary';
 import XpLevel from './xpLevel';
 import Names from './names';
@@ -27,7 +26,7 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         this.handleTraitSelection = this.handleTraitSelection.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
 
-        this.handleXpChange = this.handleXpChange.bind(this);
+        this.handleXpAndLevelChange = this.handleXpAndLevelChange.bind(this);
         this.handlePlayerNameChange = this.handlePlayerNameChange.bind(this);
         this.handleCharacterNameChange = this.handleCharacterNameChange.bind(this);
         this.handleRaceChange = this.handleRaceChange.bind(this);
@@ -41,11 +40,11 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         this.handleLanguagesChange = this.handleLanguagesChange.bind(this);
     }
 
-    handleXpChange(xp: number) {
+    handleXpAndLevelChange(xp: number, level: number) {
         this.setState({
             ...this.state,
             xp: xp,
-            level: reference.getLevel(xp)
+            level: level
         });
     }
 
@@ -108,7 +107,7 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
             backgroundSpecialty: 0
         });
     }
-    
+
     handleStatArrayChange(statArray: number[], allStatsAssigned: boolean) {
         this.setState({
             ...this.state,
@@ -116,7 +115,7 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
             allStatsAssigned: allStatsAssigned
         });
     }
-    
+
     handleProficienciesChange(proficiencies: number[], allProficienciesChosen: boolean) {
         this.setState({
             ...this.state,
@@ -165,7 +164,7 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                     <XpLevel
                         level={this.state.level}
                         xp={this.state.xp}
-                        setXp={this.handleXpChange} />
+                        setXpAndLevel={this.handleXpAndLevelChange} />
 
                     <Names
                         race={this.state.race}
@@ -182,43 +181,43 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                         class={this.state.class}
                         archetype={this.state.archetype}
                         level={this.state.level}
-                        setClass={this.handleClassChange} 
-                        setArchetype={this.handleArchetypeChange}/>
-                    
+                        setClass={this.handleClassChange}
+                        setArchetype={this.handleArchetypeChange} />
+
                     <AlignmentComponent
                         alignment={this.state.alignment}
-                        setAlignment={this.handleAlignmentChange}/>
+                        setAlignment={this.handleAlignmentChange} />
 
                     <BackgroundComponent
                         background={this.state.background}
-                        setBackground={this.handleBackgroundChange}/>
+                        setBackground={this.handleBackgroundChange} />
 
                     <StatsComponent
                         race={this.state.race}
-                        setStatArray={this.handleStatArrayChange}/>
-                    
+                        setStatArray={this.handleStatArrayChange} />
+
                     <ProficienciesComponent
                         class={this.state.class}
                         background={this.state.background}
-                        setProficiencies={this.handleProficienciesChange}/>
-                    
+                        setProficiencies={this.handleProficienciesChange} />
+
                     <EquipmentComponent
                         class={this.state.class}
                         background={this.state.background}
-                        setEquipment={this.handleEquipmentChange}/>
-                    
+                        setEquipment={this.handleEquipmentChange} />
+
                     <LanguagesComponent
                         class={this.state.class}
                         race={this.state.race}
                         background={this.state.background}
-                        setLanguages={this.handleLanguagesChange}/>
+                        setLanguages={this.handleLanguagesChange} />
 
                     <TraitsComponent
                         background={this.state.background}
-                        setTrait={this.handleTraitSelection}/>
-                    
-                    <FreeFields setField={this.handleInputChange}/>
-                    
+                        setTrait={this.handleTraitSelection} />
+
+                    <FreeFields {...this.state} setField={this.handleInputChange} />
+
                     <GeneratePDF {...this.state} />
 
                     <div>&nbsp;</div>
