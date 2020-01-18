@@ -6,8 +6,10 @@ import reference from '../../core/reference';
 interface Props {
     background: Background;
     backgroundToolChoice: string;
+    backgroundSpecialty: number;
     setBackground: (background: Background) => void;
     setBackgroundToolChoice: (tool: string) => void;
+    setSpecialty: (backgroundSpecialty: number) => void;
 }
 
 export default class BackgroundComponent extends React.Component<Props> {
@@ -15,6 +17,7 @@ export default class BackgroundComponent extends React.Component<Props> {
         super(props);
         this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
         this.handleBackgroundToolChoiceChange = this.handleBackgroundToolChoiceChange.bind(this);
+        this.handleSpecialtySelection = this.handleSpecialtySelection.bind(this);
     }
 
     handleBackgroundChange(event: any, bg: Background) {
@@ -25,6 +28,15 @@ export default class BackgroundComponent extends React.Component<Props> {
     handleBackgroundToolChoiceChange(event: any) {
         event.preventDefault();
         this.props.setBackgroundToolChoice(event.target.value);
+    }
+
+    handleSpecialtySelection(event: any) {
+        event.preventDefault();
+
+        const target = event.target;
+        const val = target.value;
+
+        this.props.setSpecialty(val);
     }
 
     get toolProficienciesText(): string {
@@ -80,12 +92,28 @@ export default class BackgroundComponent extends React.Component<Props> {
                         </div>
                     </div>
                 </div>
+                {background.specialty !== undefined && (
+                    <div className='field is-vcentered'>
+                        <div className='columns'>
+                            <label className='column is-2 label'>{background.specialty.name}:</label>
+                            <div className='control'>
+                                <div className='select'>
+                                    <select name='backgroundSpecialty' onChange={(e) => this.handleSpecialtySelection(e)}>
+                                        {background.specialty.rolls.map((roll, index) => {
+                                            return (<option key={index} value={roll.id}>{roll.text}</option>)
+                                        })}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>)
+                }
                 {this.props.background.toolSelection !== undefined && (
 
-                    <div className='field'>
+                    <div className='field is-vcentered'>
                         <div className='columns'>
                             <label className='column is-2 label'>{this.props.background.toolSelection.text}:</label>
-                            <input className='input column is-5' id="charname" type="text"
+                            <input className='input column is-fullwidth' id="charname" type="text"
                                 name="toolSelection"
                                 value={backgroundToolChoice}
                                 onChange={this.handleBackgroundToolChoiceChange}
@@ -96,8 +124,7 @@ export default class BackgroundComponent extends React.Component<Props> {
                                 <b>Suggestions: </b>{this.props.background.toolSelection.suggestions}
                             </div>
                         </div>
-                    </div>
-                    )
+                    </div>)
                 }
                 {this.toolProficienciesText !== '' && (
                     <div className='columns field'>

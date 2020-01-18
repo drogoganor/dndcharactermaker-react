@@ -48,7 +48,7 @@ export default class XpLevel extends React.Component<Props> {
 
                 <div className='columns'>
                     <label className='column is-2 label'>XP:</label>
-                    <input className='input column is-2' id="xp" type="text" name="xp" value={xp} onChange={this.handleChange} />
+                    <input className='input column is-fullwidth' id="xp" type="text" name="xp" value={xp} onChange={this.handleChange} />
                 </div>
             </div>
         )

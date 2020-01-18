@@ -125,7 +125,7 @@ export default class StatsComponent extends React.Component<Props, State> {
         const race = this.props.race;
 
         return (
-            <div className='field'>
+            <div className='field is-vcentered'>
                 <div className='columns'>
                     <label className='column is-2 label'>Stats:</label>
                     <div className='column is-1'>Assigned</div>
@@ -135,7 +135,7 @@ export default class StatsComponent extends React.Component<Props, State> {
                 </div>
                 {reference.statBlocks.map((block, index) => {
                     return (
-                        <div className='columns' id="stat-block" key={index}>
+                        <div className='columns is-vcentered' id="stat-block" key={index}>
                             <div className='column is-2'>{block.text}</div>
                             <div className='column is-1'>{this.props.statArray[block.id]}</div>
                             <div className='column is-1'>{race.bonuses[block.id]}</div>
@@ -144,7 +144,7 @@ export default class StatsComponent extends React.Component<Props, State> {
                         </div>)
                 })}
                 {this.state.statRolls.length > 0 && (
-                    <div className='columns field'>
+                    <div className='columns field is-vcentered'>
                         <div className='column is-2'>Assign <b>{this.currentStatAssignmentText}</b>:</div>
                         <div className='column buttons has-addons'>
                             {this.state.statRolls.map((r, index) => {
@@ -160,7 +160,7 @@ export default class StatsComponent extends React.Component<Props, State> {
                         </div>
                     </div>)
                 }
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Reset Stats:</label>
                     <div className='column'>
                         <button type="button" className='button is-danger' onClick={(e) => this.rerollStatsStandard(e)}>Standard Array</button>&nbsp;

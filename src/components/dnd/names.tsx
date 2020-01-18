@@ -36,7 +36,7 @@ export default class Names extends React.Component<Props> {
             <div className='field'>
                 <div className='columns'>
                     <label className='column is-2 label'>Character Name:</label>
-                    <input className='input column is-5' id="charname" type="text"
+                    <input className='input column is-fullwidth' id="charname" type="text"
                         name="characterName"
                         placeholder={this.raceNamesPageReference}
                         value={characterName}
@@ -45,7 +45,7 @@ export default class Names extends React.Component<Props> {
                 </div>
                 <div className='columns'>
                     <label className='column is-2 label'>Player Name:</label>
-                    <input className='input column is-5' id="playername" type="text" placeholder="Your name"
+                    <input className='input column is-fullwidth' id="playername" type="text" placeholder="Your name"
                         name="playerName"
                         value={playerName}
                         onChange={this.handlePlayerNameChange}

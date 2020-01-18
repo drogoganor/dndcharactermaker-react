@@ -19,7 +19,6 @@ export default class Summary extends React.Component {
                         <ul>
                             <li>Everything from books other than the Player's Handbook</li>
                             <li>Cantrips and spells</li>
-                            <li>Background specialty selection</li>
                             <li>Background variant selection</li>
                             <li>Feats and ability score improvements</li>
                             <li>Class tool proficiency selection</li>

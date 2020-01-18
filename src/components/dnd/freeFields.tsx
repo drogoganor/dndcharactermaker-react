@@ -63,41 +63,77 @@ export default class FreeFields extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <div className='field'>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Age:</label>
-                    <input className='input column is-2' name="age" type="text" value={this.props.age} onChange={this.handleInputChange} />
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' name="age" type="text" value={this.props.age} onChange={this.handleInputChange} />
+                        </div>
+                    </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Height:</label>
-                    <input className='input column is-2' name="height" type="text" value={this.props.height} onChange={this.handleInputChange} />
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' name="height" type="text" value={this.props.height} onChange={this.handleInputChange} />
+                        </div>
+                    </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Weight:</label>
-                    <input className='input column is-2' name="weight" type="text" value={this.props.weight} onChange={this.handleInputChange} />
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' name="weight" type="text" value={this.props.weight} onChange={this.handleInputChange} />
+                        </div>
+                    </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Eyes:</label>
-                    <input className='input column is-2' name="eyes" type="text" value={this.props.eyes} onChange={this.handleInputChange} />
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' name="eyes" type="text" value={this.props.eyes} onChange={this.handleInputChange} />
+                        </div>
+                    </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Skin:</label>
-                    <input className='input column is-2' name="skin" type="text" value={this.props.skin} onChange={this.handleInputChange} />
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' name="skin" type="text" value={this.props.skin} onChange={this.handleInputChange} />
+                        </div>
+                    </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Hair:</label>
-                    <input className='input column is-2' name="hair" type="text" value={this.props.hair} onChange={this.handleInputChange} />
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' name="hair" type="text" value={this.props.hair} onChange={this.handleInputChange} />
+                        </div>
+                    </div>
                 </div>
-                <div className='field'>
-                    <label className='label'>Appearance (not implemented yet):</label>
-                    <input className='input' name="appearance" type="file" accept="image/*" onChange={(e) => this.setAppearance(e)} />
+                <div className='columns field is-vcentered'>
+                    <label className='column is-2 label'>Appearance (N/A):</label>
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' disabled name="appearance" type="file" accept="image/*" onChange={(e) => this.setAppearance(e)} />
+                        </div>
+                    </div>
                 </div>
-                <div className='field'>
-                    <label className='label'>Organization/Faction:</label>
-                    <input className='input' name="organizations" type="text" value={this.props.organizations} onChange={this.handleInputChange} />
+                <div className='columns field is-vcentered'>
+                    <label className='column is-2 label'>Organization/Faction:</label>
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' name="organizations" type="text" value={this.props.organizations} onChange={this.handleInputChange} />
+                        </div>
+                    </div>
                 </div>
-                <div className='field'>
-                    <label className='label'>Faction Logo (not implemented yet):</label>
-                    <input className='input' name="factionLogo" type="file" accept="image/*" onChange={(e) => this.setFactionLogo(e)} />
+                <div className='columns field is-vcentered'>
+                    <label className='column is-2 label'>Faction Logo (N/A):</label>
+                    <div className='column'>
+                        <div className='control'>
+                            <input className='input' disabled name="factionLogo" type="file" accept="image/*" onChange={(e) => this.setFactionLogo(e)} />
+                        </div>
+                    </div>
                 </div>
                 <div className='field'>
                     <label className='label'>Allies:</label>

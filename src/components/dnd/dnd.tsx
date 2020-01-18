@@ -39,7 +39,8 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         this.handleLanguagesChange = this.handleLanguagesChange.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
         this.handleBackgroundToolChoiceChange = this.handleBackgroundToolChoiceChange.bind(this);
-        
+        this.handleBackgroundSpecialtyChange = this.handleBackgroundSpecialtyChange.bind(this);
+
         this.allLanguagesChosen = this.allLanguagesChosen.bind(this);
         this.allProficienciesChosen = this.allProficienciesChosen.bind(this);
         this.proficiencies = this.proficiencies.bind(this);
@@ -120,6 +121,13 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         });
     }
 
+    handleBackgroundSpecialtyChange(backgroundSpecialty: number) {
+        this.setState({
+            ...this.state,
+            backgroundSpecialty: backgroundSpecialty
+        });
+    }
+    
     handleStatArrayChange(statArray: number[], statTotals: number[], statModifiers: number[], allStatsAssigned: boolean) {
         this.setState({
             ...this.state,
@@ -249,8 +257,10 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                     <BackgroundComponent
                         background={this.state.background}
                         backgroundToolChoice={this.state.backgroundToolChoice}
+                        backgroundSpecialty={this.state.backgroundSpecialty}
                         setBackground={this.handleBackgroundChange}
-                        setBackgroundToolChoice={this.handleBackgroundToolChoiceChange} />
+                        setBackgroundToolChoice={this.handleBackgroundToolChoiceChange} 
+                        setSpecialty={this.handleBackgroundSpecialtyChange} />
 
                     <StatsComponent
                         race={this.state.race}

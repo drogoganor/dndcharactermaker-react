@@ -20,6 +20,19 @@ export default class TraitsComponent extends React.Component<Props, State> {
         this.handleClickSelection = this.handleClickSelection.bind(this);
     }
 
+    handleOptionSelection(event: any) {
+        event.preventDefault();
+
+        const target = event.target;
+        const name = target.name;
+        const val = target.value;
+
+        this.setState({
+            ...this.state,
+            [name]: val
+        }, () => this.props.setTrait(name, val));
+    }
+
     handleClickSelection(event: any, val: any) {
         event.preventDefault();
 
@@ -37,64 +50,60 @@ export default class TraitsComponent extends React.Component<Props, State> {
 
         return (
             <div className='field'>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Personality Trait:</label>
-                    <div className='column buttons are-small'>
-                        {background.personalityTraits.map((trait, index) => {
-                            return (
-                                <button type="button"
-                                    name="trait"
-                                    key={index}
-                                    onClick={(e) => this.handleClickSelection(e, trait.id)}
-                                    className={"button is-fullwidth " + (this.state.trait === trait.id ? "is-link is-selected" : null)}>
-                                    {trait.text}
-                                </button>)
-                        })}
+                    <div className='column'>
+                        <div className='control'>
+                            <div className='select is-fullwidth'>
+                                <select name='trait' onChange={(e) => this.handleOptionSelection(e)}>
+                                    {background.personalityTraits.map((trait, index) => {
+                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                    })}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Ideal:</label>
-                    <div className='column buttons are-small'>
-                        {background.ideals.map((trait, index) => {
-                            return (
-                                <button type="button"
-                                    name="ideal"
-                                    key={index}
-                                    onClick={(e) => this.handleClickSelection(e, trait.id)}
-                                    className={"button is-fullwidth " + (this.state.ideal === trait.id ? "is-link is-selected" : null)}>
-                                    {trait.text}
-                                </button>)
-                        })}
+                    <div className='column'>
+                        <div className='control'>
+                            <div className='select is-fullwidth'>
+                                <select name='ideal' onChange={(e) => this.handleOptionSelection(e)}>
+                                    {background.ideals.map((trait, index) => {
+                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                    })}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Bond:</label>
-                    <div className='column buttons are-small'>
-                        {background.bonds.map((trait, index) => {
-                            return (
-                                <button type="button"
-                                    name="bond"
-                                    key={index}
-                                    onClick={(e) => this.handleClickSelection(e, trait.id)}
-                                    className={"button is-fullwidth " + (this.state.bond === trait.id ? "is-link is-selected" : null)}>
-                                    {trait.text}
-                                </button>)
-                        })}
+                    <div className='column'>
+                        <div className='control'>
+                            <div className='select is-fullwidth'>
+                                <select name='bond' onChange={(e) => this.handleOptionSelection(e)}>
+                                    {background.bonds.map((trait, index) => {
+                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                    })}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className='columns field'>
+                <div className='columns field is-vcentered'>
                     <label className='column is-2 label'>Flaw:</label>
-                    <div className='column buttons are-small'>
-                        {background.flaws.map((trait, index) => {
-                            return (
-                                <button type="button"
-                                    name="flaw"
-                                    key={index}
-                                    onClick={(e) => this.handleClickSelection(e, trait.id)}
-                                    className={"button is-fullwidth " + (this.state.flaw === trait.id ? "is-link is-selected" : null)}>
-                                    {trait.text}
-                                </button>)
-                        })}
+                    <div className='column'>
+                        <div className='control'>
+                            <div className='select is-fullwidth'>
+                                <select name='flaw' onChange={(e) => this.handleOptionSelection(e)}>
+                                    {background.flaws.map((trait, index) => {
+                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                    })}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
