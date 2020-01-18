@@ -40,7 +40,7 @@ export default class ClassComponent extends React.Component<Props> {
         const archetype = this.props.archetype;
 
         return (
-            <div>
+            <div className='field'>
                 <div className='field'>
                     <label className='label'>Class:</label>
                     <div id="character-class">

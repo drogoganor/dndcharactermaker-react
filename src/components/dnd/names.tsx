@@ -33,8 +33,8 @@ export default class Names extends React.Component<Props> {
         const characterName = this.props.characterName;
 
         return (
-            <div>
-                <div className='columns field'>
+            <div className='field'>
+                <div className='columns'>
                     <label className='column is-2 label'>Character Name:</label>
                     <input className='input column is-5' id="charname" type="text"
                         name="characterName"
@@ -43,7 +43,7 @@ export default class Names extends React.Component<Props> {
                         onChange={this.handleCharacterNameChange}
                     />
                 </div>
-                <div className='columns field'>
+                <div className='columns'>
                     <label className='column is-2 label'>Player Name:</label>
                     <input className='input column is-5' id="playername" type="text" placeholder="Your name"
                         name="playerName"

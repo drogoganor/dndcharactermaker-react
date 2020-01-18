@@ -22,22 +22,20 @@ export default class AlignmentComponent extends React.Component<Props> {
         const alignment = this.props.alignment;
 
         return (
-            <div>
-                <div className='field'>
-                    <label className='label'>Alignment:</label>
-                    <div id="character-alignment1">
-                        <div className="buttons are-small has-addons">
-                            {reference.alignments.map((align, index) => {
-                                return (
-                                    <button
-                                        type="button"
-                                        key={index}
-                                        name="alignment"
-                                        onClick={(e) => this.handleAlignmentChange(e, align)}
-                                        className={"button " + (alignment.id === align.id ? "is-link is-selected" : null)}
-                                    >{align.lawfulChaotic + ' ' + align.goodEvil}</button>)
-                            })}
-                        </div>
+            <div className='field'>
+                <label className='label'>Alignment:</label>
+                <div id="character-alignment1">
+                    <div className="buttons are-small has-addons">
+                        {reference.alignments.map((align, index) => {
+                            return (
+                                <button
+                                    type="button"
+                                    key={index}
+                                    name="alignment"
+                                    onClick={(e) => this.handleAlignmentChange(e, align)}
+                                    className={"button " + (alignment.id === align.id ? "is-link is-selected" : null)}
+                                >{align.lawfulChaotic + ' ' + align.goodEvil}</button>)
+                        })}
                     </div>
                 </div>
             </div>

@@ -22,7 +22,7 @@ export default class RaceComponent extends React.Component<Props> {
         const race = this.props.race;
 
         return (
-            <div>
+            <div className='field'>
                 <div className='field'>
                     <label className='label'>Race:</label>
                     <div id="character-race">

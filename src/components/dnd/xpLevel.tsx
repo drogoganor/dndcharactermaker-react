@@ -40,13 +40,13 @@ export default class XpLevel extends React.Component<Props> {
         const xp = this.props.xp;
 
         return (
-            <div>
-                <div className='columns field'>
+            <div className='field'>
+                <div className='columns'>
                     <label className='column is-2 label'>Level:</label>
                     <div className='column is-1' id="level">{level}</div>
                 </div>
 
-                <div className='columns field'>
+                <div className='columns'>
                     <label className='column is-2 label'>XP:</label>
                     <input className='input column is-2' id="xp" type="text" name="xp" value={xp} onChange={this.handleChange} />
                 </div>

@@ -25,9 +25,6 @@ export default class DndCharacter {
         this.background = phb.backgrounds[0];
     }
 
-    public readonly statAssignmentIndex: number = 0;
-    public readonly statRolls: number[] = [15, 14, 13, 12, 10, 8];
-
     public readonly characterName: string = '';
     public readonly playerName: string = '';
     public readonly race: Race;
@@ -37,6 +34,8 @@ export default class DndCharacter {
     public readonly backgroundSpecialty: number = 0;
     public readonly background: Background;
     public readonly statArray: number[] = Array(6).fill(null);
+    public readonly statModifiers: number[] = Array(6).fill(null);
+    public readonly statTotals: number[] = Array(6).fill(null);
     public readonly xp: number = 0;
     public readonly languageids: number[] = [];
     public readonly proficiencies: number[] = [];
@@ -64,8 +63,6 @@ export default class DndCharacter {
     public readonly level: number = 1;
 
     public readonly allEquipmentChosen: boolean = false;
-    public readonly allLanguagesChosen: boolean = false; // Faulty: Sometimes doesn't require a choice of language
-    public readonly allProficienciesChosen: boolean = false; // Faulty: Sometimes doesn't require a choice of proficiency
     public readonly allStatsAssigned: boolean = false;
 
     public readonly equipmentText: string = '';

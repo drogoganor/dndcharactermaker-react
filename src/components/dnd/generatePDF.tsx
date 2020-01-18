@@ -4,8 +4,14 @@ import { Equipment } from '../../core/types';
 import DndCharacter from '../../core/dndcharacter';
 import Util from '../../core/util';
 
-export default class GeneratePDF extends React.Component<DndCharacter> {
-    constructor(props: DndCharacter) {
+interface CharacterPdfModel extends DndCharacter {
+    allLanguagesChosen: () => boolean;
+    allProficienciesChosen: () => boolean;
+    getProficiencies: () => number[];
+}
+
+export default class GeneratePDF extends React.Component<CharacterPdfModel> {
+    constructor(props: CharacterPdfModel) {
         super(props);
         this.handleGenerate = this.handleGenerate.bind(this);
     }
@@ -31,75 +37,11 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
     };
 
     get allChoicesFulfilled(): boolean {
-        return this.allProficienciesChosen &&
+        return this.props.allProficienciesChosen() &&
             this.props.allStatsAssigned &&
             this.props.allEquipmentChosen &&
-            this.allLanguagesChosen;
+            this.props.allLanguagesChosen();
     };
-
-    // TODO: Copied from stats.tsx - should be recorded in state
-
-    statTotal(i: number): number {
-        return this.props.statArray[i] + this.props.race.bonuses[i];
-    }
-
-    statModifier(i: number): number {
-        return this.getModifier(this.statTotal(i));
-    }
-
-    getModifier(val: number): number {
-        // Get stat modifier from lookup table
-        for (let mod of reference.statModifiers) {
-            if (val <= mod.val)
-                return mod.modifier;
-        }
-        return reference.statModifiers[reference.statModifiers.length - 1].modifier;
-    };
-
-    // End copied from stats.tsx
-
-    // Copied from proficiencies.tsx
-
-    get allProficienciesChosen(): boolean {
-        let numClassProfs = this.props.class.proficiencies.num;
-        let numBackgroundProfs = this.props.background.proficiencies.length;
-
-        if (this.proficiencies.length < numClassProfs + numBackgroundProfs)
-            return false;
-        return true;
-    };
-
-    // End copied from proficiencies.tsx
-
-    // Copied from languages.tsx
-
-    get languages(): number[] {
-        return this.props.race.languages.concat(this.props.languageids);
-    };
-
-    get numBackgroundLanguages(): number {
-        return this.props.background.languages;
-    };
-
-    get allLanguagesChosen(): boolean {
-        let extraLangs = this.props.race.extraLanguages;
-        let numBackgroundLangs = this.numBackgroundLanguages;
-        let numLanguagesTotal = extraLangs + numBackgroundLangs;
-
-        if (this.props.languageids.length < numLanguagesTotal)
-            return false;
-        return true;
-    };
-
-    // End copied from languages.tsx
-
-    // Copied from proficiencies.tsx
-
-    get proficiencies(): number[] {
-        return this.props.background.proficiencies.concat(this.props.proficiencies);
-    };
-
-    // End copied from proficiencies.tsx
 
     get specialtyText(): string {
         if (!this.props.background.specialty) {
@@ -139,7 +81,7 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
     savingThrow(i: number): number {
         let savingThrow = this.props.class.savingThrows.find(th => th === i) !== undefined ? this.proficiencyBonus : 0;
 
-        return this.getModifier(this.statTotal(i)) + savingThrow;
+        return Util.getModifier(this.props.statTotals[i]) + savingThrow;
     }
 
     get toolProficienciesText(): string {
@@ -147,7 +89,8 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
     };
 
     get languagesText(): string {
-        return this.languages.map(language => reference.languages[language].text).join(', ');
+        let languages = this.props.race.languages.concat(this.props.languageids);
+        return languages.map(language => reference.languages[language].text).join(', ');
     };
 
     get traitText(): string {
@@ -216,11 +159,11 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
             let atkBonus = 0;
             let dmgBonus = 0;
             if (equipmentData.melee === true) { // TODO: Check finesse, use DEX if true
-                atkBonus += this.statModifier(0); // STRmod
-                dmgBonus += this.statModifier(0);
+                atkBonus += this.props.statModifiers[0]; // STRmod
+                dmgBonus += this.props.statModifiers[0];
             } else {
-                atkBonus += this.statModifier(1); // DEXmod
-                dmgBonus += this.statModifier(1);
+                atkBonus += this.props.statModifiers[1]; // DEXmod
+                dmgBonus += this.props.statModifiers[1];
             }
 
             if (this.hasWeaponProficiency(equipmentData)) {
@@ -248,13 +191,13 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
         let o = this.props;
 
         // Initiative: DEX modifier
-        let initiative = this.statModifier(1);
+        let initiative = o.statModifiers[1];
 
         // Base armor class: 10 + DEX modifier (TODO: include shield & armor)
-        let armorClass = 10 + this.statModifier(1);
+        let armorClass = 10 + o.statModifiers[1];
 
         // HP: Starting HP + CON
-        let hp = o.class.hitDice + this.statModifier(2);
+        let hp = o.class.hitDice + o.statModifiers[2];
 
         fields['PlayerName'] = [o.playerName];
         fields['CharacterName'] = [o.characterName];
@@ -288,19 +231,19 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
 
         fields['XP'] = [o.xp];
 
-        fields['STR'] = [Util.formatModifier(this.statModifier(0))];
-        fields['DEX'] = [Util.formatModifier(this.statModifier(1))];
-        fields['CON'] = [Util.formatModifier(this.statModifier(2))];
-        fields['INT'] = [Util.formatModifier(this.statModifier(3))];
-        fields['WIS'] = [Util.formatModifier(this.statModifier(4))];
-        fields['CHA'] = [Util.formatModifier(this.statModifier(5))];
+        fields['STR'] = [Util.formatModifier(o.statModifiers[0])];
+        fields['DEX'] = [Util.formatModifier(o.statModifiers[1])];
+        fields['CON'] = [Util.formatModifier(o.statModifiers[2])];
+        fields['INT'] = [Util.formatModifier(o.statModifiers[3])];
+        fields['WIS'] = [Util.formatModifier(o.statModifiers[4])];
+        fields['CHA'] = [Util.formatModifier(o.statModifiers[5])];
 
-        fields['STRmod'] = [this.statTotal(0)];
-        fields['DEXmod '] = [this.statTotal(1)];
-        fields['CONmod'] = [this.statTotal(2)];
-        fields['INTmod'] = [this.statTotal(3)];
-        fields['WISmod'] = [this.statTotal(4)];
-        fields['CHamod'] = [this.statTotal(5)];
+        fields['STRmod'] = [o.statTotals[0]];
+        fields['DEXmod '] = [o.statTotals[1]];
+        fields['CONmod'] = [o.statTotals[2]];
+        fields['INTmod'] = [o.statTotals[3]];
+        fields['WISmod'] = [o.statTotals[4]];
+        fields['CHamod'] = [o.statTotals[5]];
 
         fields['HPMax'] = [hp];
         fields['Speed'] = [o.race.speed];
@@ -338,7 +281,7 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
             }
         }
 
-        fields['HDTotal'] = ['1d' + o.class.hitDice];
+        fields['HDTotal'] = [this.props.level + 'd' + o.class.hitDice];
         fields['ProfBonus'] = [Util.formatModifier(this.proficiencyBonus)];
 
         let profLangText = 'Languages: ' + this.languagesText;
@@ -363,33 +306,36 @@ export default class GeneratePDF extends React.Component<DndCharacter> {
         fields['Flaws'] = [this.flawText];
 
         // https://rpg.stackexchange.com/questions/101169/how-does-passive-perception-work
-        let pp = 10 + this.statModifier(4);
-        if (this.proficiencies.includes(11))
+        let pp = 10 + o.statModifiers[4];
+
+        let proficiencies = o.getProficiencies();
+
+        if (proficiencies.includes(11))
             pp += this.proficiencyBonus;
 
         fields['Passive'] = [pp];
 
-        fields['Acrobatics'] = [Util.formatModifier(this.statModifier(1) + (this.proficiencies.includes(0) ? this.proficiencyBonus : 0))];
-        fields['Animal'] = [Util.formatModifier(this.statModifier(4) + (this.proficiencies.includes(1) ? this.proficiencyBonus : 0))];
-        fields['Arcana'] = [Util.formatModifier(this.statModifier(3) + (this.proficiencies.includes(2) ? this.proficiencyBonus : 0))];
-        fields['Athletics'] = [Util.formatModifier(this.statModifier(0) + (this.proficiencies.includes(3) ? this.proficiencyBonus : 0))];
-        fields['Deception '] = [Util.formatModifier(this.statModifier(5) + (this.proficiencies.includes(4) ? this.proficiencyBonus : 0))];
-        fields['History '] = [Util.formatModifier(this.statModifier(3) + (this.proficiencies.includes(5) ? this.proficiencyBonus : 0))];
-        fields['Insight'] = [Util.formatModifier(this.statModifier(4) + (this.proficiencies.includes(6) ? this.proficiencyBonus : 0))];
-        fields['Intimidation'] = [Util.formatModifier(this.statModifier(5) + (this.proficiencies.includes(7) ? this.proficiencyBonus : 0))];
-        fields['Investigation '] = [Util.formatModifier(this.statModifier(3) + (this.proficiencies.includes(8) ? this.proficiencyBonus : 0))];
-        fields['Medicine'] = [Util.formatModifier(this.statModifier(4) + (this.proficiencies.includes(9) ? this.proficiencyBonus : 0))];
-        fields['Nature'] = [Util.formatModifier(this.statModifier(3) + (this.proficiencies.includes(10) ? this.proficiencyBonus : 0))];
-        fields['Perception '] = [Util.formatModifier(this.statModifier(4) + (this.proficiencies.includes(11) ? this.proficiencyBonus : 0))];
-        fields['Performance'] = [Util.formatModifier(this.statModifier(5) + (this.proficiencies.includes(12) ? this.proficiencyBonus : 0))];
-        fields['Persuasion'] = [Util.formatModifier(this.statModifier(5) + (this.proficiencies.includes(13) ? this.proficiencyBonus : 0))];
-        fields['Religion'] = [Util.formatModifier(this.statModifier(3) + (this.proficiencies.includes(14) ? this.proficiencyBonus : 0))];
-        fields['SleightofHand'] = [Util.formatModifier(this.statModifier(1) + (this.proficiencies.includes(15) ? this.proficiencyBonus : 0))];
-        fields['Stealth '] = [Util.formatModifier(this.statModifier(1) + (this.proficiencies.includes(16) ? this.proficiencyBonus : 0))];
-        fields['Survival'] = [Util.formatModifier(this.statModifier(4) + (this.proficiencies.includes(17) ? this.proficiencyBonus : 0))];
+        fields['Acrobatics'] = [Util.formatModifier(o.statModifiers[1] + (proficiencies.includes(0) ? this.proficiencyBonus : 0))];
+        fields['Animal'] = [Util.formatModifier(o.statModifiers[4] + (proficiencies.includes(1) ? this.proficiencyBonus : 0))];
+        fields['Arcana'] = [Util.formatModifier(o.statModifiers[3] + (proficiencies.includes(2) ? this.proficiencyBonus : 0))];
+        fields['Athletics'] = [Util.formatModifier(o.statModifiers[0] + (proficiencies.includes(3) ? this.proficiencyBonus : 0))];
+        fields['Deception '] = [Util.formatModifier(o.statModifiers[5] + (proficiencies.includes(4) ? this.proficiencyBonus : 0))];
+        fields['History '] = [Util.formatModifier(o.statModifiers[3] + (proficiencies.includes(5) ? this.proficiencyBonus : 0))];
+        fields['Insight'] = [Util.formatModifier(o.statModifiers[4] + (proficiencies.includes(6) ? this.proficiencyBonus : 0))];
+        fields['Intimidation'] = [Util.formatModifier(o.statModifiers[5] + (proficiencies.includes(7) ? this.proficiencyBonus : 0))];
+        fields['Investigation '] = [Util.formatModifier(o.statModifiers[3] + (proficiencies.includes(8) ? this.proficiencyBonus : 0))];
+        fields['Medicine'] = [Util.formatModifier(o.statModifiers[4] + (proficiencies.includes(9) ? this.proficiencyBonus : 0))];
+        fields['Nature'] = [Util.formatModifier(o.statModifiers[3] + (proficiencies.includes(10) ? this.proficiencyBonus : 0))];
+        fields['Perception '] = [Util.formatModifier(o.statModifiers[4] + (proficiencies.includes(11) ? this.proficiencyBonus : 0))];
+        fields['Performance'] = [Util.formatModifier(o.statModifiers[5] + (proficiencies.includes(12) ? this.proficiencyBonus : 0))];
+        fields['Persuasion'] = [Util.formatModifier(o.statModifiers[5] + (proficiencies.includes(13) ? this.proficiencyBonus : 0))];
+        fields['Religion'] = [Util.formatModifier(o.statModifiers[3] + (proficiencies.includes(14) ? this.proficiencyBonus : 0))];
+        fields['SleightofHand'] = [Util.formatModifier(o.statModifiers[1] + (proficiencies.includes(15) ? this.proficiencyBonus : 0))];
+        fields['Stealth '] = [Util.formatModifier(o.statModifiers[1] + (proficiencies.includes(16) ? this.proficiencyBonus : 0))];
+        fields['Survival'] = [Util.formatModifier(o.statModifiers[4] + (proficiencies.includes(17) ? this.proficiencyBonus : 0))];
 
         // Proficiencies
-        for (let prof of this.proficiencies) {
+        for (let prof of proficiencies) {
             switch (prof) {
                 case 0:
                     fields['Check Box 23'] = [true];

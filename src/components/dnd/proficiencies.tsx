@@ -5,28 +5,34 @@ import reference from '../../core/reference';
 interface Props {
     class: Class;
     background: Background;
-    setProficiencies: (proficiencies: number[], allProficienciesChosen: boolean) => void;
+    proficiencies: number[];
+    setProficiencies: (proficiencies: number[]) => void;
 }
 
-class State {
-    proficiencies: number[] = [];
-}
-
-export default class ProficienciesComponent extends React.Component<Props, State> {
+export default class ProficienciesComponent extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.state = new State();
         this.resetProficiencies = this.resetProficiencies.bind(this);
         this.addProficiency = this.addProficiency.bind(this);
     }
 
     get proficiencies(): number[] {
-        return this.props.background.proficiencies.concat(this.state.proficiencies);
+        return this.props.background.proficiencies.concat(this.props.proficiencies);
+    };
+
+    get allProficienciesChosen(): boolean {
+        let numClassProfs = this.props.class.proficiencies.num;
+        let numBackgroundProfs = this.props.background.proficiencies.length;
+        if (this.proficiencies.length < numClassProfs + numBackgroundProfs) {
+            return false;
+        }
+
+        return true;
     };
 
     get proficiencesLeftText(): string {
         // Nice text label of how many proficiencies left to select
-        let numLeft = this.props.class.proficiencies.num - this.state.proficiencies.length;
+        let numLeft = this.props.class.proficiencies.num - this.props.proficiencies.length;
 
         return "Choose " + numLeft + " additional proficienc" + (numLeft > 1 ? "ies" : "y") + ":";
     };
@@ -41,40 +47,33 @@ export default class ProficienciesComponent extends React.Component<Props, State
                 profs.push(prof);
             }
         }
-        
+
         return profs;
-    };
-
-    get allProficienciesChosen(): boolean {
-        let numClassProfs = this.props.class.proficiencies.num;
-        let numBackgroundProfs = this.props.background.proficiencies.length;
-
-        if (this.proficiencies.length < numClassProfs + numBackgroundProfs) {
-            return false;
-        }
-
-        return true;
     };
 
     resetProficiencies(event: any) {
         event.preventDefault();
 
-        this.setState({
-            ...this.state,
-            proficiencies: []
-        }, () => this.props.setProficiencies([], this.allProficienciesChosen));
+        // this.setState({
+        //     ...this.state,
+        //     proficiencies: []
+        // }, () => this.props.setProficiencies([]));
+
+        this.props.setProficiencies([]);
     };
 
     addProficiency(event: any, id: number) {
         event.preventDefault();
 
-        let profs = this.state.proficiencies;
+        let profs = this.props.proficiencies;
         profs.push(id);
 
-        this.setState({
-            ...this.state,
-            proficiencies: profs
-        }, () => this.props.setProficiencies(profs, this.allProficienciesChosen));
+        // this.setState({
+        //     ...this.state,
+        //     proficiencies: profs
+        // }, () => this.props.setProficiencies(profs));
+
+        this.props.setProficiencies(profs)
     };
 
     public render(): JSX.Element {

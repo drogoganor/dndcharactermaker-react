@@ -45,7 +45,7 @@ export default class BackgroundComponent extends React.Component<Props> {
         const background = this.props.background;
 
         return (
-            <div>
+            <div className='field'>
                 <div className='field'>
                     <label className='label'>Background:</label>
                     <div id="character-background">

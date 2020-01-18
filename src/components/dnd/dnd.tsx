@@ -25,7 +25,6 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         this.state = new DndCharacter();
         this.handleTraitSelection = this.handleTraitSelection.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-
         this.handleXpAndLevelChange = this.handleXpAndLevelChange.bind(this);
         this.handlePlayerNameChange = this.handlePlayerNameChange.bind(this);
         this.handleCharacterNameChange = this.handleCharacterNameChange.bind(this);
@@ -38,6 +37,10 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         this.handleProficienciesChange = this.handleProficienciesChange.bind(this);
         this.handleEquipmentChange = this.handleEquipmentChange.bind(this);
         this.handleLanguagesChange = this.handleLanguagesChange.bind(this);
+        
+        this.allLanguagesChosen = this.allLanguagesChosen.bind(this);
+        this.allProficienciesChosen = this.allProficienciesChosen.bind(this);
+        this.proficiencies = this.proficiencies.bind(this);
     }
 
     handleXpAndLevelChange(xp: number, level: number) {
@@ -108,19 +111,20 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         });
     }
 
-    handleStatArrayChange(statArray: number[], allStatsAssigned: boolean) {
+    handleStatArrayChange(statArray: number[], statTotals: number[], statModifiers: number[], allStatsAssigned: boolean) {
         this.setState({
             ...this.state,
             statArray: statArray,
+            statTotals: statTotals,
+            statModifiers: statModifiers,
             allStatsAssigned: allStatsAssigned
         });
     }
 
-    handleProficienciesChange(proficiencies: number[], allProficienciesChosen: boolean) {
+    handleProficienciesChange(proficiencies: number[]) {
         this.setState({
             ...this.state,
-            proficiencies: proficiencies,
-            allProficienciesChosen: allProficienciesChosen
+            proficiencies: proficiencies
         });
     }
 
@@ -134,11 +138,10 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         });
     }
 
-    handleLanguagesChange(languageids: number[], allLanguagesChosen: boolean) {
+    handleLanguagesChange(languageids: number[]) {
         this.setState({
             ...this.state,
-            languageids: languageids,
-            allLanguagesChosen: allLanguagesChosen
+            languageids: languageids
         });
     }
 
@@ -155,6 +158,33 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
             [name]: value
         });
     }
+
+    ///////// Logic /////////
+
+    allLanguagesChosen = (): boolean => {
+        let extraLangs = this.state.race.extraLanguages;
+        let numBackgroundLangs = this.state.background.languages;
+        let numLanguagesTotal = extraLangs + numBackgroundLangs;
+
+        if (this.state.languageids.length < numLanguagesTotal)
+            return false;
+        return true;
+    };
+
+    allProficienciesChosen = (): boolean => {
+        let numClassProfs = this.state.class.proficiencies.num;
+        let numBackgroundProfs = this.state.background.proficiencies.length;
+
+        if (this.proficiencies().length < numClassProfs + numBackgroundProfs)
+            return false;
+        return true;
+    };
+
+    proficiencies = (): number[] => {
+        return this.state.background.proficiencies.concat(this.state.proficiencies);
+    };
+
+    ///////// Component /////////
 
     public render(): JSX.Element {
         return (
@@ -194,11 +224,15 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
 
                     <StatsComponent
                         race={this.state.race}
+                        statArray={this.state.statArray}
+                        statTotals={this.state.statTotals}
+                        statModifiers={this.state.statModifiers}
                         setStatArray={this.handleStatArrayChange} />
 
                     <ProficienciesComponent
                         class={this.state.class}
                         background={this.state.background}
+                        proficiencies={this.state.proficiencies}
                         setProficiencies={this.handleProficienciesChange} />
 
                     <EquipmentComponent
@@ -210,7 +244,9 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                         class={this.state.class}
                         race={this.state.race}
                         background={this.state.background}
-                        setLanguages={this.handleLanguagesChange} />
+                        languageids={this.state.languageids}
+                        setLanguages={this.handleLanguagesChange}
+                        allLanguagesChosen={this.allLanguagesChosen} />
 
                     <TraitsComponent
                         background={this.state.background}
@@ -218,7 +254,10 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
 
                     <FreeFields {...this.state} setField={this.handleInputChange} />
 
-                    <GeneratePDF {...this.state} />
+                    <GeneratePDF {...this.state}
+                        allLanguagesChosen={this.allLanguagesChosen}
+                        allProficienciesChosen={this.allProficienciesChosen}
+                        getProficiencies={this.proficiencies} />
 
                     <div>&nbsp;</div>
                 </div>

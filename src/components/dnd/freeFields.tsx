@@ -49,7 +49,7 @@ export default class FreeFields extends React.Component<Props> {
 
     public render(): JSX.Element {
         return (
-            <div>
+            <div className='field'>
                 <div className='columns field'>
                     <label className='column is-2 label'>Age:</label>
                     <input className='input column is-2' name="age" type="text" value={this.props.age} onChange={this.handleInputChange} />

@@ -1,3 +1,5 @@
+import reference from "./reference";
+
 export default class Util {
     public static formatModifier(val: number): string {
         if (val === null) {
@@ -27,5 +29,16 @@ export default class Util {
             .reverse();
         diceArray.pop();
         return diceArray.reduce((a, b) => a + b, 0);
+    };
+    
+    public static getModifier(val: number): number {
+        // Get stat modifier from lookup table
+        for (let mod of reference.statModifiers) {
+            if (val <= mod.val) {
+                return mod.modifier;
+            }
+        }
+
+        return reference.statModifiers[reference.statModifiers.length - 1].modifier;
     };
 }

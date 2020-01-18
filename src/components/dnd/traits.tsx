@@ -36,7 +36,7 @@ export default class TraitsComponent extends React.Component<Props, State> {
         const background = this.props.background;
 
         return (
-            <div>
+            <div className='field'>
                 <div className='columns field'>
                     <label className='column is-2 label'>Personality Trait:</label>
                     <div className='column buttons are-small'>
