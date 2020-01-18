@@ -15,6 +15,7 @@ interface Props {
     readonly treasure: string;
     readonly additionalFeaturesAndTraits: string;
     setField: (name: string, val: string) => void;
+    setImage: (name: string, val: any) => void;
 }
 
 export default class FreeFields extends React.Component<Props> {
@@ -35,17 +36,29 @@ export default class FreeFields extends React.Component<Props> {
 
     setAppearance(event: any) {
         event.preventDefault();
-
-        //appearance: event.currentTarget.files[0]
-        // TODO: Wire up
+        this.readFile(event);
     };
 
     setFactionLogo(event: any) {
         event.preventDefault();
-
-        //factionLogo: event.currentTarget.files[0]
-        // TODO: Wire up
+        this.readFile(event);
     };
+
+    readFile(event: any) {
+        let name = event.target.name;
+        let file = event.currentTarget.files[0];
+        var sf = this.props.setImage;
+
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+          // convert image file to base64 string
+          sf(name, reader.result);
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
 
     public render(): JSX.Element {
         return (

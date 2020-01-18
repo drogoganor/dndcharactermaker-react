@@ -7,6 +7,12 @@ export type Race = {
     speed: number;
     extraLanguages: number;
     languages: number[];
+    extraFeatures: RaceFeature[];
+    bonusWeaponProficiencies?: number[];
+}
+
+export type RaceFeature = {
+    text: string;
 }
 
 export type Class = {
@@ -18,6 +24,7 @@ export type Class = {
     proficiencies: ClassProficiency;
     savingThrows: number[];
     hitDice: number;
+    hpIncreasePerLevel: number;
     equipChoices: EquipmentChoice[];
     fixedEquip?: EquipmentFixedBlock[];
     subclass: Subclass;
@@ -48,6 +55,14 @@ export type Background = {
     ideals: PersonalityTrait[];
     bonds: PersonalityTrait[];
     flaws: PersonalityTrait[];
+    toolSelection?: BackgroundToolSelection;
+}
+
+type BackgroundToolSelection = {
+    text: string;
+    proficiencyId?: number;
+    itemId?: number;
+    suggestions: string;
 }
 
 type BackgroundSpecialty = {
@@ -111,6 +126,8 @@ export type Equipment = {
     light?: boolean;
     twohanded?: boolean;
     weight?: number;
+    ac?: number;
+    armorCategory?: number;
 }
 
 export type EquipmentChoiceBlock = {

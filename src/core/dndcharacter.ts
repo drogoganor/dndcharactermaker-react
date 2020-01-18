@@ -33,6 +33,7 @@ export default class DndCharacter {
     public readonly alignment: Alignment;
     public readonly backgroundSpecialty: number = 0;
     public readonly background: Background;
+    public readonly backgroundToolChoice: string = '';
     public readonly statArray: number[] = Array(6).fill(null);
     public readonly statModifiers: number[] = Array(6).fill(null);
     public readonly statTotals: number[] = Array(6).fill(null);

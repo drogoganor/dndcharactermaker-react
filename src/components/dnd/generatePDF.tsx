@@ -56,11 +56,6 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
         let backgroundFeature = this.props.background.backgroundFeature;
         result.push(backgroundFeature);
 
-        let backgroundSpecialty = this.specialtyText;
-        if (backgroundSpecialty !== '') {
-            result.push(backgroundSpecialty);
-        }
-
         let classFeatures = this.props.class.features;
         for (let classFeature of classFeatures) {
             // We meet the level and it has no archetype requirement, or we match the archetype requirement
@@ -69,6 +64,22 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
                 (classFeature.archetypeId === undefined || classFeature.archetypeId === this.props.archetype)) {
                 result.push(classFeature.text);
             }
+        }
+
+        return result;
+    };
+    
+    get additionalTraitsAndFeatures(): string[] {
+        let result = [];
+
+        let backgroundSpecialty = this.specialtyText;
+        if (backgroundSpecialty !== '') {
+            result.push(backgroundSpecialty);
+        }
+
+        let raceFeatures = this.props.race.extraFeatures;
+        for (let raceFeature of raceFeatures) {
+            result.push(raceFeature.text);
         }
 
         return result;
@@ -85,7 +96,16 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
     }
 
     get toolProficienciesText(): string {
-        return this.props.background.toolProficiencies.map(prof => reference.toolProficiencies[prof].text).join(', ');
+        // TODO: This is repeated in proficiencies.tsx
+        let result = this.props.background.toolProficiencies.map(prof => reference.toolProficiencies[prof].text).join(', ');
+        let toolSelection = this.props.background.toolSelection;
+
+        if (this.props.backgroundToolChoice !== '' && toolSelection !== undefined &&
+            toolSelection.proficiencyId !== undefined) {
+            result = result.replace('________', this.props.backgroundToolChoice.trim());
+        }
+
+        return result;
     };
 
     get languagesText(): string {
@@ -177,6 +197,87 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
         }
     };
 
+    getArmorClass(): number {
+        // No armor = 10 + dex
+        let dex = this.props.statModifiers[1];
+        let con = this.props.statModifiers[2];
+        let wis = this.props.statModifiers[4];
+        let defaultArmorClass = 10 + dex;
+        let armorClass = defaultArmorClass;
+
+        let armorEquips = this.getEquipmentByType(1);
+        let cannotIncludeShield = false;
+
+        if (armorEquips.length > 0) {
+            // Find armor with highest AC
+            let armor = armorEquips.reduce((a, b) => { return ((a.ac ?? 0) > (b.ac ?? 0)) ? a : b; });
+
+            armorClass += armor.ac ?? 0;
+            if (armor.armorCategory === 0) {
+                armorClass += dex; // Plus dex modifier for light armor
+            } else if (armor.armorCategory === 1) {
+                armorClass += Math.min(dex, 2); // Plus dex modifier for medium armor to a max of 2
+            }
+        } else {
+            // If no armor, check if we're a barb of level 2+ - unarmored defense (10 + dex + con)
+            if (this.props.class.id === 0 && this.props.level > 1) {
+                armorClass = 10 + dex + con;
+            } else if (this.props.class.id === 5) {
+                // Or a monk (only applies if we don't have a shield)
+                cannotIncludeShield = true;
+                armorClass = 10 + dex + wis;
+            }
+        }
+
+        let shieldEquips = this.getEquipmentByType(1);
+
+        // Also include +2 shield AC
+        if (shieldEquips.length > 0) {
+            armorClass += 2;
+
+            if (cannotIncludeShield) { // If we can't include a shield (monk) but have one, default to 10 + dex AC
+                armorClass = defaultArmorClass;
+            }
+        }
+
+        return armorClass;
+    }
+
+    getEquipmentByType(type: number): Equipment[] {
+        let equipModel = [];
+
+        let equipmentData;
+        for (let equipChoices of this.props.equipChoices) {
+            let choiceItems = equipChoices.items;
+            for (let choiceItem of choiceItems) {
+                equipmentData = reference.equipment[choiceItem.id];
+                if (equipmentData.type === type) {
+                    equipModel.push(equipmentData);
+                }
+            }
+        }
+
+        for (let equipment of this.props.equipment) {
+            equipmentData = reference.equipment[equipment.id];
+            if (equipmentData.type === type) {
+                equipModel.push(equipmentData);
+            }
+        }
+
+        // Condense model (remove duplicates)
+        let usedIds: number[] = [];
+        let newEquipModel = [];
+        for (let equip of equipModel) {
+            if (!usedIds.includes(equip.id)) {
+                usedIds.push(equip.id);
+                newEquipModel.push(equip);
+            }
+        }
+
+        return newEquipModel;
+    };
+
+
     hasWeaponProficiency(equipment: Equipment): boolean {
         let classWeaps = this.props.class.weaponProficiencies;
         if (classWeaps.categories.includes(equipment.type))
@@ -186,6 +287,28 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
         return false;
     };
 
+    get armorAndWeaponsProficiencyText(): string {
+        let armorProfs = this.props.class.armorProficiencies;
+        let weaponProfs = this.props.class.weaponProficiencies;
+        let bonusWeaponProfs = this.props.race.bonusWeaponProficiencies ?? [];
+
+        let result: string[] = [];
+        for (let armorProf of armorProfs) {
+            result.push(reference.armorCategories[armorProf].text);
+        }
+
+        for (let weaponCategory of weaponProfs.categories) {
+            result.push(reference.weaponCategories[weaponCategory].text);
+        }
+
+        let uniqueWeaponArray = Array.from(new Set([...weaponProfs.weapons, ...bonusWeaponProfs]));
+        for (let weapon of uniqueWeaponArray) {
+            result.push(reference.equipment[weapon].text);
+        }
+
+        return result.join(', ');
+    }
+
     fillPdfFields = (blob: any) => {
         let fields: any = {};
         let o = this.props;
@@ -194,10 +317,10 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
         let initiative = o.statModifiers[1];
 
         // Base armor class: 10 + DEX modifier (TODO: include shield & armor)
-        let armorClass = 10 + o.statModifiers[1];
+        let armorClass = this.getArmorClass();
 
         // HP: Starting HP + CON
-        let hp = o.class.hitDice + o.statModifiers[2];
+        let hp = o.class.hitDice + o.statModifiers[2] + ((o.level - 1) * o.class.hpIncreasePerLevel);
 
         fields['PlayerName'] = [o.playerName];
         fields['CharacterName'] = [o.characterName];
@@ -214,7 +337,15 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
         fields['Hair'] = [o.hair];
         fields['Allies'] = [o.allies];
         fields['FactionName'] = [o.organizations];
-        fields['Feat+Traits'] = [o.additionalFeaturesAndTraits];
+
+        let featuresAndTraits = this.additionalTraitsAndFeatures;
+        if (o.additionalFeaturesAndTraits !== '') {
+            featuresAndTraits.push(o.additionalFeaturesAndTraits);
+        }
+
+        fields['Feat+Traits'] = [featuresAndTraits.join('\n\n')];
+
+
         fields['Backstory'] = [o.backstory];
         fields['Treasure'] = [o.treasure];
 
@@ -284,7 +415,7 @@ export default class GeneratePDF extends React.Component<CharacterPdfModel> {
         fields['HDTotal'] = [this.props.level + 'd' + o.class.hitDice];
         fields['ProfBonus'] = [Util.formatModifier(this.proficiencyBonus)];
 
-        let profLangText = 'Languages: ' + this.languagesText;
+        let profLangText = this.armorAndWeaponsProficiencyText + '\n\nLanguages: ' + this.languagesText;
 
         if (this.toolProficienciesText !== '')
             profLangText += '\n\nProficiencies: ' + this.toolProficienciesText;

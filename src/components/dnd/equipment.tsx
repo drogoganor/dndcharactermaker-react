@@ -6,6 +6,7 @@ import { EquipmentChoiceModel, EquipmentModel } from '../../core/dndcharacter';
 interface Props {
     class: Class;
     background: Background;
+    backgroundToolChoice: string;
     setEquipment: (equipment: EquipmentModel[], equipChoices: EquipmentChoiceModel[], equipmentText: string, allEquipmentChosen: boolean) => void;
 }
 
@@ -73,7 +74,15 @@ export default class EquipmentComponent extends React.Component<Props, State> {
     };
 
     getEquipmentName(id: number): string {
-        return reference.equipment[id].text;
+        let text = reference.equipment[id].text;
+        let toolSelection = this.props.background.toolSelection;
+        
+        if (this.props.backgroundToolChoice !== '' && toolSelection !== undefined &&
+            toolSelection.itemId === id) {
+                text = text.replace('________', this.props.backgroundToolChoice.trim());
+        }
+
+        return text;
     };
 
     isPack(itemId: number): boolean {
@@ -152,7 +161,18 @@ export default class EquipmentComponent extends React.Component<Props, State> {
             }
         }
 
-        return equipIds;
+        // Condense (remove duplicates)
+        let newEquip: any[] = [];
+        for (let equip of equipIds) {
+            let existingEquip = newEquip.find(x => x.id === equip.id);
+            if (existingEquip !== undefined) {
+                existingEquip.num += equip.num;
+            } else {
+                newEquip.push(equip);
+            }
+        }
+
+        return newEquip;
     };
 
     get equipmentTextList(): string[] {
@@ -161,7 +181,7 @@ export default class EquipmentComponent extends React.Component<Props, State> {
         let equipIds = this.equipmentList;
 
         for (let equip of equipIds) {
-            let text = reference.equipment[equip.id].text;
+            let text = this.getEquipmentName(equip.id);
             if (equip.num > 1)
                 text += ' (' + equip.num + ')';
             arr.push(text);
@@ -178,7 +198,7 @@ export default class EquipmentComponent extends React.Component<Props, State> {
 
         for (i = 0; i < equipIds.length; i++) {
             let equip = equipIds[i];
-            text += reference.equipment[equip.id].text;
+            text += this.getEquipmentName(equip.id);
             if (equip.num > 1)
                 text += ' (' + equip.num + ')';
             if (i < equipIds.length - 1)

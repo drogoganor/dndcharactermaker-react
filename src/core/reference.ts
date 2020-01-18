@@ -5,7 +5,7 @@ export class DndReference {
     { id: 0, text: 'Light Armor' },
     { id: 1, text: 'Medium Armor' },
     { id: 2, text: 'Heavy Armor' },
-    { id: 3, text: 'Shield' },
+    { id: 3, text: 'Shields' },
   ];
   public equipmentCategories: EquipmentCategory[] = [
     { id: 0, text: 'Weapon' },
@@ -597,72 +597,96 @@ export class DndReference {
       type: 1,
       text: 'Padded armor',
       weapon: false,
+      ac: 11,
+      armorCategory: 0,
     },
     {
       id: 45,
       type: 1,
       text: 'Leather armor',
       weapon: false,
+      ac: 11,
+      armorCategory: 0,
     },
     {
       id: 46,
       type: 1,
       text: 'Studded leather armor',
       weapon: false,
+      ac: 12,
+      armorCategory: 0,
     },
     {
       id: 47,
       type: 1,
       text: 'Hide armor',
       weapon: false,
+      ac: 12,
+      armorCategory: 1,
     },
     {
       id: 48,
       type: 1,
       text: 'Chain shirt',
       weapon: false,
+      ac: 13,
+      armorCategory: 1,
     },
     {
       id: 49,
       type: 1,
       text: 'Scale mail',
       weapon: false,
+      ac: 14,
+      armorCategory: 1,
     },
     {
       id: 50,
       type: 1,
       text: 'Breastplate',
       weapon: false,
+      ac: 14,
+      armorCategory: 1,
     },
     {
       id: 51,
       type: 1,
       text: 'Half plate',
       weapon: false,
+      ac: 15,
+      armorCategory: 1,
     },
     {
       id: 52,
       type: 1,
       text: 'Ring mail',
       weapon: false,
+      ac: 14,
+      armorCategory: 2,
     },
     {
       id: 53,
       type: 1,
       text: 'Chain mail',
       weapon: false,
+      ac: 16,
+      armorCategory: 2,
     },
     {
       id: 54,
       type: 1,
       text: 'Splint',
       weapon: false,
+      ac: 17,
+      armorCategory: 2,
     },
     {
       id: 55,
       type: 1,
       text: 'Plate',
       weapon: false,
+      ac: 18,
+      armorCategory: 2,
     },
     // Shields
     {
@@ -670,12 +694,14 @@ export class DndReference {
       type: 3,
       text: 'Wooden shield',
       weapon: false,
+      ac: 2
     },
     {
       id: 57,
       type: 3,
       text: 'Shield',
       weapon: false,
+      ac: 2
     },
     // Ammo
     {
@@ -780,7 +806,7 @@ export class DndReference {
     {
       id: 74,
       type: 6,
-      text: 'Con tools',  /* Tools of the con of your choice (ten stoppered bottles filled with colored liquid, a set of weighted dice, a deck of marked cards, or a signet ring of an imaginary duke) */
+      text: 'Con tools (________)',  /* Tools of the con of your choice (ten stoppered bottles filled with colored liquid, a set of weighted dice, a deck of marked cards, or a signet ring of an imaginary duke) */
       weapon: false,
     },
     {
@@ -930,7 +956,7 @@ export class DndReference {
     {
       id: 99,
       type: 6,
-      text: 'Lucky charm', /* Such as a rabbit foot or small stone with a hole in the center (or you may roll for a random trinket on the Trinkets table in chapter 5) */
+      text: 'Lucky charm (________)', /* Such as a rabbit foot or small stone with a hole in the center (or you may roll for a random trinket on the Trinkets table in chapter 5) */
       weapon: false,
     },
     {
@@ -948,7 +974,7 @@ export class DndReference {
     {
       id: 102,
       type: 6,
-      text: 'Set of bone dice or deck of cards',
+      text: 'Gaming set (________)', /* Bone dice or deck of cards */
       weapon: false,
     },
     {

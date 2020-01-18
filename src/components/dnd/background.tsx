@@ -5,13 +5,16 @@ import reference from '../../core/reference';
 
 interface Props {
     background: Background;
+    backgroundToolChoice: string;
     setBackground: (background: Background) => void;
+    setBackgroundToolChoice: (tool: string) => void;
 }
 
 export default class BackgroundComponent extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
+        this.handleBackgroundToolChoiceChange = this.handleBackgroundToolChoiceChange.bind(this);
     }
 
     handleBackgroundChange(event: any, bg: Background) {
@@ -19,8 +22,21 @@ export default class BackgroundComponent extends React.Component<Props> {
         this.props.setBackground(bg);
     }
 
+    handleBackgroundToolChoiceChange(event: any) {
+        event.preventDefault();
+        this.props.setBackgroundToolChoice(event.target.value);
+    }
+
     get toolProficienciesText(): string {
-        return this.props.background.toolProficiencies.map(prof => reference.toolProficiencies[prof].text).join(', ');
+        let result = this.props.background.toolProficiencies.map(prof => reference.toolProficiencies[prof].text).join(', ');
+        let toolSelection = this.props.background.toolSelection;
+
+        if (this.props.backgroundToolChoice !== '' && toolSelection !== undefined &&
+            toolSelection.proficiencyId !== undefined) {
+            result = result.replace('________', this.props.backgroundToolChoice.trim());
+        }
+        
+        return result;
     };
 
     get currencyText(): string {
@@ -43,6 +59,7 @@ export default class BackgroundComponent extends React.Component<Props> {
 
     public render(): JSX.Element {
         const background = this.props.background;
+        const backgroundToolChoice = this.props.backgroundToolChoice;
 
         return (
             <div className='field'>
@@ -63,6 +80,25 @@ export default class BackgroundComponent extends React.Component<Props> {
                         </div>
                     </div>
                 </div>
+                {this.props.background.toolSelection !== undefined && (
+
+                    <div className='field'>
+                        <div className='columns'>
+                            <label className='column is-2 label'>{this.props.background.toolSelection.text}:</label>
+                            <input className='input column is-5' id="charname" type="text"
+                                name="toolSelection"
+                                value={backgroundToolChoice}
+                                onChange={this.handleBackgroundToolChoiceChange}
+                            />
+                        </div>
+                        <div className='columns'>
+                            <div className="notification">
+                                <b>Suggestions: </b>{this.props.background.toolSelection.suggestions}
+                            </div>
+                        </div>
+                    </div>
+                    )
+                }
                 {this.toolProficienciesText !== '' && (
                     <div className='columns field'>
                         <label className='column is-2 label'>Tool Proficiencies:</label>

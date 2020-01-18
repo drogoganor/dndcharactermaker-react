@@ -10,7 +10,14 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 0, 2, 0, 0, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 1]
+      languages: [0, 1],
+      extraFeatures: [
+        { text: "Darkvision" },
+        { text: "Dwarven Resilience (p.20)" },
+        { text: "Dwarven Combat Training (p.20)" },
+        { text: "Tool Proficiency (p.20)" },
+        { text: "Stonecunning (p.20)" },
+      ]
     },
     {
       id: 1,
@@ -20,7 +27,15 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 0, 2, 0, 1, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 1]
+      languages: [0, 1],
+      extraFeatures: [
+        { text: "Darkvision" },
+        { text: "Dwarven Resilience (p.20)" },
+        { text: "Dwarven Combat Training (p.20)" },
+        { text: "Tool Proficiency (p.20)" },
+        { text: "Stonecunning (p.20)" },
+        { text: "Dwarven Toughness (p.20)" },
+      ]
     },
     {
       id: 2,
@@ -30,7 +45,15 @@ export class PlayersHandbook implements Book {
       bonuses: [2, 0, 2, 0, 0, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 1]
+      languages: [0, 1],
+      extraFeatures: [
+        { text: "Darkvision" },
+        { text: "Dwarven Resilience (p.20)" },
+        { text: "Dwarven Combat Training (p.20)" },
+        { text: "Tool Proficiency (p.20)" },
+        { text: "Stonecunning (p.20)" },
+        { text: "Dwarven Armor Training (p.20)" },
+      ]
     },
     {
       id: 3,
@@ -40,7 +63,13 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 2, 0, 0, 0, 0],
       speed: 30,
       extraLanguages: 0,
-      languages: [0, 2]
+      languages: [0, 2],
+      extraFeatures: [
+        { text: "Darkvision" },
+        { text: "Keen Senses (p.23)" },
+        { text: "Fey Ancestry (p.23)" },
+        { text: "Trance (p.23)" },
+      ]
     },
     {
       id: 4,
@@ -50,7 +79,16 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 2, 0, 1, 0, 0],
       speed: 30,
       extraLanguages: 1,
-      languages: [0, 2]
+      languages: [0, 2],
+      bonusWeaponProficiencies: [21, 27, 12, 35],
+      extraFeatures: [
+        { text: "Darkvision" },
+        { text: "Keen Senses (p.23)" },
+        { text: "Fey Ancestry (p.23)" },
+        { text: "Trance (p.23)" },
+        { text: "Elf Weapon Training (p.23)" },
+        { text: "Cantrip (p.24)" },
+      ]
     },
     {
       id: 5,
@@ -60,7 +98,17 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 2, 0, 0, 1, 0],
       speed: 35,
       extraLanguages: 0,
-      languages: [0, 2]
+      languages: [0, 2],
+      bonusWeaponProficiencies: [21, 27, 12, 35],
+      extraFeatures: [
+        { text: "Darkvision" },
+        { text: "Keen Senses (p.23)" },
+        { text: "Fey Ancestry (p.23)" },
+        { text: "Trance (p.23)" },
+        { text: "Elf Weapon Training (p.24)" },
+        { text: "Fleet of Foot (p.24)" },
+        { text: "Mask of the Wild (p.24)" },
+      ]
     },
     {
       id: 6,
@@ -70,7 +118,17 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 2, 0, 0, 0, 1],
       speed: 30,
       extraLanguages: 0,
-      languages: [0, 2]
+      languages: [0, 2],
+      bonusWeaponProficiencies: [25, 27, 33],
+      extraFeatures: [
+        { text: "Superior Darkvision (120 feet)" },
+        { text: "Keen Senses (p.23)" },
+        { text: "Fey Ancestry (p.23)" },
+        { text: "Trance (p.23)" },
+        { text: "Sunlight Sensitivity (p.24)" },
+        { text: "Drow Magic (p.24)" },
+        { text: "Drow Weapon Training (p.24)" },
+      ]
     },
     {
       id: 7,
@@ -80,7 +138,12 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 2, 0, 0, 0, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 6]
+      languages: [0, 6],
+      extraFeatures: [
+        { text: "Lucky (p.28)" },
+        { text: "Brave (p.28)" },
+        { text: "Halfling Nimbleness (p.28)" }
+      ]
     },
     {
       id: 8,
@@ -90,7 +153,13 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 2, 0, 0, 0, 1],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 6]
+      languages: [0, 6],
+      extraFeatures: [
+        { text: "Lucky (p.28)" },
+        { text: "Brave (p.28)" },
+        { text: "Halfling Nimbleness (p.28)" },
+        { text: "Naturally Stealthy (p.28)" },
+      ]
     },
     {
       id: 9,
@@ -100,7 +169,13 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 2, 1, 0, 0, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 6]
+      languages: [0, 6],
+      extraFeatures: [
+        { text: "Lucky (p.28)" },
+        { text: "Brave (p.28)" },
+        { text: "Halfling Nimbleness (p.28)" },
+        { text: "Stout Resilience (p.28)" },
+      ]
     },
     {
       id: 10,
@@ -110,7 +185,8 @@ export class PlayersHandbook implements Book {
       bonuses: [1, 1, 1, 1, 1, 1],
       speed: 30,
       extraLanguages: 1,
-      languages: [0]
+      languages: [0],
+      extraFeatures: []
     },
     {
       id: 11,
@@ -120,7 +196,12 @@ export class PlayersHandbook implements Book {
       bonuses: [2, 0, 0, 0, 0, 1],
       speed: 30,
       extraLanguages: 0,
-      languages: [0, 10]
+      languages: [0, 10],
+      extraFeatures: [
+        { text: "Draconic Ancestry (p.34)" },
+        { text: "Breath Weapon (p.34)" },
+        { text: "Damage Resistance (p.34)" },
+      ]
     },
     {
       id: 12,
@@ -130,7 +211,11 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 0, 0, 2, 0, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 4]
+      languages: [0, 4],
+      extraFeatures: [
+        { text: "Darkvision (p.37)" },
+        { text: "Gnome Cunning (p.37)" },
+      ]
     },
     {
       id: 13,
@@ -140,7 +225,13 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 1, 0, 2, 0, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 4]
+      languages: [0, 4],
+      extraFeatures: [
+        { text: "Darkvision (p.37)" },
+        { text: "Gnome Cunning (p.37)" },
+        { text: "Natural Illusionist (p.37)" },
+        { text: "Speak with Small Beasts (p.37)" },
+      ]
     },
     {
       id: 14,
@@ -150,7 +241,13 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 0, 1, 2, 0, 0],
       speed: 25,
       extraLanguages: 0,
-      languages: [0, 4]
+      languages: [0, 4],
+      extraFeatures: [
+        { text: "Darkvision (p.37)" },
+        { text: "Gnome Cunning (p.37)" },
+        { text: "Artificer's Lore (p.37)" },
+        { text: "Tinker (p.37)" },
+      ]
     },
     {
       id: 15,
@@ -160,7 +257,12 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 0, 0, 0, 0, 2],
       speed: 30,
       extraLanguages: 1,
-      languages: [0, 2]
+      languages: [0, 2],
+      extraFeatures: [
+        { text: "Darkvision (p.39)" },
+        { text: "Fey Ancestry (p.39)" },
+        { text: "Skill Versatility (p.39)" },
+      ]
     },
     {
       id: 16,
@@ -170,7 +272,13 @@ export class PlayersHandbook implements Book {
       bonuses: [2, 0, 1, 0, 0, 0],
       speed: 30,
       extraLanguages: 0,
-      languages: [0, 7]
+      languages: [0, 7],
+      extraFeatures: [
+        { text: "Darkvision (p.41)" },
+        { text: "Menacing (p.41)" },
+        { text: "Relentless Endurance (p.41)" },
+        { text: "Savage Attacks (p.41)" },
+      ]
     },
     {
       id: 17,
@@ -180,7 +288,12 @@ export class PlayersHandbook implements Book {
       bonuses: [0, 0, 0, 1, 0, 2],
       speed: 30,
       extraLanguages: 0,
-      languages: [0, 12]
+      languages: [0, 12],
+      extraFeatures: [
+        { text: "Darkvision (p.43)" },
+        { text: "Hellish Resistance (p.43)" },
+        { text: "Infernal Legacy (p.43)" },
+      ]
     },
   ];
   public classes: Class[] = [
@@ -228,6 +341,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [1, 3, 7, 10, 11, 17] },
       savingThrows: [0, 2],
       hitDice: 12,
+      hpIncreasePerLevel: 7,
       equipChoices: [
         {
           id: 0,
@@ -286,6 +400,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 3, profs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
       savingThrows: [1, 5],
       hitDice: 8,
+      hpIncreasePerLevel: 5,
       equipChoices: [
         {
           id: 0,
@@ -394,6 +509,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [5, 6, 9, 13, 14] },
       savingThrows: [4, 5],
       hitDice: 8,
+      hpIncreasePerLevel: 5,
       equipChoices: [
         {
           id: 0,
@@ -472,6 +588,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [1, 2, 6, 9, 10, 11, 17] },
       savingThrows: [3, 4],
       hitDice: 8,
+      hpIncreasePerLevel: 5,
       equipChoices: [
         {
           id: 0,
@@ -545,6 +662,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [0, 1, 3, 5, 6, 7, 11, 17] },
       savingThrows: [0, 2],
       hitDice: 10,
+      hpIncreasePerLevel: 6,
       equipChoices: [
         {
           id: 0,
@@ -658,6 +776,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [0, 3, 5, 6, 14, 16] },
       savingThrows: [0, 1],
       hitDice: 8,
+      hpIncreasePerLevel: 5,
       equipChoices: [
         {
           id: 0,
@@ -733,6 +852,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [3, 6, 7, 9, 13, 14] },
       savingThrows: [4, 5],
       hitDice: 10,
+      hpIncreasePerLevel: 6,
       equipChoices: [
         {
           id: 0,
@@ -805,6 +925,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 3, profs: [1, 3, 6, 8, 10, 11, 16, 17] },
       savingThrows: [0, 1],
       hitDice: 10,
+      hpIncreasePerLevel: 6,
       equipChoices: [
         {
           id: 0,
@@ -883,6 +1004,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 4, profs: [0, 3, 4, 6, 7, 8, 11, 12, 13, 15, 16] },
       savingThrows: [1, 3],
       hitDice: 8,
+      hpIncreasePerLevel: 5,
       equipChoices: [
         {
           id: 0,
@@ -955,6 +1077,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [2, 4, 6, 7, 13, 14] },
       savingThrows: [2, 5],
       hitDice: 6,
+      hpIncreasePerLevel: 4,
       equipChoices: [
         {
           id: 0,
@@ -1028,6 +1151,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [2, 4, 5, 7, 8, 10, 14] },
       savingThrows: [4, 5],
       hitDice: 8,
+      hpIncreasePerLevel: 5,
       equipChoices: [
         {
           id: 0,
@@ -1145,6 +1269,7 @@ export class PlayersHandbook implements Book {
       proficiencies: { num: 2, profs: [2, 5, 6, 8, 9, 14] },
       savingThrows: [3, 4],
       hitDice: 6,
+      hpIncreasePerLevel: 4,
       equipChoices: [
         {
           id: 0,
@@ -1227,6 +1352,7 @@ export class PlayersHandbook implements Book {
       languages: 0,
       toolProficiencies: [0, 1],
       proficiencies: [4, 15],
+      toolSelection: { text: 'Con Tools', itemId: 74, suggestions: "Ten stoppered bottles filled with colored liquid, a set of weighted dice, a deck of marked cards, or a signet ring of an imaginary duke." },
       specialty: {
         name: 'Scheme',
         rolls: [
@@ -1282,6 +1408,7 @@ export class PlayersHandbook implements Book {
       languages: 0,
       toolProficiencies: [2, 3],
       proficiencies: [4, 16],
+      toolSelection: { text: 'Gaming Set', proficiencyId: 2, suggestions: "Dice or deck of cards." },
       specialty: {
         name: 'Specialty',
         rolls: [
@@ -1339,6 +1466,7 @@ export class PlayersHandbook implements Book {
       languages: 0,
       toolProficiencies: [0, 4],
       proficiencies: [0, 12],
+      toolSelection: { text: 'Musical Instrument', proficiencyId: 4, itemId: 63, suggestions: "Bagpipes, drum, dulcimer, flute, lute, lyre, horn, pan flute, shawm or viol." },
       specialty: {
         name: 'Routine',
         rolls: [
@@ -1398,6 +1526,7 @@ export class PlayersHandbook implements Book {
       languages: 0,
       toolProficiencies: [5, 6],
       proficiencies: [1, 17],
+      toolSelection: { text: 'Artisan\'s tools', proficiencyId: 5, itemId: 79, suggestions: "Alchemist's supplies, brewer's supplies, calligrapher's supplies, carpenter's tools, cartographer's tools, cobbler's tools, cook's utensils, glassblower's tools, jeweler's tools, leatherworker's tools, mason's tools, painter's supplies, potter's tools, smiths's tools, tinker's tools, weaver's tools or woodcarver's tools." },
       specialty: {
         name: 'Defining event',
         rolls: [
@@ -1457,6 +1586,7 @@ export class PlayersHandbook implements Book {
       languages: 1,
       toolProficiencies: [5],
       proficiencies: [6, 13],
+      toolSelection: { text: 'Artisan\'s tools', proficiencyId: 5, itemId: 79, suggestions: "Alchemist's supplies, brewer's supplies, calligrapher's supplies, carpenter's tools, cartographer's tools, cobbler's tools, cook's utensils, glassblower's tools, jeweler's tools, leatherworker's tools, mason's tools, painter's supplies, potter's tools, smiths's tools, tinker's tools, weaver's tools or woodcarver's tools." },
       specialty: {
         name: 'Guild Business',
         rolls: [
@@ -1583,6 +1713,7 @@ export class PlayersHandbook implements Book {
       languages: 1,
       toolProficiencies: [2],
       proficiencies: [5, 13],
+      toolSelection: { text: 'Gaming Set', proficiencyId: 2, suggestions: "Dice or deck of cards." },
       personalityTraits: [
         { id: 0, text: "My eloquent flattery makes everyone I talk to feel like the most wonderful and important person in the world." },
         { id: 1, text: "The common folk love me for my kindness and generosity." },
@@ -1627,6 +1758,7 @@ export class PlayersHandbook implements Book {
       languages: 1,
       toolProficiencies: [4],
       proficiencies: [3, 17],
+      toolSelection: { text: 'Musical Instrument', proficiencyId: 4, suggestions: "Bagpipes, drum, dulcimer, flute, lute, lyre, horn, pan flute, shawm or viol." },
       specialty: {
         name: 'Origin',
         rolls: [
@@ -1743,6 +1875,7 @@ export class PlayersHandbook implements Book {
       languages: 0,
       toolProficiencies: [8, 9],
       proficiencies: [3, 11],
+      toolSelection: { text: 'Lucky Charm', itemId: 99, suggestions: "A rabbit foot or small stone with a hole in the center (or you may roll for a random trinket on the Trinkets table in chapter 5, p.160)." },
       personalityTraits: [
         { id: 0, text: "My friends know they can rely on me, no matter what." },
         { id: 1, text: "I work hard so that I can play hard when the work is done." },
@@ -1787,6 +1920,7 @@ export class PlayersHandbook implements Book {
       languages: 0,
       toolProficiencies: [2, 6],
       proficiencies: [3, 7],
+      toolSelection: { text: 'Gaming Set', proficiencyId: 2, itemId: 102, suggestions: "Bone dice or deck of cards." },
       specialty: {
         name: 'Specialty',
         rolls: [

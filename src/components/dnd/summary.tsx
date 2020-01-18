@@ -18,17 +18,35 @@ export default class Summary extends React.Component {
                         </p>
                         <ul>
                             <li>Everything from books other than the Player's Handbook</li>
-                            <li>Armor class does not include equipped armor or shield</li>
                             <li>Cantrips and spells</li>
-                            <li>Race features such as Darkvision, Luck, etc.</li>
-                            <li>Feats and stat improvement</li>
+                            <li>Background specialty selection</li>
+                            <li>Background variant selection</li>
+                            <li>Feats and ability score improvements</li>
+                            <li>Class tool proficiency selection</li>
                             <li>Character appearance &amp; faction logo</li>
-                        </ul>
-                        <p>
-                            Known bugs and limitations:
-                        </p>
-                        <ul>
-                            <li>The same item can be listed twice e.g. a Criminal Rogue with a Burglar's pack will have Crowbar listed twice instead of "Crowbar (2)"</li>
+                            <li>Race:</li>
+                            <ul>
+                                <li>Dwarf: Cannot select Tool Proficiency (p. 20)</li>
+                                <li>Dragonborn: No Draconic Ancestry selection (p. 34)</li>
+                                <li>Half-Elf: Skill Versatility: Proficiency in two skills of your choice. (p. 39)</li>
+                            </ul>
+                            <li>Class:</li>
+                            <ul>
+                                <li>Barbarian: No Rage table. (p. 47)</li>
+                                <li>Fighter: No fighting style selection. (p. 72)</li>
+                                <li>Fighter-Battlemaster: No maneuvers selection. (p. 74)</li>
+                                <li>Monk: No Ki table. (p. 77)</li>
+                                <li>Paladin: No fighting style selection. (p. 84)</li>
+                                <li>Ranger: No fighting style selection. (p. 91)</li>
+                                <li>Rogue: No sneak attack table. (p. 95)</li>
+                                <li>Sorcerer: No sorcery points table. (p. 100)</li>
+                                <li>Sorcerer: No Draconic Ancestry selection (p. 102)</li>
+                                <li>Warlock: No invocations table. (p. 100)</li>
+                            </ul>
+                            <li>Background:</li>
+                            <ul>
+                                <li>Entertainer: No choice of favor of admirer. (p. 130)</li>
+                            </ul>
                         </ul>
                     </div>
                 </article>

@@ -37,6 +37,8 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         this.handleProficienciesChange = this.handleProficienciesChange.bind(this);
         this.handleEquipmentChange = this.handleEquipmentChange.bind(this);
         this.handleLanguagesChange = this.handleLanguagesChange.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
+        this.handleBackgroundToolChoiceChange = this.handleBackgroundToolChoiceChange.bind(this);
         
         this.allLanguagesChosen = this.allLanguagesChosen.bind(this);
         this.allProficienciesChosen = this.allProficienciesChosen.bind(this);
@@ -111,6 +113,13 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         });
     }
 
+    handleBackgroundToolChoiceChange(tool: string) {
+        this.setState({
+            ...this.state,
+            backgroundToolChoice: tool
+        });
+    }
+
     handleStatArrayChange(statArray: number[], statTotals: number[], statModifiers: number[], allStatsAssigned: boolean) {
         this.setState({
             ...this.state,
@@ -159,6 +168,13 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
         });
     }
 
+    handleImageChange(name: string, value: any) {
+        this.setState({
+            ...this.state,
+            [name]: value
+        });
+    }
+
     ///////// Logic /////////
 
     allLanguagesChosen = (): boolean => {
@@ -181,7 +197,19 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
     };
 
     proficiencies = (): number[] => {
-        return this.state.background.proficiencies.concat(this.state.proficiencies);
+        let profs = this.state.background.proficiencies.concat(this.state.proficiencies);
+
+        // If Half-Orc, add Intimidation
+        if (this.state.race.id === 7) {
+            profs.push(7);
+        }
+
+        // If Elf, add Perception
+        else if (this.state.race.id >= 3 && this.state.race.id <= 6) {
+            profs.push(11);
+        }
+
+        return profs;
     };
 
     ///////// Component /////////
@@ -220,7 +248,9 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
 
                     <BackgroundComponent
                         background={this.state.background}
-                        setBackground={this.handleBackgroundChange} />
+                        backgroundToolChoice={this.state.backgroundToolChoice}
+                        setBackground={this.handleBackgroundChange}
+                        setBackgroundToolChoice={this.handleBackgroundToolChoiceChange} />
 
                     <StatsComponent
                         race={this.state.race}
@@ -238,6 +268,7 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                     <EquipmentComponent
                         class={this.state.class}
                         background={this.state.background}
+                        backgroundToolChoice={this.state.backgroundToolChoice}
                         setEquipment={this.handleEquipmentChange} />
 
                     <LanguagesComponent
@@ -252,7 +283,9 @@ export default class DndCharacterMakerComponent extends React.Component<Props, D
                         background={this.state.background}
                         setTrait={this.handleTraitSelection} />
 
-                    <FreeFields {...this.state} setField={this.handleInputChange} />
+                    <FreeFields {...this.state}
+                        setField={this.handleInputChange}
+                        setImage={this.handleImageChange} />
 
                     <GeneratePDF {...this.state}
                         allLanguagesChosen={this.allLanguagesChosen}
