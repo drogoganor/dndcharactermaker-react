@@ -28,6 +28,7 @@ export type Class = {
     equipChoices: EquipmentChoice[];
     fixedEquip?: EquipmentFixedBlock[];
     subclass: Subclass;
+    spellCasting?: Spellcasting;
 }
 
 type Subclass = {
@@ -39,6 +40,20 @@ type Subclass = {
 type Archetype = {
     id: number;
     text: string;
+}
+
+type Spellcasting = {
+    atLevel: number;
+    requiresSubclass?: number;
+    modifier?: number;
+    saveDC?: number;
+    spellTable?: SpellcasterLevel[];
+}
+
+type SpellcasterLevel = {
+    level: number;
+    numSpellsOfEachLevel: number[];
+    spellsKnown?: number;
 }
 
 export type Background = {
