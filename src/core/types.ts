@@ -58,6 +58,16 @@ export type Background = {
     toolSelection?: BackgroundToolSelection;
 }
 
+export type Feat = {
+    id: number;
+    text: string;
+    attributeRequirement?: number[];
+    attributeMinimum?: number;
+    attributeBoost?: number[];
+    requiresSpellcasting?: boolean;
+    requiresArmorProficiency?: number;
+}
+
 type BackgroundToolSelection = {
     text: string;
     proficiencyId?: number;
