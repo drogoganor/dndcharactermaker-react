@@ -15,7 +15,8 @@ import {
     backgroundToolChoiceChanged,
     alignmentChanged,
     statsChanged,
-    proficienciesChanged, equipmentChanged,
+    proficienciesChanged,
+    equipmentChanged, languagesChanged, traitsChanged,
 } from "./actions";
 import {EquipmentChoiceModel, EquipmentModel} from "../core/dndcharacter";
 
@@ -38,6 +39,18 @@ export type EquipModel = {
     allEquipmentChosen: boolean;
 };
 
+export type LanguagesModel = {
+    languageIds: number[];
+    allLanguagesChosen: boolean;
+};
+
+export type TraitModel = {
+    trait: number;
+    ideal: number;
+    bond: number;
+    flaw: number;
+};
+
 export interface IGlobalState {
     xp: number;
     level: number;
@@ -53,6 +66,8 @@ export interface IGlobalState {
     stats: StatModel;
     proficiency: ProficienciesModel;
     equip: EquipModel;
+    languages: LanguagesModel;
+    traits: TraitModel;
 }
 
 export type GlobalState = typeof INITIAL_STATE;
@@ -84,6 +99,16 @@ const INITIAL_STATE = {
         equipChoices: [],
         equipmentText: '',
         allEquipmentChosen: false
+    },
+    languages: {
+        languageIds: [],
+        allLanguagesChosen: false
+    },
+    traits: {
+        trait: 0,
+        ideal: 0,
+        bond: 0,
+        flaw: 0
     }
 };
 
@@ -166,6 +191,18 @@ const rootReducer = handleActions({
     [equipmentChanged.toString()]: (state: GlobalState, { payload }: FSA<string, EquipModel>) => {
         return state.equip !== payload
             ? { ...state, equip: payload }
+            : state;
+    },
+
+    [languagesChanged.toString()]: (state: GlobalState, { payload }: FSA<string, LanguagesModel>) => {
+        return state.languages !== payload
+            ? { ...state, languages: payload }
+            : state;
+    },
+
+    [traitsChanged.toString()]: (state: GlobalState, { payload }: FSA<string, TraitModel>) => {
+        return state.traits !== payload
+            ? { ...state, traits: payload }
             : state;
     },
 }, INITIAL_STATE);

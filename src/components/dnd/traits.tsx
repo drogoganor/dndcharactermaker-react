@@ -1,112 +1,122 @@
 import React from 'react';
-import { Background } from '../../core/types';
+import { IGlobalState } from "../../redux/reducer";
+import { traitsChanged } from "../../redux/actions";
+import { connect } from 'react-redux';
 
-interface Props {
-    background: Background;
-    setTrait: (name: string, trait: number) => void;
-}
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
 
-class State {
-    public readonly trait: number = 0;
-    public readonly ideal: number = 0;
-    public readonly bond: number = 0;
-    public readonly flaw: number = 0;
-}
+const TraitsComponent = (props: StateProps & DispatchProps) => {
+    const { traits, background, onTraitsChanged } = props;
 
-export default class TraitsComponent extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = new State();
-        this.handleClickSelection = this.handleClickSelection.bind(this);
-    }
-
-    handleOptionSelection(event: any) {
-        event.preventDefault();
-
-        const target = event.target;
-        const name = target.name;
-        const val = target.value;
-
-        this.setState({
-            ...this.state,
-            [name]: val
-        }, () => this.props.setTrait(name, val));
-    }
-
-    handleClickSelection(event: any, val: any) {
-        event.preventDefault();
-
-        const target = event.target;
-        const name = target.name;
-
-        this.setState({
-            ...this.state,
-            [name]: val
-        }, () => this.props.setTrait(name, val));
-    }
-
-    public render(): JSX.Element {
-        const background = this.props.background;
-
-        return (
-            <div className='field'>
-                <div className='columns field is-vcentered'>
-                    <label className='column is-2 label'>Personality Trait:</label>
-                    <div className='column'>
-                        <div className='control'>
-                            <div className='select is-fullwidth'>
-                                <select name='trait' onChange={(e) => this.handleOptionSelection(e)}>
-                                    {background.personalityTraits.map((trait, index) => {
-                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='columns field is-vcentered'>
-                    <label className='column is-2 label'>Ideal:</label>
-                    <div className='column'>
-                        <div className='control'>
-                            <div className='select is-fullwidth'>
-                                <select name='ideal' onChange={(e) => this.handleOptionSelection(e)}>
-                                    {background.ideals.map((trait, index) => {
-                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='columns field is-vcentered'>
-                    <label className='column is-2 label'>Bond:</label>
-                    <div className='column'>
-                        <div className='control'>
-                            <div className='select is-fullwidth'>
-                                <select name='bond' onChange={(e) => this.handleOptionSelection(e)}>
-                                    {background.bonds.map((trait, index) => {
-                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='columns field is-vcentered'>
-                    <label className='column is-2 label'>Flaw:</label>
-                    <div className='column'>
-                        <div className='control'>
-                            <div className='select is-fullwidth'>
-                                <select name='flaw' onChange={(e) => this.handleOptionSelection(e)}>
-                                    {background.flaws.map((trait, index) => {
-                                        return (<option key={index} value={trait.id}>{trait.text}</option>)
-                                    })}
-                                </select>
-                            </div>
+    return (
+        <div className='field'>
+            <div className='columns field is-vcentered'>
+                <label className='column is-2 label'>Personality Trait:</label>
+                <div className='column'>
+                    <div className='control'>
+                        <div className='select is-fullwidth'>
+                            <select name='trait' onChange={(e) => traitChanged(+e.target.value)}>
+                                {background.personalityTraits.map((trait, index) => {
+                                    return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                })}
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
-        )
+            <div className='columns field is-vcentered'>
+                <label className='column is-2 label'>Ideal:</label>
+                <div className='column'>
+                    <div className='control'>
+                        <div className='select is-fullwidth'>
+                            <select name='ideal' onChange={(e) => idealChanged(+e.target.value)}>
+                                {background.ideals.map((trait, index) => {
+                                    return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                })}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='columns field is-vcentered'>
+                <label className='column is-2 label'>Bond:</label>
+                <div className='column'>
+                    <div className='control'>
+                        <div className='select is-fullwidth'>
+                            <select name='bond' onChange={(e) => bondChanged(+e.target.value)}>
+                                {background.bonds.map((trait, index) => {
+                                    return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                })}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='columns field is-vcentered'>
+                <label className='column is-2 label'>Flaw:</label>
+                <div className='column'>
+                    <div className='control'>
+                        <div className='select is-fullwidth'>
+                            <select name='flaw' onChange={(e) => flawChanged(+e.target.value)}>
+                                {background.flaws.map((trait, index) => {
+                                    return (<option key={index} value={trait.id}>{trait.text}</option>)
+                                })}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+    ////////////////////
+
+    function traitChanged(id: number) {
+        onTraitsChanged({
+            ...traits,
+            trait: id
+        });
     }
-}
+
+    function idealChanged(id: number) {
+        onTraitsChanged({
+            ...traits,
+            ideal: id
+        });
+    }
+
+    function bondChanged(id: number) {
+        onTraitsChanged({
+            ...traits,
+            bond: id
+        });
+    }
+
+    function flawChanged(id: number) {
+        onTraitsChanged({
+            ...traits,
+            flaw: id
+        });
+    }
+};
+
+////////////////////
+
+const mapStateToProps = (state: IGlobalState) => {
+    const {
+        traits,
+        background
+    } = state;
+
+    return {
+        traits,
+        background
+    };
+};
+
+const mapDispatchToProps = {
+    onTraitsChanged: traitsChanged,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TraitsComponent);

@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import { Alignment, Background, Class, Race } from '../core/types';
-import { StatModel, ProficienciesModel, EquipModel } from "./reducer";
+import { StatModel, ProficienciesModel, EquipModel, LanguagesModel, TraitModel } from "./reducer";
 
 const ActionTypes = {
     LEVEL_CHANGED: 'LEVEL_CHANGED',
@@ -16,6 +16,8 @@ const ActionTypes = {
     STATS_CHANGED: 'STATS_CHANGED',
     PROFICIENCIES_CHANGED: 'PROFICIENCIES_CHANGED',
     EQUIPMENT_CHANGED: 'EQUIPMENT_CHANGED',
+    LANGUAGES_CHANGED: 'LANGUAGES_CHANGED',
+    TRAITS_CHANGED: 'TRAITS_CHANGED',
 };
 
 export default ActionTypes;
@@ -33,3 +35,5 @@ export const alignmentChanged = createAction<Alignment>(ActionTypes.ALIGNMENT_CH
 export const statsChanged = createAction<StatModel>(ActionTypes.STATS_CHANGED);
 export const proficienciesChanged = createAction<ProficienciesModel>(ActionTypes.PROFICIENCIES_CHANGED);
 export const equipmentChanged = createAction<EquipModel>(ActionTypes.EQUIPMENT_CHANGED);
+export const languagesChanged = createAction<LanguagesModel>(ActionTypes.LANGUAGES_CHANGED);
+export const traitsChanged = createAction<TraitModel>(ActionTypes.TRAITS_CHANGED);

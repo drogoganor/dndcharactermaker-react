@@ -54,6 +54,8 @@ const DndCharacterMaker = () => {
                     <StatsComponent />
                     <ProficienciesComponent />
                     <EquipmentComponent />
+                    <LanguagesComponent />
+                    <TraitsComponent />
                 </div>
             </form>
         );
