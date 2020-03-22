@@ -1,4 +1,4 @@
-export type Race = {
+export interface Race {
     id: number;
     raceid: number;
     text: string;
@@ -11,7 +11,7 @@ export type Race = {
     bonusWeaponProficiencies?: number[];
 }
 
-export type RaceFeature = {
+export interface RaceFeature {
     text: string;
 }
 

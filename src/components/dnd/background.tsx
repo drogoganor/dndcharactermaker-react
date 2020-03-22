@@ -1,58 +1,130 @@
-import React from 'react';
-import { Background } from '../../core/types';
+import React, { useEffect } from 'react';
 import phb from '../../core/phb';
 import reference from '../../core/reference';
+import {IGlobalState} from "../../redux/reducer";
+import {
+    backgroundChanged,
+    backgroundSpecialtyChanged,
+    backgroundToolChoiceChanged
+} from "../../redux/actions";
+import { connect } from 'react-redux';
+import { Field, FormikProps } from 'formik';
 
-interface Props {
-    background: Background;
-    backgroundToolChoice: string;
-    backgroundSpecialty: number;
-    setBackground: (background: Background) => void;
-    setBackgroundToolChoice: (tool: string) => void;
-    setSpecialty: (backgroundSpecialty: number) => void;
+interface IProps {
+    form: FormikProps<IGlobalState>;
 }
 
-export default class BackgroundComponent extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-        this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
-        this.handleBackgroundToolChoiceChange = this.handleBackgroundToolChoiceChange.bind(this);
-        this.handleSpecialtySelection = this.handleSpecialtySelection.bind(this);
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+const BackgroundComponent = (props: IProps & StateProps & DispatchProps) => {
+    const {
+        form,
+        background,
+        onBackgroundChanged,
+        onBackgroundSpecialtyChanged,
+        onBackgroundToolChoiceChanged
+    } = props;
+
+    const backgroundToolChoice = form.values['backgroundToolChoice'];
+    const toolProficienciesText = useToolProficienciesText();
+    const currencyText = useCurrencyText();
+    useBackgroundChoice();
+
+    return (
+        <div className='field'>
+            <div className='field'>
+                <label className='label'>Background:</label>
+                <div id="character-background">
+                    <div className="buttons are-small has-addons">
+                        {phb.backgrounds.map((bg, index) => {
+                            return (
+                                <button
+                                    type="button"
+                                    key={index}
+                                    name="background"
+                                    onClick={() => onBackgroundChanged(bg)}
+                                    className={"button " + (background.id === bg.id ? "is-link is-selected" : null)}
+                                >{bg.text}</button>)
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            {background.specialty !== undefined && (
+                <div className='field is-vcentered'>
+                    <div className='columns'>
+                        <label className='column is-2 label'>{background.specialty.name}:</label>
+                        <div className='control'>
+                            <div className='select'>
+                                <select name='backgroundSpecialty' onChange={(e) => onBackgroundSpecialtyChanged(+e.target.value)}>
+                                    {background.specialty.rolls.map((roll, index) => {
+                                        return (<option key={index} value={roll.id}>{roll.text}</option>)
+                                    })}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>)
+            }
+
+            {background.toolSelection !== undefined && (
+
+                <div className='field is-vcentered'>
+                    <div className='columns'>
+                        <label className='column is-2 label'>{background.toolSelection.text}:</label>
+                        <Field
+                            className='input column is-fullwidth'
+                            required
+                            name="backgroundToolChoice"
+                        />
+                    </div>
+                    <div className='columns'>
+                        <div className="notification">
+                            <b>Suggestions: </b>{background.toolSelection.suggestions}
+                        </div>
+                    </div>
+                </div>)
+            }
+
+            {toolProficienciesText !== '' && (
+                <div className='columns field'>
+                    <label className='column is-2 label'>Tool Proficiencies:</label>
+                    <div className='column' id="toolProfs">
+                        <span className='tag is-dark'>{toolProficienciesText}</span>
+                    </div>
+                </div>)
+            }
+
+            <div className='columns field'>
+                <label className='column is-2 label'>Currency:</label>
+                <div className='column' id="currency">{currencyText}</div>
+            </div>
+        </div>
+    );
+
+    ////////////////////
+
+    function useBackgroundChoice() {
+        useEffect(() => {
+            onBackgroundToolChoiceChanged(backgroundToolChoice);
+        }, [backgroundToolChoice, onBackgroundToolChoiceChanged])
     }
 
-    handleBackgroundChange(event: any, bg: Background) {
-        event.preventDefault();
-        this.props.setBackground(bg);
-    }
+    function useToolProficienciesText() {
+        let result = background.toolProficiencies.map(prof => reference.toolProficiencies[prof].text).join(', ');
+        let toolSelection = background.toolSelection;
 
-    handleBackgroundToolChoiceChange(event: any) {
-        event.preventDefault();
-        this.props.setBackgroundToolChoice(event.target.value);
-    }
-
-    handleSpecialtySelection(event: any) {
-        event.preventDefault();
-
-        const target = event.target;
-        const val = target.value;
-
-        this.props.setSpecialty(val);
-    }
-
-    get toolProficienciesText(): string {
-        let result = this.props.background.toolProficiencies.map(prof => reference.toolProficiencies[prof].text).join(', ');
-        let toolSelection = this.props.background.toolSelection;
-
-        if (this.props.backgroundToolChoice !== '' && toolSelection !== undefined &&
+        if (backgroundToolChoice && toolSelection !== undefined &&
             toolSelection.proficiencyId !== undefined) {
-            result = result.replace('________', this.props.backgroundToolChoice.trim());
+            result = result.replace('________', backgroundToolChoice.trim());
         }
-        
-        return result;
-    };
 
-    get currencyText(): string {
-        let currency = this.props.background.currency.slice();
+        return result;
+    }
+
+    function useCurrencyText() {
+        let currency = background.currency.slice();
 
         // Nice text of character currencies
         let text = '';
@@ -66,79 +138,29 @@ export default class BackgroundComponent extends React.Component<Props> {
             text += currency[3] + " GP ";
         if (currency[4] > 0)
             text += currency[4] + " PP ";
+
         return text;
-    };
-
-    public render(): JSX.Element {
-        const background = this.props.background;
-        const backgroundToolChoice = this.props.backgroundToolChoice;
-
-        return (
-            <div className='field'>
-                <div className='field'>
-                    <label className='label'>Background:</label>
-                    <div id="character-background">
-                        <div className="buttons are-small has-addons">
-                            {phb.backgrounds.map((bg, index) => {
-                                return (
-                                    <button
-                                        type="button"
-                                        key={index}
-                                        name="background"
-                                        onClick={(e) => this.handleBackgroundChange(e, bg)}
-                                        className={"button " + (background.id === bg.id ? "is-link is-selected" : null)}
-                                    >{bg.text}</button>)
-                            })}
-                        </div>
-                    </div>
-                </div>
-                {background.specialty !== undefined && (
-                    <div className='field is-vcentered'>
-                        <div className='columns'>
-                            <label className='column is-2 label'>{background.specialty.name}:</label>
-                            <div className='control'>
-                                <div className='select'>
-                                    <select name='backgroundSpecialty' onChange={(e) => this.handleSpecialtySelection(e)}>
-                                        {background.specialty.rolls.map((roll, index) => {
-                                            return (<option key={index} value={roll.id}>{roll.text}</option>)
-                                        })}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>)
-                }
-                {this.props.background.toolSelection !== undefined && (
-
-                    <div className='field is-vcentered'>
-                        <div className='columns'>
-                            <label className='column is-2 label'>{this.props.background.toolSelection.text}:</label>
-                            <input className='input column is-fullwidth' id="charname" type="text"
-                                name="toolSelection"
-                                value={backgroundToolChoice}
-                                onChange={this.handleBackgroundToolChoiceChange}
-                            />
-                        </div>
-                        <div className='columns'>
-                            <div className="notification">
-                                <b>Suggestions: </b>{this.props.background.toolSelection.suggestions}
-                            </div>
-                        </div>
-                    </div>)
-                }
-                {this.toolProficienciesText !== '' && (
-                    <div className='columns field'>
-                        <label className='column is-2 label'>Tool Proficiencies:</label>
-                        <div className='column' id="toolProfs">
-                            <span className='tag is-dark'>{this.toolProficienciesText}</span>
-                        </div>
-                    </div>)
-                }
-                <div className='columns field'>
-                    <label className='column is-2 label'>Currency:</label>
-                    <div className='column' id="currency">{this.currencyText}</div>
-                </div>
-            </div>
-        )
     }
-}
+};
+
+////////////////////
+
+const mapStateToProps = (state: IGlobalState) => {
+    const {
+        background,
+        backgroundToolChoice
+    } = state;
+
+    return {
+        background,
+        backgroundToolChoice
+    };
+};
+
+const mapDispatchToProps = {
+    onBackgroundChanged: backgroundChanged,
+    onBackgroundSpecialtyChanged: backgroundSpecialtyChanged,
+    onBackgroundToolChoiceChanged: backgroundToolChoiceChanged,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BackgroundComponent);
