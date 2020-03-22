@@ -15,13 +15,27 @@ import {
     backgroundToolChoiceChanged,
     alignmentChanged,
     statsChanged,
+    proficienciesChanged, equipmentChanged,
 } from "./actions";
+import {EquipmentChoiceModel, EquipmentModel} from "../core/dndcharacter";
 
 export type StatModel = {
     statArray: number[];
     statModifiers: number[];
     statTotals: number[];
     allStatsAssigned: boolean;
+};
+
+export type ProficienciesModel = {
+    proficiencies: number[];
+    allProficienciesChosen: boolean;
+};
+
+export type EquipModel = {
+    equipment: EquipmentModel[];
+    equipChoices: EquipmentChoiceModel[];
+    equipmentText: string;
+    allEquipmentChosen: boolean;
 };
 
 export interface IGlobalState {
@@ -37,6 +51,8 @@ export interface IGlobalState {
     backgroundToolChoice: string;
     alignment: Alignment;
     stats: StatModel;
+    proficiency: ProficienciesModel;
+    equip: EquipModel;
 }
 
 export type GlobalState = typeof INITIAL_STATE;
@@ -59,6 +75,16 @@ const INITIAL_STATE = {
         statTotals: Array(6).fill(null),
         allStatsAssigned: false
     },
+    proficiency: {
+        proficiencies: [],
+        allProficienciesChosen: false
+    },
+    equip: {
+        equipment: [],
+        equipChoices: [],
+        equipmentText: '',
+        allEquipmentChosen: false
+    }
 };
 
 ////////////////////
@@ -128,6 +154,18 @@ const rootReducer = handleActions({
     [statsChanged.toString()]: (state: GlobalState, { payload }: FSA<string, StatModel>) => {
         return state.stats !== payload
             ? { ...state, stats: payload }
+            : state;
+    },
+
+    [proficienciesChanged.toString()]: (state: GlobalState, { payload }: FSA<string, ProficienciesModel>) => {
+        return state.proficiency !== payload
+            ? { ...state, proficiency: payload }
+            : state;
+    },
+
+    [equipmentChanged.toString()]: (state: GlobalState, { payload }: FSA<string, EquipModel>) => {
+        return state.equip !== payload
+            ? { ...state, equip: payload }
             : state;
     },
 }, INITIAL_STATE);

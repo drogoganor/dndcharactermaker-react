@@ -1,16 +1,11 @@
 import React, { useMemo } from 'react';
-import { Race } from '../../core/types';
 import { IGlobalState } from "../../redux/reducer";
 import { connect } from 'react-redux';
 import { Field } from 'formik';
 
-interface IProps {
-    race: Race;
-}
-
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-const Names = (props: IProps & StateProps) => {
+const Names = (props: StateProps) => {
     const { race } = props;
     const raceNamePlaceholder = useCharacterNamePageReference();
 

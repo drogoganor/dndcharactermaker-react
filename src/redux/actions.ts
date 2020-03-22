@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
-import {Alignment, Background, Class, Race} from '../core/types';
-import {StatModel} from "./reducer";
+import { Alignment, Background, Class, Race } from '../core/types';
+import { StatModel, ProficienciesModel, EquipModel } from "./reducer";
 
 const ActionTypes = {
     LEVEL_CHANGED: 'LEVEL_CHANGED',
@@ -14,6 +14,8 @@ const ActionTypes = {
     BACKGROUND_TOOL_CHOICE_CHANGED: 'BACKGROUND_TOOL_CHOICE_CHANGED',
     ALIGNMENT_CHANGED: 'ALIGNMENT_CHANGED',
     STATS_CHANGED: 'STATS_CHANGED',
+    PROFICIENCIES_CHANGED: 'PROFICIENCIES_CHANGED',
+    EQUIPMENT_CHANGED: 'EQUIPMENT_CHANGED',
 };
 
 export default ActionTypes;
@@ -29,3 +31,5 @@ export const backgroundSpecialtyChanged = createAction<number>(ActionTypes.BACKG
 export const backgroundToolChoiceChanged = createAction<string>(ActionTypes.BACKGROUND_TOOL_CHOICE_CHANGED);
 export const alignmentChanged = createAction<Alignment>(ActionTypes.ALIGNMENT_CHANGED);
 export const statsChanged = createAction<StatModel>(ActionTypes.STATS_CHANGED);
+export const proficienciesChanged = createAction<ProficienciesModel>(ActionTypes.PROFICIENCIES_CHANGED);
+export const equipmentChanged = createAction<EquipModel>(ActionTypes.EQUIPMENT_CHANGED);

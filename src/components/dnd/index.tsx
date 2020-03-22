@@ -52,6 +52,8 @@ const DndCharacterMaker = () => {
                     <AlignmentComponent />
                     <BackgroundComponent form={form} />
                     <StatsComponent />
+                    <ProficienciesComponent />
+                    <EquipmentComponent />
                 </div>
             </form>
         );
