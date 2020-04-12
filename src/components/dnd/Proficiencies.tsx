@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import reference from '../../core/reference';
 import { IGlobalState } from "../../redux/reducer";
 import { proficienciesChanged } from "../../redux/actions";
@@ -9,13 +9,14 @@ type DispatchProps = typeof mapDispatchToProps;
 
 const ProficienciesComponent = (props: StateProps & DispatchProps) => {
     const { classType, background, proficiency, onProficienciesChanged } = props;
-    const { proficiencies } = proficiency;
+    const { proficiencies, allProficienciesChosen } = proficiency;
     const allProficiencies = background.proficiencies.concat(proficiencies);
     const proficienciesLeftText = useProficienciesLeftText();
-    const allProficienciesChosen = useAllProficienciesChosen();
     const availableProficiencies = useAvailableProficiencies();
     const resetProficiencies = useResetProficiencies;
     const addProficiency = useAddProficiency;
+    const totalProficiencies = classType.proficiencies.num + background.proficiencies.length;
+    useAllProficienciesChosen();
 
     return (
         <div className='columns field'>
@@ -59,6 +60,17 @@ const ProficienciesComponent = (props: StateProps & DispatchProps) => {
 
     ////////////////////
 
+    function useAllProficienciesChosen() {
+        useEffect(() => {
+            if (allProficiencies.length >= totalProficiencies && !allProficienciesChosen) {
+                onProficienciesChanged({
+                    proficiencies: proficiencies,
+                    allProficienciesChosen: true
+                });
+            }
+        }, [proficiencies]);
+    }
+
     function useResetProficiencies() {
         onProficienciesChanged({
             proficiencies: [],
@@ -72,7 +84,7 @@ const ProficienciesComponent = (props: StateProps & DispatchProps) => {
 
         onProficienciesChanged({
             proficiencies: profs,
-            allProficienciesChosen: useAllProficienciesChosen()
+            allProficienciesChosen: false
         });
     }
 
@@ -80,12 +92,6 @@ const ProficienciesComponent = (props: StateProps & DispatchProps) => {
         // Nice text label of how many proficiencies left to select
         const numLeft = classType.proficiencies.num - proficiencies.length;
         return "Choose " + numLeft + " additional proficienc" + (numLeft > 1 ? "ies" : "y") + ":";
-    }
-
-    function useAllProficienciesChosen() {
-        const numClassProfs = classType.proficiencies.num;
-        const numBackgroundProfs = background.proficiencies.length;
-        return allProficiencies.length >= numClassProfs + numBackgroundProfs;
     }
 
     function useAvailableProficiencies() {

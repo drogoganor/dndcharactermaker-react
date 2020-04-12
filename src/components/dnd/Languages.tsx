@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import reference from '../../core/reference';
 import { IGlobalState } from "../../redux/reducer";
 import { languagesChanged } from "../../redux/actions";
@@ -9,9 +9,11 @@ type DispatchProps = typeof mapDispatchToProps;
 
 const LanguagesComponent = (props: StateProps & DispatchProps) => {
     const { race, background, languages, onLanguagesChanged } = props;
-    const { languageIds } = languages;
+    const { languageIds, allLanguagesChosen } = languages;
     const allLanguages = race.languages.concat(languageIds);
-    const hasBonusLanguages = race.extraLanguages > 0 || background.languages > 0
+    const hasBonusLanguages = race.extraLanguages > 0 || background.languages > 0;
+    const numLanguagesTotal = race.extraLanguages + background.languages;
+    useAllLanguagesChosen();
 
     return (
         <div className='columns field'>
@@ -26,10 +28,10 @@ const LanguagesComponent = (props: StateProps & DispatchProps) => {
                             >{reference.languages[lang].text}</span>)
                     })}
                 </div>
-                {hasBonusLanguages && allLanguagesChosen() && (
+                {hasBonusLanguages && allLanguagesChosen && (
                     <button type="button" className='button is-danger' onClick={() => resetLanguages()}>Reset Languages</button>)
                 }
-                {!allLanguagesChosen() && (
+                {!allLanguagesChosen && (
                     <div>
                         <label className='label'>{languagesLeftText()}</label>
                         <div className='buttons are-small'>
@@ -50,12 +52,15 @@ const LanguagesComponent = (props: StateProps & DispatchProps) => {
 
     ////////////////////
 
-    function allLanguagesChosen(): boolean {
-        const extraLangs = race.extraLanguages;
-        const numBackgroundLangs = background.languages;
-        const numLanguagesTotal = extraLangs + numBackgroundLangs;
-
-        return languageIds.length >= numLanguagesTotal;
+    function useAllLanguagesChosen() {
+        useEffect(() => {
+            if (languageIds.length >= numLanguagesTotal && !allLanguagesChosen) {
+                onLanguagesChanged({
+                    languageIds: languageIds,
+                    allLanguagesChosen: true
+                });
+            }
+        }, [languageIds]);
     }
 
     function languagesLeftText(): string {
@@ -90,7 +95,7 @@ const LanguagesComponent = (props: StateProps & DispatchProps) => {
 
         onLanguagesChanged({
             languageIds: langs,
-            allLanguagesChosen: false
+            allLanguagesChosen: langs.length >= numLanguagesTotal
         });
     }
 };

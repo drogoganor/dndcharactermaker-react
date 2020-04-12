@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IGlobalState } from "../../redux/reducer";
 import { equipmentChanged } from "../../redux/actions";
 import { connect } from 'react-redux';
@@ -11,10 +11,10 @@ type DispatchProps = typeof mapDispatchToProps;
 
 const EquipmentComponent = (props: StateProps & DispatchProps) => {
     const { classType, background, backgroundToolChoice, equip, onEquipmentChanged } = props;
-    const { equipment, equipChoices } = equip; // equipment,
+    const { equipment, equipChoices, allEquipmentChosen } = equip; // equipment,
     const equipmentChoiceModel = useEquipmentChoiceModel();
     const hasChosenAnyEquipment = equipmentChoiceModel.length < classType.equipChoices.length;
-    const allEquipmentChosen = equipmentChoiceModel.length === 0;
+    useAllEquipmentChosen();
 
     return (
         <div className='columns field'>
@@ -70,6 +70,19 @@ const EquipmentComponent = (props: StateProps & DispatchProps) => {
     );
 
     ////////////////////
+
+    function useAllEquipmentChosen() {
+        useEffect(() => {
+            if (equipmentChoiceModel.length === 0 && !allEquipmentChosen) {
+                onEquipmentChanged({
+                    equipChoices: equipChoices,
+                    equipment: equipment,
+                    equipmentText: equipmentText(),
+                    allEquipmentChosen: true
+                });
+            }
+        }, [equipChoices, equipment]);
+    }
 
     function useEquipmentChoiceModel() {
         // List of all available equipment choices to choose from, excluding already selected

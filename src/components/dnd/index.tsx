@@ -1,24 +1,20 @@
 import React from 'react';
 import 'bulma';
-import { Race, Class, Background } from '../../core/types';
-import DndCharacter, { EquipmentChoiceModel, EquipmentModel } from '../../core/dndcharacter';
-import Summary from './summary';
-import XpLevel from './xpLevel';
-import Names from './names';
-import RaceComponent from './race';
-import ClassComponent from './class';
-import AlignmentComponent from './alignment';
-import BackgroundComponent from './background';
-import StatsComponent from './stats';
-import ProficienciesComponent from './proficiencies';
-import EquipmentComponent from './equipment';
-import LanguagesComponent from './languages';
-import TraitsComponent from './traits';
-import FreeFields from './freeFields';
-import GeneratePDF from './generatePDF';
+import Summary from './Summary';
+import XpLevel from './XpLevel';
+import Names from './Names';
+import RaceComponent from './Race';
+import ClassComponent from './Class';
+import AlignmentComponent from './Alignment';
+import BackgroundComponent from './Background';
+import StatsComponent from './Stats';
+import ProficienciesComponent from './Proficiencies';
+import EquipmentComponent from './Equipment';
+import LanguagesComponent from './Languages';
+import TraitsComponent from './Traits';
+import FreeFields from './FreeFields';
+import GeneratePDF from './GeneratePDF';
 import { IGlobalState } from "../../redux/reducer";
-import { levelChanged } from "../../redux/actions";
-import { connect } from 'react-redux';
 import { Formik, FormikProps, FormikHelpers } from 'formik';
 import phb from '../../core/phb';
 
@@ -56,6 +52,8 @@ const DndCharacterMaker = () => {
                     <EquipmentComponent />
                     <LanguagesComponent />
                     <TraitsComponent />
+                    <FreeFields />
+                    <GeneratePDF form={form} />
                 </div>
             </form>
         );
@@ -231,93 +229,6 @@ const DndCharacterMaker = () => {
     //     return profs;
     // };
 
-    ///////// Component /////////
-
-    // public render(): JSX.Element {
-    //     return (
-    //         <div className='bd-main-container container'>
-    //             <Summary />
-    //             <div className='content has-text-left'>
-    //                 <XpLevel
-    //                     level={this.state.level}
-    //                     xp={this.state.xp}
-    //                     setXpAndLevel={this.handleXpAndLevelChange} />
-    //
-    //                 <Names
-    //                     race={this.state.race}
-    //                     playerName={this.state.playerName}
-    //                     characterName={this.state.characterName}
-    //                     setCharacterName={this.handleCharacterNameChange}
-    //                     setPlayerName={this.handlePlayerNameChange} />
-    //
-    //                 <RaceComponent
-    //                     race={this.state.race}
-    //                     setRace={this.handleRaceChange} />
-    //
-    //                 <ClassComponent
-    //                     class={this.state.class}
-    //                     archetype={this.state.archetype}
-    //                     level={this.state.level}
-    //                     setClass={this.handleClassChange}
-    //                     setArchetype={this.handleArchetypeChange} />
-    //
-    //                 <AlignmentComponent
-    //                     alignment={this.state.alignment}
-    //                     setAlignment={this.handleAlignmentChange} />
-    //
-    //                 <BackgroundComponent
-    //                     background={this.state.background}
-    //                     backgroundToolChoice={this.state.backgroundToolChoice}
-    //                     backgroundSpecialty={this.state.backgroundSpecialty}
-    //                     setBackground={this.handleBackgroundChange}
-    //                     setBackgroundToolChoice={this.handleBackgroundToolChoiceChange}
-    //                     setSpecialty={this.handleBackgroundSpecialtyChange} />
-    //
-    //                 <StatsComponent
-    //                     race={this.state.race}
-    //                     statArray={this.state.statArray}
-    //                     statTotals={this.state.statTotals}
-    //                     statModifiers={this.state.statModifiers}
-    //                     setStatArray={this.handleStatArrayChange} />
-    //
-    //                 <ProficienciesComponent
-    //                     class={this.state.class}
-    //                     background={this.state.background}
-    //                     proficiencies={this.state.proficiencies}
-    //                     setProficiencies={this.handleProficienciesChange} />
-    //
-    //                 <EquipmentComponent
-    //                     class={this.state.class}
-    //                     background={this.state.background}
-    //                     backgroundToolChoice={this.state.backgroundToolChoice}
-    //                     setEquipment={this.handleEquipmentChange} />
-    //
-    //                 <LanguagesComponent
-    //                     class={this.state.class}
-    //                     race={this.state.race}
-    //                     background={this.state.background}
-    //                     languageids={this.state.languageids}
-    //                     setLanguages={this.handleLanguagesChange}
-    //                     allLanguagesChosen={this.allLanguagesChosen} />
-    //
-    //                 <TraitsComponent
-    //                     background={this.state.background}
-    //                     setTrait={this.handleTraitSelection} />
-    //
-    //                 <FreeFields {...this.state}
-    //                     setField={this.handleInputChange}
-    //                     setImage={this.handleImageChange} />
-    //
-    //                 <GeneratePDF {...this.state}
-    //                     allLanguagesChosen={this.allLanguagesChosen}
-    //                     allProficienciesChosen={this.allProficienciesChosen}
-    //                     getProficiencies={this.proficiencies} />
-    //
-    //                 <div>&nbsp;</div>
-    //             </div>
-    //         </div>
-    //     );
-    // }
 };
 
 export default DndCharacterMaker;

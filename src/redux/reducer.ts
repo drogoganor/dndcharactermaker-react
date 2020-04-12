@@ -51,6 +51,9 @@ export type TraitModel = {
     flaw: number;
 };
 
+export type FreeFieldsModel = {
+};
+
 export interface IGlobalState {
     xp: number;
     level: number;
@@ -68,6 +71,20 @@ export interface IGlobalState {
     equip: EquipModel;
     languages: LanguagesModel;
     traits: TraitModel;
+
+    age: string;
+    height: string;
+    weight: string;
+    hairColor: string;
+    eyeColor: string;
+    skinColor: string;
+    backstory: string;
+    appearance: any;
+    factionLogo: any;
+    organizationFaction: string;
+    allies: string;
+    additionalFeatureAndTraits: string;
+    treasure: string;
 }
 
 export type GlobalState = typeof INITIAL_STATE;
@@ -109,7 +126,21 @@ const INITIAL_STATE = {
         ideal: 0,
         bond: 0,
         flaw: 0
-    }
+    },
+
+    age: '',
+    height: '',
+    weight: '',
+    hairColor: '',
+    eyeColor: '',
+    skinColor: '',
+    backstory: '',
+    appearance: null,
+    factionLogo: null,
+    organizationFaction: '',
+    allies: '',
+    additionalFeatureAndTraits: '',
+    treasure: ''
 };
 
 ////////////////////

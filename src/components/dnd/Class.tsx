@@ -12,8 +12,7 @@ const ClassComponent = (props: StateProps & DispatchProps) => {
     const canSelectArchetype = level >= classType.subclass.atLevel;
     return (
         <div className='field'>
-            <div className='field'>
-                <label className='label'>Class:</label>
+            <div className='field'>                <label className='label'>Class:</label>
                 <div id="character-class">
                     <div className="buttons are-small has-addons">
                         {phb.classes.map((cls, index) => {

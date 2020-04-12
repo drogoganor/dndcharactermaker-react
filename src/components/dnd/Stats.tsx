@@ -13,12 +13,12 @@ const StatsComponent = (props: StateProps & DispatchProps) => {
     const [statRolls, setStatRolls] = useState([15, 14, 13, 12, 10, 8]);
 
     const { race, stats, onStatsChanged } = props;
-    const { statArray, statTotals, statModifiers } = stats;
+    const { statArray, statTotals, statModifiers, allStatsAssigned } = stats;
     const currentStatAssignmentText = reference.statBlocks[statAssignmentIndex].text;
-    const allStatsAssigned = statRolls.length === 0;
     const rerollStatsStandard = useStatRerollStandard;
     const rerollStatsRandom = useStatRerollRandom;
     useRaceStats();
+    useAllStatsChosen();
 
     return (
         <div className='field is-vcentered'>
@@ -69,6 +69,20 @@ const StatsComponent = (props: StateProps & DispatchProps) => {
     );
 
     ////////////////////
+
+
+    function useAllStatsChosen() {
+        useEffect(() => {
+            if (statRolls.length === 0 && !allStatsAssigned) {
+                onStatsChanged({
+                    statArray,
+                    statTotals,
+                    statModifiers,
+                    allStatsAssigned: true
+                });
+            }
+        }, [statArray, statTotals, statModifiers, statRolls, allStatsAssigned]);
+    }
 
     function useRaceStats() {
         useEffect(() => {
@@ -122,7 +136,7 @@ const StatsComponent = (props: StateProps & DispatchProps) => {
             statArray: array,
             statTotals: totals,
             statModifiers: modifiers,
-            allStatsAssigned: allStatsAssigned
+            allStatsAssigned: false
         });
     }
 
@@ -138,7 +152,7 @@ const StatsComponent = (props: StateProps & DispatchProps) => {
             statArray: Array(6).fill(null),
             statTotals: Array(6).fill(null),
             statModifiers: Array(6).fill(null),
-            allStatsAssigned: allStatsAssigned
+            allStatsAssigned: false
         });
     }
 
@@ -153,7 +167,7 @@ const StatsComponent = (props: StateProps & DispatchProps) => {
             statArray: Array(6).fill(null),
             statTotals: Array(6).fill(null),
             statModifiers: Array(6).fill(null),
-            allStatsAssigned: allStatsAssigned
+            allStatsAssigned: false
         });
     }
 };
