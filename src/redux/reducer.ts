@@ -167,13 +167,38 @@ const rootReducer = handleActions({
 
     [raceChanged.toString()]: (state: GlobalState, { payload }: FSA<string, Race>) => {
         return state.race !== payload
-            ? { ...state, race: payload }
+            ? {
+                ...state,
+                race: payload,
+                languages: {
+                    languageIds: [],
+                    allLanguagesChosen: false
+                }
+            }
             : state;
     },
 
     [classChanged.toString()]: (state: GlobalState, { payload }: FSA<string, Class>) => {
         return state.classType !== payload
-            ? { ...state, classType: payload }
+            ? {
+                ...state,
+                classType: payload,
+                equip: {
+                    allEquipmentChosen: false,
+                    equipChoices: [],
+                    equipment: [],
+                    equipmentText: ''
+                },
+                proficiency: {
+                    allProficienciesChosen: false,
+                    proficiencies: []
+                },
+                languages: {
+                    languageIds: [],
+                    allLanguagesChosen: false
+                },
+                archetype: 0
+            }
             : state;
     },
 
@@ -185,7 +210,25 @@ const rootReducer = handleActions({
 
     [backgroundChanged.toString()]: (state: GlobalState, { payload }: FSA<string, Background>) => {
         return state.background !== payload
-            ? { ...state, background: payload }
+            ? {
+                ...state,
+                background: payload,
+                equip: {
+                    allEquipmentChosen: false,
+                    equipChoices: [],
+                    equipment: [],
+                    equipmentText: ''
+                },
+                proficiency: {
+                    allProficienciesChosen: false,
+                    proficiencies: []
+                },
+                languages: {
+                    languageIds: [],
+                    allLanguagesChosen: false
+                },
+                backgroundSpecialty: 0
+            }
             : state;
     },
 
